@@ -1,0 +1,30 @@
+[user]
+	email = mlwarner632@gmail.com
+	name = Matt Warner
+[color]
+	ui = auto
+[commit]
+  template = ~/.config/git/message
+[core]
+	pager = less -FMRiX
+[push]
+	default = simple
+[alias]
+	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)\"%an\" <%ae>%C(reset) %C(magenta)%ar%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+	co = checkout
+	ci = commit
+	st = status
+  br = branch
+  df = diff
+  hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+	dt = difftool
+	mt = mergetool
+[diff]
+	tool = vimdiff
+[merge]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[mergetool]
+	keepBackup = false
+	prompt = false
