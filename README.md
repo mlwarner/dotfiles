@@ -8,11 +8,6 @@ This is a collection of my different configurations I use. I've attempted to cre
 - Using Nix for reproducible build environments (tooling)
 - Using Home Manager to vend the configuration and build tools
 
-# Usage
-
-1. Install Nix
-2. Install home manager
-=======
 ## Setup
 
 ### Install Nix
