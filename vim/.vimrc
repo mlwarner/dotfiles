@@ -83,3 +83,4 @@ autocmd FileType {mail,markdown,taskedit,text,vimwiki} setlocal spell concealcur
 autocmd FileType {mail} setlocal formatoptions+=w textwidth=80
 autocmd FileType {crontab} setlocal nobackup | set nowritebackup
 autocmd FileType {java,jsp} setlocal shiftwidth=4 tabstop=4 textwidth=150 cc=+1
+

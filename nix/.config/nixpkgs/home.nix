@@ -4,6 +4,10 @@ let
 
   my-dotfile-dir = ~/dotfiles;
 
+  # Git configuration
+  gitConfig = "${my-dotfile-dir}/git/.config/git";
+
+  # Vim Configuration
   vimRC = "${my-dotfile-dir}/vim/.vimrc";
   neovimRC = "${my-dotfile-dir}/neovim/.config/nvim/init.vim";
   neovimConfig = builtins.readFile neovimRC;
@@ -34,6 +38,7 @@ in
     vimAlias = true;
   };
 
+  /*
   programs.git = {
     enable = true;
 
@@ -69,6 +74,7 @@ in
       push.default = "simple";
     };
   };
+  */
 
   programs.fzf = {
     enable = true;
@@ -95,6 +101,11 @@ in
       # neovimRC depends on vimRC to exist in the filesystem
       # This is only necessary until we change the paths to load the plugins + source
       ".vimrc".source = vimRC;
+
+      ".config/git" = {
+        source = gitConfig;
+        recursive = true;
+      };
   };
 
   home.sessionVariables = {
