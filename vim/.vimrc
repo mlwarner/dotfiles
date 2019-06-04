@@ -11,7 +11,15 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy file f
 Plug 'junegunn/fzf.vim'                   " Fuzzy file finder plugin
 Plug 'junegunn/vim-plug'                  " Manage self
 
-Plug 'morhetz/gruvbox'                    " Gruvbox colorscheme
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+Plug 'gruvbox-community/gruvbox'          " Gruvbox colorscheme
 Plug 'sheerun/vim-polyglot'               " Collection of language plugins
 Plug 'tpope/vim-commentary'               " Commenting made easy
 Plug 'tpope/vim-dispatch'                 " Dispatch commands asynchronously!
@@ -66,9 +74,11 @@ let g:vimwiki_url_maxsave=0
 let g:vimwiki_global_ext=0
 
 " ALE
-let g:ale_completion_enabled = 1
 let g:ale_linters = {'rust': ['rls']}
 let g:ale_rust_rls_toolchain = 'stable'
+
+" Deoplete
+let g:deoplete#enable_at_startup = 1
 
 " For guake terminal artifacts with neovim https://github.com/neovim/neovim/issues/7049
 set guicursor=
