@@ -16,11 +16,11 @@ in
 
 {
   home.packages = with pkgs; [
+    autossh
     fasd
     gnupg
     httpie
     jq
-    mosh
     ripgrep
     rtv
     rustup
@@ -33,7 +33,7 @@ in
   programs.neovim = {
     enable = true;
 
-    configure.customRC = neovimConfig;
+    extraConfig = neovimConfig;
 
     vimAlias = true;
   };
