@@ -1,29 +1,3 @@
-" Install plugin manager if it does not exist
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-call plug#begin()
-
-Plug 'gruvbox-community/gruvbox'          " Gruvbox colorscheme
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fuzzy file finder binary
-Plug 'junegunn/fzf.vim'                   " Fuzzy file finder plugin
-Plug 'junegunn/vim-plug'                  " Manage self
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'sheerun/vim-polyglot'               " Collection of language plugins
-Plug 'tpope/vim-commentary'               " Commenting made easy
-Plug 'tpope/vim-dispatch'                 " Dispatch commands asynchronously!
-Plug 'tpope/vim-fugitive'                 " Git in vim
-Plug 'tpope/vim-sensible'                 " Sensible defaults
-Plug 'vim-airline/vim-airline'            " Statusline
-Plug 'vim-airline/vim-airline-themes'     " Statusline themes
-Plug 'vimwiki/vimwiki'                    " Wiki management in vim
-Plug 'Yggdroot/indentLine'                " Indentation guides
-
-call plug#end()
-
 " Leader
 let mapleader="\<space>"
 
@@ -35,6 +9,7 @@ set hlsearch
 " Cursor line
 set cursorline
 set relativenumber
+set number
 
 " Set the background
 set background=dark
@@ -43,22 +18,29 @@ colorscheme gruvbox
 " Store swapfiles in a single location
 set dir=$HOME/.vim/tmp
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+
 " Fuzzy file finder
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-v': 'vsplit'
       \ }
-nnoremap <c-p> :FZF<cr>
+nnoremap <silent> <c-p> :Files<cr>
+
+" Search commits or blame
+nnoremap <silent> <Leader>c  :Commits<CR>
+nnoremap <silent> <Leader>bc :BCommits<CR>
 
 " Airline
-"let g:airline_powerline_fonts = 1
-
-" IndentLine
-let g:indentLine_concealcursor='c'
-
-" Spell settings
-"highlight SpellBad cterm=underline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#coc#enabled = 1
+set noshowmode " Don't show the mode we are in because airline handles that
 
 " Wiki
 let g:vimwiki_list =[{'syntax': 'markdown', 'ext': '.md'}]
@@ -105,9 +87,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -160,34 +142,17 @@ xmap <silent> <TAB> <Plug>(coc-range-select)
 xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
 
 " Use `:Format` to format current buffer
-command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 Format    :call     CocAction('format')
 
 " Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold      :call     CocAction('fold', <f-args>)
 
 " use `:OR` for organize import of current buffer
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR        :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-" Add status line support, for integration with other plugin, checkout `:h coc-status`
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+" use `:Refactor` for changing path of current file
+command! -nargs=0 Refactor  :CocCommand workspace.renameCurrentFile
+command! -nargs=0 Rename    :CocCommand workspace.renameCurrentFile
 
 " Style Guidelines
 set expandtab
@@ -195,8 +160,7 @@ set shiftwidth=2
 set tabstop=2
 set softtabstop=2
 autocmd BufNewFile,BufRead {*.m,*.mi,*.mhtml} setlocal filetype=mason
-autocmd FileType {mail,markdown,taskedit,text,vimwiki} setlocal spell concealcursor=c
+autocmd FileType {mail,markdown,taskedit,text,vimwiki} setlocal spell concealcursor=c shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType {mail} setlocal formatoptions+=w textwidth=80
 autocmd FileType {crontab} setlocal nobackup | set nowritebackup
 autocmd FileType {java,jsp} setlocal shiftwidth=4 tabstop=4 textwidth=150 cc=+1
-

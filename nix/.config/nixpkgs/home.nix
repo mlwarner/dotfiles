@@ -1,114 +1,96 @@
 { pkgs, ... }:
 
 let
-
   my-dotfile-dir = ~/dotfiles;
 
-  # Git configuration
-  gitConfig = "${my-dotfile-dir}/git/.config/git";
+  myCLIPackages = with pkgs; [
+    autossh
+    #eternal-terminal
+    fasd
+    fd
+    git
+    gnupg
+    mosh
+    #q-text-as-data
+    ripgrep
+    silver-searcher
+    starship
+    #taskwarrior
+    #timewarrior
+    tldr
+    tmux
+    tree
+    zsh-autosuggestions
+  ];
 
-  # Vim Configuration
-  vimRC = "${my-dotfile-dir}/vim/.vimrc";
-  neovimRC = "${my-dotfile-dir}/neovim/.config/nvim/init.vim";
-  neovimConfig = builtins.readFile neovimRC;
+  myNinjaDevSyncPackages = with pkgs; [
+    fswatch
+  ];
+
+  myDocumentationPackages = with pkgs; [
+    ffmpeg
+    pandoc
+    #plantuml
+  ];
+
+  myCLIEmailPackages = with pkgs; [
+    aerc
+    colordiff
+    dante
+    isync
+    #khal
+    lbdb
+    msmtp
+    neomutt
+    #notmuch
+    #pass
+    rtv
+    #todo-txt-cli
+    #urlscan
+    w3m
+  ];
+
+  myJavascriptDevelopmentPackages = with pkgs; [
+    httpie
+    jq
+    nodejs
+  ];
+
+  myPackagesForRubyDevelopment = with pkgs; [
+    ruby
+    solargraph
+  ];
 
 in
 
 {
-  home.packages = with pkgs; [
-    autossh
-    fasd
-    gnupg
-    httpie
-    jq
-    ripgrep
-    rtv
-    rustup
-    tmux
-    tree
+  imports = [
+    ./programs/alacritty/alacritty.nix
+    ./programs/git/git.nix
+    ./programs/neovim/neovim.nix
+    ./programs/shell/shell.nix
+    ./programs/tmux/tmux.nix
   ];
 
   programs.home-manager.enable = true;
 
-  programs.neovim = {
-    enable = true;
-
-    extraConfig = neovimConfig;
-
-    vimAlias = true;
-  };
-
-  /*
-  programs.git = {
-    enable = true;
-
-    userName = "Matt Warner";
-    userEmail = "mlwarner632@gmail.com";
-
-    aliases = {
-      br = "branch";
-      co = "checkout";
-      ci = "commit";
-      df = "diff";
-      dt = "difftool";
-      hist = "log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short";
-      mt = "mergetool";
-      st = "status";
-    };
-
-    ignores = [
-      "node_modules"
-      "*.iml"
-      "build"
-    ];
-
-    extraConfig = {
-      core.pager = "less -FMRiX";
-      difftool.prompt = false;
-
-      mergetool = {
-        keepBackup = false;
-        prompt = false;
-      };
-
-      push.default = "simple";
-    };
-  };
-  */
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.zsh = {
-    enable = true;
-
-    oh-my-zsh = {
-      enable = true;
-      theme = "robbyrussell";
-
-      plugins = [
-        "cargo"
-        "git"
-        "nix-shell"
-        "rust"
-      ];
-    };
-  };
+  home.packages = with pkgs; [
+    #neovim
+    watchman # To monitor file changes with vim-coc
+  ]
+  ++ myCLIPackages
+  #++ myCLIEmailPackages
+  #++ myNinjaDevSyncPackages
+  #++ myDocumentationPackages
+  ++ myJavascriptDevelopmentPackages;
+  #++ myPackagesForRubyDevelopment;
 
   home.file = {
-      # neovimRC depends on vimRC to exist in the filesystem
-      # This is only necessary until we change the paths to load the plugins + source
-      ".vimrc".source = vimRC;
+      ".npmrc".source = "${my-dotfile-dir}/npm/.npmrc";
+      #".ssh/config".source = "${my-dotfile-dir}/ssh/.ssh/config";
 
-      ".config/git" = {
-        source = gitConfig;
-        recursive = true;
-      };
-  };
-
-  home.sessionVariables = {
-      EDITOR = "vim";
+      # Cannot symlink config that needs to be writable
+      #".config/ninja-dev-sync.json".source = "${my-dotfile-dir}/ninja-dev-sync/.config/ninja-dev-sync.json";
   };
 }
+
