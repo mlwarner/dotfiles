@@ -1,12 +1,5 @@
 { config, lib, pkgs, ... }:
 
-let
-  my-dotfile-dir = ~/dotfiles;
-
-  # Git configuration
-  gitConfigDir = "${my-dotfile-dir}/git/.config/git";
-in
-
 {
   programs.git = {
     enable = true;
