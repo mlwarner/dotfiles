@@ -42,5 +42,5 @@ in
     };
   };
 
-  home.file.".config/git/message".source = "${gitConfigDir}/message";
+  home.file.".config/git/message".source = ./message;
 }

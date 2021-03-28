@@ -1,8 +1,6 @@
 { pkgs, ... }:
 
 let
-  my-dotfile-dir = ~/dotfiles;
-
   myCLIPackages = with pkgs; [
     autossh
     #eternal-terminal
@@ -65,11 +63,13 @@ in
 
 {
   imports = [
-    ./programs/alacritty/alacritty.nix
-    ./programs/git/git.nix
-    ./programs/neovim/neovim.nix
-    ./programs/shell/shell.nix
-    ./programs/tmux/tmux.nix
+    ./alacritty/alacritty.nix
+    ./git/git.nix
+    ./neovim/neovim.nix
+    ./npm/npm.nix
+    ./shell/shell.nix
+    #./ssh/ssh.nix
+    ./tmux/tmux.nix
   ];
 
   programs.home-manager.enable = true;
@@ -84,13 +84,5 @@ in
   #++ myDocumentationPackages
   ++ myJavascriptDevelopmentPackages;
   #++ myPackagesForRubyDevelopment;
-
-  home.file = {
-      ".npmrc".source = "${my-dotfile-dir}/npm/.npmrc";
-      #".ssh/config".source = "${my-dotfile-dir}/ssh/.ssh/config";
-
-      # Cannot symlink config that needs to be writable
-      #".config/ninja-dev-sync.json".source = "${my-dotfile-dir}/ninja-dev-sync/.config/ninja-dev-sync.json";
-  };
 }
 
