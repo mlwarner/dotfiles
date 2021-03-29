@@ -4,7 +4,6 @@ let
   myCLIPackages = with pkgs; [
     autossh
     #eternal-terminal
-    fasd
     fd
     git
     gnupg

@@ -4,7 +4,6 @@ let
   # Set all shell aliases programatically
   shellAliases = {
     g = "git";
-    j = "fasd_cd -d";
 
     vim = "nvim";
     ta = "tmux attach";
@@ -49,6 +48,11 @@ in
     envExtra = builtins.readFile ./zshenv;
 
     initExtra = builtins.readFile ./zshrc;
+  };
+
+  programs.autojump = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   programs.fzf = {

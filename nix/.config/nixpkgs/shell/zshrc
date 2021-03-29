@@ -1,6 +1,3 @@
-# FASD commands
-eval "$(fasd --init auto)"
-
 # EDA brazil workspace tools
 EDA_AUTO=$(mktemp -d)
 eda completions zsh > $EDA_AUTO/_eda
