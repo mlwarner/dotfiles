@@ -21,16 +21,16 @@
         use_thin_strokes = false;
 
         normal = {
-          family = "Fira Code";
+          family = "Jetbrains Mono";
           style = "Regular";
         };
         bold = {
-          family = "Fira Code";
+          family = "Jetbrains Mono";
           style = "Bold";
         };
         italic = {
-          family = "Fira Code";
-          style = "Light";
+          family = "Jetbrains Mono";
+          style = "Italic";
         };
       };
 

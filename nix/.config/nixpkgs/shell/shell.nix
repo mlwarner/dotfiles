@@ -5,9 +5,17 @@ let
   shellAliases = {
     g = "git";
 
+    # Map newer tools
+    cat = "bat";
+    find = "fd";
+    grep = "rg";
+    ls = "exa";
+    ps = "procs";
     vim = "nvim";
-    ta = "tmux attach";
 
+    # Shortcuts
+    ta = "tmux attach";
+    hme = "home-manager edit";
     hms = "home-manager switch";
 
     # Reload home manager and zsh
@@ -18,17 +26,6 @@ let
 
     # See which Nix packages are installed
     installed = "nix-env --query --installed";
-
-    # Imported from zsh
-    bb = "brazil-build";
-    bbb = "bb build";
-    bbc = "bb clean clean";
-    bbr = "bb release";
-    bbs = "bb server";
-    brc = "brazil-recursive-cmd";
-    bbbb = "brc brazil-build build";
-    bball = "brc --allPackages";
-    bbsuds = "bb --ds-type=suds --cloud";
 
     dns_flush = "sudo killall -HUP mDNSResponder";
   };
@@ -45,8 +42,9 @@ in
       EDITOR = "nvim";
     };
 
+    # Loading goes env, profile, zshrc
     envExtra = builtins.readFile ./zshenv;
-
+    profileExtra = builtins.readFile ./zprofile;
     initExtra = builtins.readFile ./zshrc;
   };
 

@@ -3,21 +3,22 @@
 let
   myCLIPackages = with pkgs; [
     autossh
-    #eternal-terminal
+    bat
+    delta
+    exa
     fd
     git
     gnupg
-    mosh
+    htop
     #q-text-as-data
+    procs
     ripgrep
-    silver-searcher
     starship
-    #taskwarrior
-    #timewarrior
     tldr
     tmux
+    tokei
     tree
-    zsh-autosuggestions
+    watchman
   ];
 
   myNinjaDevSyncPackages = with pkgs; [
@@ -73,11 +74,7 @@ in
 
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
-    #neovim
-    watchman # To monitor file changes with vim-coc
-  ]
-  ++ myCLIPackages
+  home.packages = myCLIPackages
   #++ myCLIEmailPackages
   #++ myNinjaDevSyncPackages
   #++ myDocumentationPackages
