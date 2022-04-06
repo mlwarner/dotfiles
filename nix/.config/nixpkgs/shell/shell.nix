@@ -16,8 +16,10 @@ let
 
     # Shortcuts for common actions
     ta = "tmux attach";
-    hme = "home-manager edit";
-    hms = "home-manager switch";
+    hms = "home-manager switch --flake '/Users/mwarner/Dotfiles/.#mwarner'";
+    nfuhms = "nix flake update 'Dotfiles/.' && home-manager switch --flake '/Users/mwarner/Dotfiles/.#mwarner'";
+
+    dns_flush = "sudo killall -HUP mDNSResponder";
 
     # Reload home manager and zsh
     reload = "home-manager switch && source ~/.zshrc";
@@ -28,7 +30,19 @@ let
     # See which Nix packages are installed
     installed = "nix-env --query --installed";
 
-    dns_flush = "sudo killall -HUP mDNSResponder";
+    # Brazil build system aliases
+    bb = "brazil-build";
+    bbb = "bb build";
+    bbc = "bb clean clean";
+    bbr = "bb release";
+    bbs = "bb server";
+    brc = "brazil-recursive-cmd";
+    bbbb = "brc brazil-build build";
+    bball = "brc --allPackages";
+    bbsuds = "bb --ds-type=suds --cloud";
+
+    # Autoconnect
+    assh = "autossh -M 0 clouddesk -t /apollo/env/envImprovement/bin/tmux attach";
   };
 in
 {

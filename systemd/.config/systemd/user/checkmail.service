@@ -1,0 +1,12 @@
+[Unit]
+Description=check mail
+RefuseManualStart=no
+RefuseManualStop=no
+After=network-online.target
+
+[Service]
+Type=oneshot
+#ExecStart=/usr/bin/mbsync -qa
+ExecStart=/home/ANT.AMAZON.COM/mwarner/.nix-profile/bin/mbsync -qa
+StandardOutput=syslog
+StandardError=syslog

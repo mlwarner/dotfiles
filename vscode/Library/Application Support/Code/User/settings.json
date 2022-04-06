@@ -1,0 +1,63 @@
+{
+    "workbench.startupEditor": "newUntitledFile",
+    "codespaces.accountProvider": "Microsoft",
+    "editor.fontFamily": "Jetbrains Mono, Consolas, 'Courier New', monospace",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.fontSize": 16,
+    "editor.lineNumbers": "relative",
+    "vim.hlsearch": true,
+    "vim.highlightedyank.enable": true,
+    "vim.leader": "<space>",
+    "vsnotes.defaultNotePath": "~/Vimwiki",
+    "codespaces.planFilter": "/subscriptions/2bdc7d8f-a728-4ff5-9463-6332fa1086ec/resourceGroups/vso-rg-7487362/providers/Microsoft.VSOnline/plans/vso-plan-westus2",
+    "telemetry.enableCrashReporter": false,
+    "githubPullRequests.telemetry.enabled": false,
+    "telemetry.enableTelemetry": false,
+    "git.autofetch": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "workbench.colorTheme": "Gruvbox Dark Medium",
+    "viceroy.config.lastVersion": "0.42.201000",
+    "files.watcherExclude": {
+        "**/build/**": true,
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.hg/store/**": true
+    },
+    "files.exclude": {
+        ".viceroy": true,
+        "apollo-overrides": true,
+        "release-info": true,
+        "src/*/build": false,
+        "build": true,
+        "env": true,
+        "packageInfo*": true,
+        ".bemol": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true
+    },
+    "search.exclude": {
+        "env": true,
+        "src/*/build": true,
+        "build": true,
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true
+    },
+    "viceroy.config.internal.lastUpdateTime": "2021-12-02T22:06:17.419Z",
+    "viceroy.doc.welcome.showAtStartup": false,
+    "docker.showStartPage": false,
+    "explorer.confirmDelete": false,
+    "workbench.sideBar.location": "right",
+    "terminal.integrated.fontSize": 13,
+    "debug.console.fontSize": 14,
+    "workbench.editor.untitled.hint": "hidden",
+    "telemetry.telemetryLevel": "off",
+    "viceroy.config.resolveSymlinks": "resolve"
+}

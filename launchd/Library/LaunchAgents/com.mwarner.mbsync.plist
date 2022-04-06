@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.mwarner.mbsync</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/mwarner/.nix-profile/bin/mbsync</string>
+    <string>-a</string>
+  </array>
+
+  <key>KeepAlive</key>
+  <true/>
+
+  <key>Nice</key>
+  <integer>1</integer>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/mwarner/mbsync-out.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/mwarner/mbsync-err.log</string>
+
+  <key>StartInterval</key>
+  <integer>60</integer> <!-- start every X seconds -->
+
+</dict>
+</plist>
