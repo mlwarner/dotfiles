@@ -16,8 +16,8 @@ let
 
     # Shortcuts for common actions
     ta = "tmux attach";
-    hms = "home-manager switch --flake '/Users/mwarner/Dotfiles/.#mwarner'";
-    nfuhms = "nix flake update 'Dotfiles/.' && home-manager switch --flake '/Users/mwarner/Dotfiles/.#mwarner'";
+    hms = "home-manager switch --flake '/Users/mwarner/dotfiles/.#mwarner'";
+    nfuhms = "nix flake update 'dotfiles/.' && home-manager switch --flake '/Users/mwarner/dotfiles/.#mwarner'";
 
     dns_flush = "sudo killall -HUP mDNSResponder";
 
