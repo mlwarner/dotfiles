@@ -1,25 +1,14 @@
 { pkgs, ... }:
 
-let
-  myNinjaDevSyncPackages = with pkgs; [
-    fswatch
-  ];
-
-  myDocumentationPackages = with pkgs; [
-    ffmpeg
-    pandoc
-    #plantuml
-  ];
-in
-
 {
   imports = [
     ./alacritty/alacritty.nix
     #./email/email.nix
     ./git/git.nix
     ./neovim/neovim.nix
+    #./nix/nix.nix
     ./nodejs/nodejs.nix
-    #./ruby/ruby.nix
+    ./ruby/ruby.nix
     ./shell/shell.nix
     ./ssh/ssh.nix
     ./tmux/tmux.nix
@@ -27,19 +16,17 @@ in
 
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
-    bat
-    delta
-    exa
-    fd
-    gnupg
-    htop
-    #q-text-as-data
-    procs
-    ripgrep
-    tldr
-    tokei
-    tree
-    watchman
-  ];
+  # nixpkgs.overlays = [
+  #   (self: super: {
+  #     # Overwrite broken miniupnpc on darwin
+  #     miniupnpc = super.miniupnpc.overrideAttrs (oldAttrs: {
+  #       postInstall = '''';
+  #     });
+  #   })
+  #   (self: super: {
+  #     # Overwrite broken miniupnpc on darwin
+  #     aerc = super.aerc.overrideAttrs (oldAttrs: {
+  #     });
+  #   })
+  # ];
 }

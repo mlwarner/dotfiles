@@ -1,1 +1,3 @@
-if [ -e /home/mlwarner632/.nix-profile/etc/profile.d/nix.sh ]; then . /home/mlwarner632/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+# Load nix first since it includes most of my toolings
+if [ -e /Users/mwarner/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/mwarner/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+

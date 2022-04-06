@@ -6,30 +6,48 @@
     settings = {
 
       window = {
-        padding.x = 10;
-        padding.y = 10;
+        padding.x = 4;
+        padding.y = 4;
         decorations = "full";
         dynamic_title = true;
+        dynamic_padding = true;
       };
 
       font = {
-        size = 14.0;
+        size = 15.0;
+
+        # Offset is the extra space around each character. `offset.y` can be thought of
+        # as modifying the line spacing, and `offset.x` as modifying the letter spacing
+        # I've given in 14 spacing which fits really well with my fonts, you may change it
+        # to your convenience but make sure to adjust 'glyph_offset' appropriately post that
         offset = {
           x = 0;
-          y = 10;
+          y = 4;
         };
-        use_thin_strokes = false;
+
+        # Note: This requires RESTART
+        # By default when you change the offset above you'll see an issue, where the texts are bottom
+        # aligned with the cursor, this is to make sure they center align.
+        # This offset should usually be 1/2 of the above offset-y being set.
+        glyph_offset = {
+          x = 0;
+          y = 2;
+        };
+        #use_thin_strokes = true;
 
         normal = {
-          family = "Jetbrains Mono";
+          #family = "Jetbrains Mono";
+          family = "Cascadia Code PL";
           style = "Regular";
         };
         bold = {
-          family = "Jetbrains Mono";
+          #family = "Jetbrains Mono";
+          family = "Cascadia Code PL";
           style = "Bold";
         };
         italic = {
-          family = "Jetbrains Mono";
+          #family = "Jetbrains Mono";
+          family = "Cascadia Code PL";
           style = "Italic";
         };
       };
@@ -64,6 +82,12 @@
         };
       };
 
+      # What happens with things we highlight
+      selection = {
+        # When set to `true`, selected text will be copied to the primary clipboard.
+        save_to_clipboard = true;
+      };
+
       # Add additional keybinds for tmux
       key_bindings = [
         # New tab.
@@ -79,6 +103,7 @@
         { key = "LBracket"; mods = "Command|Shift"; chars = "\\x02\\x70"; }
 
         # Move to tab x.
+        { key = "Key0";     mods = "Command";       chars = "\\x02\\x30"; }
         { key = "Key1";     mods = "Command";       chars = "\\x02\\x31"; }
         { key = "Key2";     mods = "Command";       chars = "\\x02\\x32"; }
         { key = "Key3";     mods = "Command";       chars = "\\x02\\x33"; }
@@ -88,6 +113,9 @@
         { key = "Key7";     mods = "Command";       chars = "\\x02\\x37"; }
         { key = "Key8";     mods = "Command";       chars = "\\x02\\x38"; }
         { key = "Key9";     mods = "Command";       chars = "\\x02\\x39"; }
+
+        # Fix ctrl+space
+        { key = "Space";    mods = "Control";       chars = "\\x00";      }
       ];
     };
   };

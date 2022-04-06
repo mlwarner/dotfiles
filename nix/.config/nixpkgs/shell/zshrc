@@ -3,6 +3,10 @@ EDA_AUTO=$(mktemp -d)
 eda completions zsh > $EDA_AUTO/_eda
 fpath=($EDA_AUTO $fpath)
 
+# Set session variables until we can remove prezto
+export EDITOR="nvim"
+export VISUAL="nvim"
+
 # Set title to running command
 function set-title-precmd() {
   printf "\e]2;%s\a" "${PWD/#$HOME/~}"
@@ -15,6 +19,4 @@ function set-title-preexec() {
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd set-title-precmd
 add-zsh-hook preexec set-title-preexec
-
-bindkey -e
 
