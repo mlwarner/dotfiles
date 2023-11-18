@@ -2,20 +2,20 @@
 
 ## Description
 
-This is a collection of my different configurations I use. I've attempted to 
-create a reproducible setup across machines by:
-
-- Creating a collection of dotfiles which contain my configurations
-- Using Nix flakes for reproducible build environments (tooling)
-- Using Home Manager to vend the configuration and build tools
+This is a collection of my different configurations I use. I checkout this
+repository and use GNU stow to symlink the layout of my folders.
 
 ## Setup
 
-### Install Nix
+### Install Homebrew
 
-`curl https://nixos.org/nix/install | sh`
+`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 
-https://nixos.org/
+### Install CLI packages
+
+```sh
+brew install node neovim starship stow fzf zoxide
+```
 
 ### Install dotfiles
 
@@ -24,7 +24,10 @@ truth for configurations in your workspace.
 
 `git clone https://github.com/mlwarner/dotfiles.git $HOME`
 
-## Usage
+### Create symlinks
 
-`nix flake update "Dotfiles/." && home-manager switch --flake '/Users/mwarner/Dotfiles/.#mwarner'`
+```
+cd $HOME/dotfiles
+stow .
+```
 
