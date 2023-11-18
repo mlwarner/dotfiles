@@ -9,7 +9,9 @@ repository and use GNU stow to symlink the layout of my folders.
 
 ### Install Homebrew
 
-`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
 ### Install CLI packages
 
@@ -22,7 +24,9 @@ brew install node neovim starship stow fzf zoxide
 Make a clone of this repository in your home folder. This will be the source of
 truth for configurations in your workspace.
 
-`git clone https://github.com/mlwarner/dotfiles.git $HOME`
+```
+git clone https://github.com/mlwarner/dotfiles.git $HOME
+```
 
 ### Create symlinks
 
