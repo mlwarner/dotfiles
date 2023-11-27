@@ -3,6 +3,8 @@
 # top-most EditorConfig file
 root = true
 
+# test
+
 # Unix-style newlines with a newline ending every file
 [*]
 charset = utf-8
