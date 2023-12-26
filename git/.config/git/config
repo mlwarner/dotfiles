@@ -1,6 +1,7 @@
 [alias]
-	co = checkout
-	sw = switch
 	br = branch
 	ci = commit
+	co = checkout
 	st = status
+	sw = switch
+    df = diff

@@ -52,6 +52,19 @@ require('lazy').setup({
     dependencies = { "rafamadriz/friendly-snippets" },
   },
 
+  -- Codium AI (personal use only)
+  {
+    "Exafunction/codeium.nvim",
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+        "hrsh7th/nvim-cmp",
+    },
+    config = function()
+        require("codeium").setup({
+        })
+    end
+},
+
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim', opts = {} },
   -- Pretty prompts
@@ -295,8 +308,9 @@ require('luasnip.loaders.from_vscode').lazy_load()
 
 cmp.setup({
   sources = {
-    {name = 'nvim_lsp'},
-    {name = 'luasnip'},
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    { name = 'codeium' },
   },
   formatting = lsp_zero.cmp_format(),
   mapping = cmp.mapping.preset.insert({
@@ -354,7 +368,8 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- Wiki.vim
-vim.g.wiki_root = '~/Vimwiki'
+-- vim.g.wiki_root = '~/Documents/my_notes'
+vim.g.wiki_root = '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
 vim.g.wiki_journal_index = {
   link_url_parser = function(_, isoDate, _)
     return isoDate
@@ -362,6 +377,10 @@ vim.g.wiki_journal_index = {
   link_test_parser = function(_, _, absolutePath)
     return absolutePath
   end
+}
+
+vim.g.wiki_mappings_local = {
+  ['<plug>(wiki-pages)'] = '<leader>ws',
 }
 
 vim.g.wiki_mappings_local_journal = {
