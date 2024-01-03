@@ -85,25 +85,24 @@ require('lazy').setup({
       -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
       overrides = {
         SignColumn = { bg = "#1d2021" },          -- No constrast on sign column
-        Todo = { bg = "#1d2021", fg = "#928374" }, -- No constrast on sign column
       },
     }
   },
 
-  {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = false,
-        globalstatus = true,
-        --theme = 'gruvbox',
-        component_separators = '|',
-        section_separators = '',
-      },
-    },
-  },
+  -- {
+  --   -- Set lualine as statusline
+  --   'nvim-lualine/lualine.nvim',
+  --   -- See `:help lualine.txt`
+  --   opts = {
+  --     options = {
+  --       icons_enabled = false,
+  --       globalstatus = true,
+  --       --theme = 'gruvbox',
+  --       component_separators = '|',
+  --       section_separators = '',
+  --     },
+  --   },
+  -- },
 
   { "folke/neodev.nvim", opts = {} },
   {'folke/zen-mode.nvim', opts = {
@@ -167,6 +166,9 @@ require('lazy').setup({
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
+
+-- Status line
+vim.o.laststatus = 3
 
 -- Disable cursor styling
 vim.o.guicursor = ""
@@ -249,7 +251,24 @@ vim.keymap.set('n', '<c-f>', require('telescope.builtin').live_grep, { desc = '[
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
      -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'lua', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'swift' },
+    ensure_installed = {
+      'bash',
+      'c_sharp',
+      'css',
+      'html',
+      'javascript',
+      'json',
+      'lua',
+      'markdown',
+      'markdown_inline',
+      'perl',
+      'python',
+      'swift',
+      'tsx',
+      'typescript',
+      'vim',
+      'vimdoc',
+    },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -369,7 +388,8 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Wiki.vim
 -- vim.g.wiki_root = '~/Documents/my_notes'
-vim.g.wiki_root = '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
+-- vim.g.wiki_root = '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
+vim.g.wiki_root = '/Users/mwarner/Library/CloudStorage/ProtonDrive-warnmat@proton.me/my_notes'
 vim.g.wiki_journal_index = {
   link_url_parser = function(_, isoDate, _)
     return isoDate
