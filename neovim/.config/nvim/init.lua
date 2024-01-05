@@ -367,8 +367,9 @@ luasnip.config.setup()
 
 cmp.setup({
   sources = {
-    {name = 'nvim_lsp'},
-    {name = 'luasnip'},
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+    { name = 'codeium' },
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
