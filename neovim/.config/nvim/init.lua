@@ -40,7 +40,6 @@ require('lazy').setup({
   {'lervag/wiki.vim'},
 
   -- Lsp related plugins
-  {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
   {'williamboman/mason.nvim'},
   {'williamboman/mason-lspconfig.nvim'},
   {'neovim/nvim-lspconfig'},
@@ -278,26 +277,42 @@ vim.defer_fn(function()
 end, 0)
 
 -- LSP settings.
-local lsp_zero = require('lsp-zero')
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP actoins',
+  callback = function(ev)
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local buffer = ev.buf
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = buffer; desc = 'show hover' })
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = buffer; desc = '[g]o to [d]efinition' })
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = buffer; desc = '[g]o to [D]eclaration' })
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = buffer; desc = '[g]o to [i]mplementation' })
+    vim.keymap.set('n', 'go', vim.lsp.buf.type_definition, { buffer = buffer; desc = '[g]o to type definition' })
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = buffer; desc = '[g]o to [r]eferences' })
+    vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, { buffer = buffer; desc = 'show signature' })
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, { buffer = buffer; desc = 'type [D]efinition' })
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, { buffer = buffer; desc = '[r]e[n]ame' })
+    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, { buffer = buffer; desc = '[c]ode [a]ction' })
+    vim.keymap.set('n', '<space>f', function()
+      vim.lsp.buf.format { async = true }
+    end, { buffer = buffer; desc = '[f]ormat' })
+    -- Workspace functions
+    -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, { buffer = buffer; desc = '[w]orkspace [a]dd folder' })
+    -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, { buffer = buffer; desc = '[w]orkspace [r]emove folder' })
+    -- vim.keymap.set('n', '<space>wl', function()
+    --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    -- end, { buffer = buffer; desc = '[w]orkspace [l]ist folders' })
+  end,
+})
 
-lsp_zero.on_attach(function(client, bufnr)
-  -- see :help lsp-zero-keybindings
-  -- to learn the available actions
-  lsp_zero.default_keymaps({
-    buffer = bufnr,
-    preserve_mappings = false
+local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+local default_lsp_setup = function(server)
+  require('lspconfig')[server].setup({
+    capabilities = lsp_capabilities,
   })
+end
 
-  vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, { buffer = bufnr; desc = '[r]e[n]ame' })
-  vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, { buffer = bufnr; desc = '[c]ode [a]ction' })
-  vim.keymap.set('n', '<space>f', function()
-    vim.lsp.buf.format { async = true }
-  end, { buffer = bufnr; desc = '[f]ormat' })
-
-end)
-
--- see :help lsp-zero-guide:integrate-with-mason-nvim
--- to learn how to use mason.nvim with lsp-zero
 require('mason').setup({})
 require('mason-lspconfig').setup({
   ensure_installed = {
@@ -307,42 +322,69 @@ require('mason-lspconfig').setup({
     -- 'solargraph',
   },
   handlers = {
-    lsp_zero.default_setup,
-  }
+    default_lsp_setup,
+    -- setup servers that have special configs
+    lua_ls = function()
+      require('lspconfig').lua_ls.setup({
+        capabilities = lsp_capabilities,
+        settings = {
+          Lua = {
+            telemetry = { enable = false },
+            runtime = {
+              version = 'LuaJIT'
+            },
+            diagnostics = {
+              globals = {'vim'},
+            },
+            -- Make the server aware of Neovim runtime files
+            workspace = {
+              library = {
+                vim.env.VIMRUNTIME,
+              }
+            }
+          }
+        }
+      })
+    end,
+  },
 })
 
--- setup servers which are not managed by mason
+-- Setup lsp servers which are not managed by mason
 require('lspconfig').sourcekit.setup({
+  capabilities = lsp_capabilities,
   single_file_support = true
 })
-
--- Setup lua for nvim workspace
-local lua_opts = lsp_zero.nvim_lua_ls()
-require('lspconfig').lua_ls.setup(lua_opts)
 
 -- Setup cmp for completions
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
-require('luasnip.loaders.from_vscode').lazy_load()
+
+-- Setup luasnip
+-- This comes with a huge repository of snippets for various languages. e.g. 'date' for markdown files
+local luasnip = require 'luasnip'
+require("luasnip.loaders.from_vscode").lazy_load()
+luasnip.config.setup()
 
 cmp.setup({
   sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'codeium' },
+    {name = 'nvim_lsp'},
+    {name = 'luasnip'},
   },
-  formatting = lsp_zero.cmp_format(),
   mapping = cmp.mapping.preset.insert({
     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm {
+    ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-
+      -- select = true,
+    })
   }),
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end
+  },
 })
 
 -- Refactor.nvim
