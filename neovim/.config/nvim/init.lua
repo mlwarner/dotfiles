@@ -95,9 +95,6 @@ require('lazy').setup({
     'ellisonleao/gruvbox.nvim',
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000,
-    -- config = function ()
-    --   vim.cmd([[colorscheme gruvbox]])
-    -- end,
     config = true,
     opts = {
       contrast = 'hard',
@@ -107,25 +104,9 @@ require('lazy').setup({
       overrides = {
         SignColumn = { bg = "#1d2021" }, -- No constrast on sign column
       },
-    }
+    },
   },
 
-  -- {
-  --   -- Set lualine as statusline
-  --   'nvim-lualine/lualine.nvim',
-  --   -- See `:help lualine.txt`
-  --   opts = {
-  --     options = {
-  --       icons_enabled = false,
-  --       globalstatus = true,
-  --       --theme = 'gruvbox',
-  --       component_separators = '|',
-  --       section_separators = '',
-  --     },
-  --   },
-  -- },
-
-  { "folke/neodev.nvim",     opts = {} },
   {
     'folke/zen-mode.nvim',
     opts = {
