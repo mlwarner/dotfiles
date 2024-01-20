@@ -14,8 +14,8 @@ end
 config.front_end = 'WebGpu'
 
 -- This is where you actually apply your config choices
-config.color_scheme = "GruvboxDarkHard"
-config.font = wezterm.font("JetBrains Mono Medium")
+config.color_scheme = "Gruvbox dark, hard (base16)"
+config.font = wezterm.font("JetBrains Mono")
 config.font_size = 15.0
 config.line_height = 1.2
 

@@ -30,14 +30,14 @@ require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
-  { 'tpope/vim-fugitive' },
+  'tpope/vim-fugitive',
 
   -- Detect tabstop and shiftwidth automatically
-  { 'tpope/vim-sleuth' },
+  'tpope/vim-sleuth',
 
   -- Vimwiki related functionality
-  { 'lervag/lists.vim' },
-  { 'lervag/wiki.vim' },
+  'lervag/lists.vim',
+  'lervag/wiki.vim',
 
   -- Lsp related plugins
   {
@@ -151,6 +151,7 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter-textobjects',
       'ThePrimeagen/refactoring.nvim'
     },
+    tag = 'v0.9.2',
     build = ':TSUpdate',
   },
 }, {})
@@ -159,7 +160,7 @@ require('lazy').setup({
 -- See `:help vim.o`
 
 -- Status line
-vim.o.laststatus = 3
+-- vim.o.laststatus = 3
 
 -- Disable cursor styling
 vim.o.guicursor = ""
@@ -180,9 +181,9 @@ vim.wo.cursorlineopt = 'number'
 vim.wo.cursorline = true
 
 -- Enable break indent
--- vim.o.breakindent = true
+vim.o.breakindent = true
 -- Do not wrap long lines
-vim.opt.wrap = false
+-- vim.opt.wrap = false
 
 -- Save undo history
 vim.o.undofile = true
@@ -356,6 +357,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- Setup neovim lua configuration
+require('neodev').setup()
+
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local default_lsp_setup = function(server)
@@ -364,7 +368,6 @@ local default_lsp_setup = function(server)
   })
 end
 
-require('fidget').setup()
 require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {
@@ -498,6 +501,13 @@ vim.g.wiki_journal_index = {
 vim.g.wiki_mappings_local = {
   ['<plug>(wiki-pages)'] = '<leader>ws',
 }
+
+vim.keymap.set('n', '<leader>wf', function()
+  require('telescope.builtin').find_files({ cwd = vim.g.wiki_root })
+end, { desc = '[W]iki [F]iles' })
+vim.keymap.set('n', '<leader>wg', function()
+  require('telescope.builtin').live_grep({ cwd = vim.g.wiki_root })
+end, { desc = '[W]iki [G]rep' })
 
 vim.g.wiki_mappings_local_journal = {
   ['<plug>(wiki-journal-prev)'] = '[w',
