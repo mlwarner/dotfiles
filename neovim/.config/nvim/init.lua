@@ -101,9 +101,12 @@ require('lazy').setup({
       -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
       -- See `:help vim.treesitter`
       -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
+      palette_overrides = {
+        -- dark0 = "#1d2021", -- taken from `contrast = hard`
+      },
       overrides = {
         CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
-        SignColumn = { bg = "#1d2021" }, -- No constrast on sign column
+        SignColumn = { bg = "#1d2021" },   -- No constrast on sign column
       },
     },
   },
