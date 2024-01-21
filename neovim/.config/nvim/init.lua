@@ -102,6 +102,7 @@ require('lazy').setup({
       -- See `:help vim.treesitter`
       -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
       overrides = {
+        CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
         SignColumn = { bg = "#1d2021" }, -- No constrast on sign column
       },
     },
