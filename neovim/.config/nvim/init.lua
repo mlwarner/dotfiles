@@ -267,6 +267,7 @@ vim.defer_fn(function()
       'markdown_inline',
       'perl',
       'python',
+      'rust',
       'swift',
       'tsx',
       'typescript',
@@ -410,6 +411,11 @@ require('mason-lspconfig').setup({
 
 -- Setup lsp servers which are not managed by mason
 require('lspconfig').sourcekit.setup({
+  capabilities = lsp_capabilities,
+  single_file_support = true
+})
+
+require('lspconfig').rust_analyzer.setup({
   capabilities = lsp_capabilities,
   single_file_support = true
 })
