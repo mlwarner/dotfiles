@@ -163,9 +163,6 @@ require('lazy').setup({
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
--- Status line
--- vim.o.laststatus = 3
-
 -- Disable cursor styling
 vim.o.guicursor = ""
 
@@ -362,61 +359,64 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- mason-lspconfig requires that these setup functions are called in this order
+-- before setting up the servers.
+require('mason').setup()
+require('mason-lspconfig').setup()
+
+-- Enable the following language servers
+--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+--
+--  Add any additional override configuration in the following tables. They will be passed to
+--  the `settings` field of the server config. You must look up that documentation yourself.
+--
+--  If you want to override the default filetypes that your language server will attach to you can
+--  define the property 'filetypes' to the map in question.
+local servers = {
+  marksman = {},
+  rust_analyzer = {},
+  tsserver = {},
+
+  lua_ls = {
+    Lua = {
+      telemetry = { enable = false },
+      workspace = {
+        checkThirdParty = false,
+        library = { vim.env.VIMRUNTIME },
+      },
+      -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+      -- diagnostics = { disable = { 'missing-fields' } },
+    },
+  },
+}
+
 -- Setup neovim lua configuration
 require('neodev').setup()
 
-local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local default_lsp_setup = function(server)
-  require('lspconfig')[server].setup({
-    capabilities = lsp_capabilities,
-  })
-end
+-- Ensure the servers above are installed
+local mason_lspconfig = require 'mason-lspconfig'
 
-require('mason').setup()
-require('mason-lspconfig').setup({
-  ensure_installed = {
-    'tsserver',
-    'marksman',
-    'lua_ls',
-    -- 'solargraph',
-  },
-  handlers = {
-    default_lsp_setup,
-    -- setup servers that have special configs
-    lua_ls = function()
-      require('lspconfig').lua_ls.setup({
-        capabilities = lsp_capabilities,
-        settings = {
-          Lua = {
-            telemetry = { enable = false },
-            runtime = {
-              version = 'LuaJIT'
-            },
-            diagnostics = {
-              globals = { 'vim' },
-            },
-            -- Make the server aware of Neovim runtime files
-            workspace = {
-              library = {
-                vim.env.VIMRUNTIME,
-              }
-            }
-          }
-        }
-      })
-    end,
-  },
-})
+mason_lspconfig.setup {
+  ensure_installed = vim.tbl_keys(servers),
+}
 
--- Setup lsp servers which are not managed by mason
+mason_lspconfig.setup_handlers {
+  function(server_name)
+    require('lspconfig')[server_name].setup {
+      capabilities = capabilities,
+      settings = servers[server_name],
+      filetypes = (servers[server_name] or {}).filetypes,
+      single_file_support = true,
+    }
+  end,
+}
+
 require('lspconfig').sourcekit.setup({
-  capabilities = lsp_capabilities,
-  single_file_support = true
-})
-
-require('lspconfig').rust_analyzer.setup({
-  capabilities = lsp_capabilities,
+  capabilities = capabilities,
   single_file_support = true
 })
 
