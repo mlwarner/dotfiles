@@ -35,8 +35,10 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+
   -- Vimwiki related functionality
-  'lervag/lists.vim',
+  -- 'lervag/lists.vim',
+  'opdavies/toggle-checkbox.nvim',
   'lervag/wiki.vim',
 
   -- Lsp related plugins
@@ -155,7 +157,6 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter-textobjects',
       'ThePrimeagen/refactoring.nvim'
     },
-    tag = 'v0.9.2',
     build = ':TSUpdate',
   },
 }, {})
@@ -455,7 +456,7 @@ cmp.setup({
 })
 
 -- Refactor.nvim
-vim.keymap.set({ "n", "x" }, "<leader>rr", require('refactoring').select_refactor, { desc = '[r]efacto[r]' })
+vim.keymap.set({ "n", "x" }, "<leader>rr", function() require('refactoring').select_refactor() end, { desc = '[r]efacto[r]' })
 
 -- zen-mode.nvim
 vim.api.nvim_set_keymap('n', '<leader>gy', ':ZenMode<CR>', { noremap = true, silent = true })
@@ -489,10 +490,17 @@ vim.cmd("colorscheme gruvbox")
 
 -- Lists.vim
 -- Filetype detection does not work out of the box. Need to create an autocmd for it.
-vim.g.lists_filetypes = { 'md', 'markdown' }
+-- vim.g.lists_filetypes = { 'md', 'markdown' }
+-- Disabling because of conflict with list formatting
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = { 'markdown' },
+--   command = 'ListsEnable'
+-- })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'markdown' },
-  command = 'ListsEnable'
+  callback = function (args)
+    vim.keymap.set("n", "<leader>tt", function() require('toggle-checkbox').toggle() end, { buffer = args.buf, desc = '[T]oggle [T]ask' })
+  end
 })
 
 -- Wiki.vim

@@ -10,9 +10,6 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
--- Turn on webgpu. Default in later versions
-config.front_end = 'WebGpu'
-
 -- This is where you actually apply your config choices
 config.color_scheme = "Gruvbox dark, hard (base16)"
 config.font = wezterm.font("JetBrains Mono")
