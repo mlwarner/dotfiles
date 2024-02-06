@@ -505,8 +505,8 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Wiki.vim
 -- vim.g.wiki_root = '~/Documents/my_notes'
--- vim.g.wiki_root = '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
-vim.g.wiki_root = '/Users/mwarner/Library/CloudStorage/ProtonDrive-warnmat@proton.me/my_notes'
+vim.g.wiki_root = '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
+-- vim.g.wiki_root = '/Users/mwarner/Library/CloudStorage/ProtonDrive-warnmat@proton.me/my_notes'
 vim.g.wiki_journal_index = {
   link_url_parser = function(_, isoDate, _)
     return isoDate
