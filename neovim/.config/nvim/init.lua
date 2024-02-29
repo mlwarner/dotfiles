@@ -244,8 +244,16 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-vim.keymap.set('n', '<c-p>', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<c-f>', require('telescope.builtin').live_grep, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<c-p>', require('telescope.builtin').find_files, { desc = 'find files' })
+vim.keymap.set('n', '<c-f>', require('telescope.builtin').live_grep, { desc = 'live grep' })
+
+-- silicon for screenshots
+-- https://github.com/Aloxaf/silicon
+vim.api.nvim_create_user_command('Silicon',
+  -- Pass the extension (:e) and filename without extension for writing a png (:r)
+  ':w !silicon -l %:e -o %:r.png %',
+  { nargs = 0 })
+
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -456,7 +464,8 @@ cmp.setup({
 })
 
 -- Refactor.nvim
-vim.keymap.set({ "n", "x" }, "<leader>rr", function() require('refactoring').select_refactor() end, { desc = '[r]efacto[r]' })
+vim.keymap.set({ "n", "x" }, "<leader>rr", function() require('refactoring').select_refactor() end,
+  { desc = '[r]efacto[r]' })
 
 -- zen-mode.nvim
 vim.api.nvim_set_keymap('n', '<leader>gy', ':ZenMode<CR>', { noremap = true, silent = true })
@@ -498,8 +507,9 @@ vim.cmd("colorscheme gruvbox")
 -- })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'markdown' },
-  callback = function (args)
-    vim.keymap.set("n", "<leader>tt", function() require('toggle-checkbox').toggle() end, { buffer = args.buf, desc = '[T]oggle [T]ask' })
+  callback = function(args)
+    vim.keymap.set("n", "<leader>tt", function() require('toggle-checkbox').toggle() end,
+      { buffer = args.buf, desc = '[T]oggle [T]ask' })
   end
 })
 
