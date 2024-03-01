@@ -247,14 +247,6 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.keymap.set('n', '<c-p>', require('telescope.builtin').find_files, { desc = 'find files' })
 vim.keymap.set('n', '<c-f>', require('telescope.builtin').live_grep, { desc = 'live grep' })
 
--- silicon for screenshots
--- https://github.com/Aloxaf/silicon
-vim.api.nvim_create_user_command('Silicon',
-  -- Pass the extension (:e) and filename without extension for writing a png (:r)
-  ':w !silicon -l %:e -o %:r.png %',
-  { nargs = 0 })
-
-
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
@@ -469,6 +461,24 @@ vim.keymap.set({ "n", "x" }, "<leader>rr", function() require('refactoring').sel
 
 -- zen-mode.nvim
 vim.api.nvim_set_keymap('n', '<leader>gy', ':ZenMode<CR>', { noremap = true, silent = true })
+
+-- silicon for screenshots
+-- https://github.com/Aloxaf/silicon
+vim.api.nvim_create_user_command('Silicon',
+  function (opts)
+    local line1 = opts.line1
+    local line2 = opts.line2
+    local curDate = os.date('%Y-%m-%dT%T')
+    -- TODO handle missing file extension - Maybe a fallback we can use?
+    local fileExtension = vim.bo.filetype
+    local fileOutName = string.format('Screenshot-%s.png', curDate)
+    local writeCommand = string.format('%s,%swrite !silicon -l %s -o %s',
+      line1, line2, fileExtension, fileOutName
+    )
+    vim.cmd(writeCommand)
+  end,
+  { nargs = 0, range = '%' }
+)
 
 -- custom filetype detection
 vim.filetype.add({
