@@ -92,25 +92,35 @@ require('lazy').setup({
     -- Pretty prompts
     { 'stevearc/dressing.nvim', opts = {} },
     {
-        -- Theme
-        'ellisonleao/gruvbox.nvim',
+        'RRethy/base16-nvim',
         lazy = false, -- make sure we load this during startup if it is your main colorscheme
         priority = 1000,
-        config = true,
-        opts = {
-            contrast = 'hard',
-            -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
-            -- See `:help vim.treesitter`
-            -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
-            palette_overrides = {
-                -- dark0 = "#1d2021", -- taken from `contrast = hard`
-            },
-            overrides = {
-                CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
-                SignColumn = { bg = "#1d2021" },   -- No constrast on sign column
-            },
-        },
+        config = function ()
+            vim.cmd("colorscheme base16-gruvbox-dark-hard")
+            vim.api.nvim_set_hl(0, "CursorLineNr", { bg = nil }) -- clear the backgorund highlights
+        end,
     },
+    -- {
+    --     -- Theme
+    --     'ellisonleao/gruvbox.nvim',
+    --     lazy = true,
+    --     -- lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    --     priority = 1000,
+    --     config = true,
+    --     opts = {
+    --         contrast = 'hard',
+    --         -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
+    --         -- See `:help vim.treesitter`
+    --         -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
+    --         palette_overrides = {
+    --             -- dark0 = "#1d2021", -- taken from `contrast = hard`
+    --         },
+    --         overrides = {
+    --             CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
+    --             SignColumn = { bg = "#1d2021" },   -- No constrast on sign column
+    --         },
+    --     },
+    -- },
 
     {
         'folke/zen-mode.nvim',
@@ -208,7 +218,7 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- Set colorscheme
 vim.o.termguicolors = true
-vim.cmd("colorscheme gruvbox")
+-- vim.cmd("colorscheme gruvbox")
 
 -- [[ Basic Keymaps ]]
 
