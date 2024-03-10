@@ -73,6 +73,23 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float,
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
   { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
+-- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
+-- is not what someone will guess without a bit more experience.
+--
+-- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
+-- or just use <C-\><C-n> to exit terminal mode
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Keybinds to make split navigation easier.
+--  Use CTRL+<hjkl> to switch between windows
+--
+--  See `:help wincmd` for a list of all window commands
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
 -- Swap lines in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -90,6 +107,49 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
     vim.highlight.on_yank()
   end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'mail', 'markdown', 'text' },
+  command = 'setlocal spell spelllang=en_us'
+})
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'mail' },
+  command = 'setlocal formatoptions+=aw textwidth=150'
+})
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'crontab' },
+  command = 'setlocal nobackup | set nowritebackup'
+})
+
+-- [[ Basic UserCommands ]]
+
+-- silicon for screenshots
+-- https://github.com/Aloxaf/silicon
+vim.api.nvim_create_user_command('Silicon',
+  function(opts)
+    local line1 = opts.line1
+    local line2 = opts.line2
+    local curDate = os.date('%Y-%m-%dT%T')
+    -- TODO handle missing file extension - Maybe a fallback we can use?
+    local fileExtension = vim.bo.filetype
+    local fileOutName = string.format('Screenshot-%s.png', curDate)
+    local writeCommand = string.format('%s,%swrite !silicon -l %s -o %s',
+      line1, line2, fileExtension, fileOutName
+    )
+    vim.cmd(writeCommand)
+  end,
+  { nargs = 0, range = '%' }
+)
+
+-- custom filetype detection
+vim.filetype.add({
+  extension = {
+    m = "mason",
+    mi = "mason",
+    mhtml = "mason",
+    kata = "kata",
+  }
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -225,13 +285,14 @@ require('lazy').setup({
         { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers,
         { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>/', builtin.current_buffer_fuzzy_find,
+        { desc = '[/] Fuzzily search in current buffer' })
       vim.keymap.set('n', '<c-p>', require('telescope.builtin').find_files,
         { desc = 'find files' })
       vim.keymap.set('n', '<c-f>', require('telescope.builtin').live_grep,
         { desc = 'live grep' })
     end,
   },
-
 
   {
     -- LSP Configuration & Plugins
@@ -283,6 +344,7 @@ require('lazy').setup({
     'RRethy/base16-nvim',
     priority = 1000,
     init = function()
+      vim.opt.termguicolors = true
       vim.cmd.colorscheme 'base16-gruvbox-dark-hard'
       vim.api.nvim_set_hl(0, "CursorLineNr", { bg = nil }) -- clear the backgorund highlights
     end,
@@ -551,39 +613,6 @@ vim.keymap.set({ "n", "x" }, "<leader>rr",
 vim.keymap.set('n', '<leader>gy', ':ZenMode<CR>',
   { noremap = true, silent = true })
 
--- silicon for screenshots
--- https://github.com/Aloxaf/silicon
-vim.api.nvim_create_user_command('Silicon',
-  function(opts)
-    local line1 = opts.line1
-    local line2 = opts.line2
-    local curDate = os.date('%Y-%m-%dT%T')
-    -- TODO handle missing file extension - Maybe a fallback we can use?
-    local fileExtension = vim.bo.filetype
-    local fileOutName = string.format('Screenshot-%s.png', curDate)
-    local writeCommand = string.format('%s,%swrite !silicon -l %s -o %s',
-      line1, line2, fileExtension, fileOutName
-    )
-    vim.cmd(writeCommand)
-  end,
-  { nargs = 0, range = '%' }
-)
-
--- [[ Autocommands ]]
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'mail', 'markdown', 'text' },
-  command = 'setlocal spell spelllang=en_us'
-})
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'mail' },
-  command = 'setlocal formatoptions+=aw textwidth=150'
-})
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'crontab' },
-  command = 'setlocal nobackup | set nowritebackup'
-})
-
 -- toggle-checkbox.nvim
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'markdown' },
@@ -592,16 +621,6 @@ vim.api.nvim_create_autocmd('FileType', {
       function() require('toggle-checkbox').toggle() end,
       { buffer = args.buf, desc = '[T]oggle [T]ask' })
   end
-})
-
--- custom filetype detection
-vim.filetype.add({
-  extension = {
-    m = "mason",
-    mi = "mason",
-    mhtml = "mason",
-    kata = "kata",
-  }
 })
 
 -- Wiki.vim
