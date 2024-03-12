@@ -122,6 +122,42 @@ vim.api.nvim_create_autocmd('FileType', {
   command = 'setlocal nobackup | set nowritebackup'
 })
 
+-- LSP keymaps
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP actions',
+  callback = function(ev)
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local buffer = ev.buf
+
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename,
+      { buffer = buffer, desc = '[r]e[n]ame' })
+    vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action,
+      { buffer = buffer, desc = '[c]ode [a]ction' })
+
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition,
+      { buffer = buffer, desc = '[g]o to [d]efinition' })
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
+      { buffer = buffer, desc = '[g]o to [D]eclaration' })
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation,
+      { buffer = buffer, desc = '[g]o to [i]mplementation' })
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references,
+      { buffer = buffer, desc = '[g]o to [r]eferences' })
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition,
+      { buffer = buffer, desc = 'type [D]efinition' })
+
+    -- See `:help K` for why this keymap
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover,
+      { buffer = buffer, desc = 'show hover' })
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help,
+      { buffer = buffer, desc = 'show signature' })
+
+    vim.keymap.set('n', '<space>f', function()
+      vim.lsp.buf.format { async = true }
+    end, { buffer = buffer, desc = '[f]ormat' })
+  end,
+})
+
 -- [[ Basic UserCommands ]]
 
 -- silicon for screenshots
@@ -178,8 +214,20 @@ require('lazy').setup({
   'tpope/vim-fugitive', -- Git related plugin
 
   -- Markdown wiki
-  'opdavies/toggle-checkbox.nvim',
   'lervag/wiki.vim',
+  {
+    'opdavies/toggle-checkbox.nvim',
+    config = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'markdown' },
+        callback = function(args)
+          vim.keymap.set("n", "<leader>tt", function() require('toggle-checkbox').toggle() end,
+            { buffer = args.buf, desc = '[T]oggle [T]ask' })
+        end
+      })
+    end
+  },
+
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -194,7 +242,7 @@ require('lazy').setup({
   { 'numToStr/Comment.nvim', opts = {} },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
+  { 'folke/which-key.nvim',  event = 'VimEnter', opts = {} },
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -202,7 +250,7 @@ require('lazy').setup({
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
-      { -- If encountering errors, see telescope-fzf-native README for install instructions
+      {
         'nvim-telescope/telescope-fzf-native.nvim',
 
         -- `build` is used to run some command when the plugin is installed/updated.
@@ -221,37 +269,9 @@ require('lazy').setup({
       { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
     },
     config = function()
-      -- Telescope is a fuzzy finder that comes with a lot of different things that
-      -- it can fuzzy find! It's more than just a "file finder", it can search
-      -- many different aspects of Neovim, your workspace, LSP, and more!
-      --
-      -- The easiest way to use telescope, is to start by doing something like:
-      --  :Telescope help_tags
-      --
-      -- After running this command, a window will open up and you're able to
-      -- type in the prompt window. You'll see a list of help_tags options and
-      -- a corresponding preview of the help.
-      --
-      -- Two important keymaps to use while in telescope are:
-      --  - Insert mode: <c-/>
-      --  - Normal mode: ?
-      --
-      -- This opens a window that shows you all of the keymaps for the current
-      -- telescope picker. This is really useful to discover what Telescope can
-      -- do as well as how to actually do it!
-
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
       require('telescope').setup {
-        -- You can put your default mappings / updates / etc. in here
-        --  All the info you're looking for is in `:help telescope.setup()`
-        --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
-        -- pickers = {}
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -294,25 +314,84 @@ require('lazy').setup({
     end,
   },
 
-  {
-    -- LSP Configuration & Plugins
+  { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- Automatically install LSPs to stdpath for neovim
+      -- Automatically install LSPs and related tools to stdpath for neovim
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
 
-      -- Useful status updates for LSP
+      -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
-
-      -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim',
     },
+    config = function()
+      -- LSP servers and clients are able to communicate to each other what features they support.
+      --  By default, Neovim doesn't support everything that is in the LSP Specification.
+      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
+      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
+      -- Enable the following language servers
+      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+      --
+      --  Add any additional override configuration in the following tables. Available keys are:
+      --  - cmd (table): Override the default command used to start the server
+      --  - filetypes (table): Override the default list of associated filetypes for the server
+      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+      --  - settings (table): Override the default settings passed when initializing the server.
+      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      local servers = {
+        marksman = {},
+        rust_analyzer = {},
+        tsserver = {},
+
+        lua_ls = {
+          settings = {
+            Lua = {
+              telemetry = { enable = false },
+              workspace = {
+                checkThirdParty = false,
+                library = { vim.env.VIMRUNTIME },
+              },
+              -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+              -- diagnostics = { disable = { 'missing-fields' } },
+            },
+          },
+        },
+      }
+
+      require('mason').setup()
+
+      local ensure_installed = vim.tbl_keys(servers or {})
+      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+
+      require('mason-lspconfig').setup {
+        handlers = {
+          function(server_name)
+            local server = servers[server_name] or {}
+            -- This handles overriding only values explicitly passed
+            -- by the server configuration above. Useful when disabling
+            -- certain features of an LSP (for example, turning off formatting for tsserver)
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            require('lspconfig')[server_name].setup(server)
+          end,
+        },
+      }
+
+      require('lspconfig').sourcekit.setup({
+        capabilities = capabilities,
+        single_file_support = true
+      })
+    end,
   },
+
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       'L3MON4D3/LuaSnip',
@@ -324,18 +403,52 @@ require('lazy').setup({
 
       -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets',
-    },
-  },
 
-  -- Codium AI (personal use only)
-  {
-    "Exafunction/codeium.nvim",
-    dependencies = {
+      -- Codium AI (personal use only)
+      { "Exafunction/codeium.nvim", opts = {} },
       "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
     },
     config = function()
-      require("codeium").setup({
+      local cmp = require('cmp')
+
+      -- Setup luasnip
+      -- This comes with a huge repository of snippets for various languages. e.g. 'date' for markdown files
+      local luasnip = require 'luasnip'
+      require("luasnip.loaders.from_vscode").lazy_load()
+      luasnip.config.setup()
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end
+        },
+        mapping = cmp.mapping.preset.insert({
+          -- Select the [n]ext item
+          ['<C-n>'] = cmp.mapping.select_next_item(),
+          -- Select the [p]revious item
+          ['<C-p>'] = cmp.mapping.select_prev_item(),
+
+          -- Accept ([y]es) the completion.
+          --  This will auto-import if your LSP supports it.
+          --  This will expand snippets if the LSP sent a snippet.
+          ['<C-y>'] = cmp.mapping.confirm { select = true },
+
+          -- Manually trigger a completion from nvim-cmp.
+          --  Generally you don't need this, because nvim-cmp will display
+          --  completions whenever it has completion options available.
+          ['<C-Space>'] = cmp.mapping.complete {},
+          ['<CR>'] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            -- select = true,
+          })
+        }),
+        sources = {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'path' },
+          { name = 'codeium' },
+        },
       })
     end
   },
@@ -381,7 +494,11 @@ require('lazy').setup({
           relativenumber = false
         }
       }
-    }
+    },
+    config = function()
+      vim.keymap.set('n', '<leader>gy', ':ZenMode<CR>',
+        { noremap = true, silent = true })
+    end
   },
 
   {
@@ -467,172 +584,13 @@ require('lazy').setup({
           },
         },
       }
+      -- Refactor.nvim
+      vim.keymap.set({ "n", "x" }, "<leader>rr",
+        function() require('refactoring').select_refactor() end,
+        { desc = '[r]efacto[r]' })
     end
   },
 }, {})
-
--- Global mappings.
-
--- LSP settings.
-vim.api.nvim_create_autocmd('LspAttach', {
-  desc = 'LSP actions',
-  callback = function(ev)
-    -- Buffer local mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local buffer = ev.buf
-
-    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename,
-      { buffer = buffer, desc = '[r]e[n]ame' })
-    vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action,
-      { buffer = buffer, desc = '[c]ode [a]ction' })
-
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition,
-      { buffer = buffer, desc = '[g]o to [d]efinition' })
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
-      { buffer = buffer, desc = '[g]o to [D]eclaration' })
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation,
-      { buffer = buffer, desc = '[g]o to [i]mplementation' })
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references,
-      { buffer = buffer, desc = '[g]o to [r]eferences' })
-    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition,
-      { buffer = buffer, desc = 'type [D]efinition' })
-
-    -- See `:help K` for why this keymap
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover,
-      { buffer = buffer, desc = 'show hover' })
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help,
-      { buffer = buffer, desc = 'show signature' })
-
-    vim.keymap.set('n', '<space>f', function()
-      vim.lsp.buf.format { async = true }
-    end, { buffer = buffer, desc = '[f]ormat' })
-  end,
-})
-
--- mason-lspconfig requires that these setup functions are called in this order
--- before setting up the servers.
-require('mason').setup()
-require('mason-lspconfig').setup()
-
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. They will be passed to
---  the `settings` field of the server config. You must look up that documentation yourself.
---
---  If you want to override the default filetypes that your language server will attach to you can
---  define the property 'filetypes' to the map in question.
-local servers = {
-  marksman = {},
-  rust_analyzer = {},
-  tsserver = {},
-
-  lua_ls = {
-    Lua = {
-      telemetry = { enable = false },
-      workspace = {
-        checkThirdParty = false,
-        library = { vim.env.VIMRUNTIME },
-      },
-      -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-      -- diagnostics = { disable = { 'missing-fields' } },
-    },
-  },
-}
-
--- Setup neovim lua configuration
-require('neodev').setup()
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
--- Ensure the servers above are installed
-local mason_lspconfig = require 'mason-lspconfig'
-
-mason_lspconfig.setup {
-  ensure_installed = vim.tbl_keys(servers),
-}
-
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-      single_file_support = true,
-    }
-  end,
-}
-
-require('lspconfig').sourcekit.setup({
-  capabilities = capabilities,
-  single_file_support = true
-})
-
--- Setup cmp for completions
-local cmp = require('cmp')
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
--- Setup luasnip
--- This comes with a huge repository of snippets for various languages. e.g. 'date' for markdown files
-local luasnip = require 'luasnip'
-require("luasnip.loaders.from_vscode").lazy_load()
-luasnip.config.setup()
-
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end
-  },
-  completion = { completeopt = 'menu,menuone,noinsert' },
-  mapping = cmp.mapping.preset.insert({
-    -- Select the [n]ext item
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    -- Select the [p]revious item
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-
-    -- Accept ([y]es) the completion.
-    --  This will auto-import if your LSP supports it.
-    --  This will expand snippets if the LSP sent a snippet.
-    ['<C-y>'] = cmp.mapping.confirm { select = true },
-
-    -- Manually trigger a completion from nvim-cmp.
-    --  Generally you don't need this, because nvim-cmp will display
-    --  completions whenever it has completion options available.
-    ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Replace,
-      -- select = true,
-    })
-  }),
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-    { name = 'path' },
-    { name = 'codeium' },
-  },
-})
-
--- Refactor.nvim
-vim.keymap.set({ "n", "x" }, "<leader>rr",
-  function() require('refactoring').select_refactor() end,
-  { desc = '[r]efacto[r]' })
-
--- zen-mode.nvim
-vim.keymap.set('n', '<leader>gy', ':ZenMode<CR>',
-  { noremap = true, silent = true })
-
--- toggle-checkbox.nvim
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'markdown' },
-  callback = function(args)
-    vim.keymap.set("n", "<leader>tt",
-      function() require('toggle-checkbox').toggle() end,
-      { buffer = args.buf, desc = '[T]oggle [T]ask' })
-  end
-})
 
 -- Wiki.vim
 -- vim.g.wiki_root = '~/Documents/my_notes'
