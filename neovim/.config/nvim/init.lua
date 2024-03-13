@@ -85,10 +85,14 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>',
+  { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<C-l>', '<C-w><C-l>',
+  { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w><C-j>',
+  { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w><C-k>',
+  { desc = 'Move focus to the upper window' })
 
 -- Swap lines in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -214,20 +218,52 @@ require('lazy').setup({
   'tpope/vim-fugitive', -- Git related plugin
 
   -- Markdown wiki
-  'lervag/wiki.vim',
+  {
+    'lervag/wiki.vim',
+    config = function()
+      -- vim.g.wiki_root = '~/Documents/my_notes'
+      vim.g.wiki_root =
+      '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
+      -- vim.g.wiki_root = '/Users/mwarner/Library/CloudStorage/ProtonDrive-warnmat@proton.me/my_notes'
+      vim.g.wiki_journal_index = {
+        link_url_parser = function(_, isoDate, _)
+          return isoDate
+        end,
+        link_test_parser = function(_, _, absolutePath)
+          return absolutePath
+        end
+      }
+
+      vim.g.wiki_mappings_local = {
+        ['<plug>(wiki-pages)'] = '<leader>ws',
+      }
+
+      vim.keymap.set('n', '<leader>wf', function()
+        require('telescope.builtin').find_files({ cwd = vim.g.wiki_root })
+      end, { desc = '[W]iki [F]iles' })
+      vim.keymap.set('n', '<leader>wg', function()
+        require('telescope.builtin').live_grep({ cwd = vim.g.wiki_root })
+      end, { desc = '[W]iki [G]rep' })
+
+      vim.g.wiki_mappings_local_journal = {
+        ['<plug>(wiki-journal-prev)'] = '[w',
+        ['<plug>(wiki-journal-next)'] = ']w',
+      }
+    end
+  },
   {
     'opdavies/toggle-checkbox.nvim',
     config = function()
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { 'markdown' },
         callback = function(args)
-          vim.keymap.set("n", "<leader>tt", function() require('toggle-checkbox').toggle() end,
+          vim.keymap.set("n", "<leader>tt",
+            function() require('toggle-checkbox').toggle() end,
             { buffer = args.buf, desc = '[T]oggle [T]ask' })
         end
       })
     end
   },
-
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -332,7 +368,8 @@ require('lazy').setup({
       --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      capabilities = vim.tbl_deep_extend('force', capabilities,
+        require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -375,7 +412,8 @@ require('lazy').setup({
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities,
+              server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
         },
@@ -592,35 +630,4 @@ require('lazy').setup({
   },
 }, {})
 
--- Wiki.vim
--- vim.g.wiki_root = '~/Documents/my_notes'
-vim.g.wiki_root =
-'/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
--- vim.g.wiki_root = '/Users/mwarner/Library/CloudStorage/ProtonDrive-warnmat@proton.me/my_notes'
-vim.g.wiki_journal_index = {
-  link_url_parser = function(_, isoDate, _)
-    return isoDate
-  end,
-  link_test_parser = function(_, _, absolutePath)
-    return absolutePath
-  end
-}
-
-vim.g.wiki_mappings_local = {
-  ['<plug>(wiki-pages)'] = '<leader>ws',
-}
-
-vim.keymap.set('n', '<leader>wf', function()
-  require('telescope.builtin').find_files({ cwd = vim.g.wiki_root })
-end, { desc = '[W]iki [F]iles' })
-vim.keymap.set('n', '<leader>wg', function()
-  require('telescope.builtin').live_grep({ cwd = vim.g.wiki_root })
-end, { desc = '[W]iki [G]rep' })
-
-vim.g.wiki_mappings_local_journal = {
-  ['<plug>(wiki-journal-prev)'] = '[w',
-  ['<plug>(wiki-journal-next)'] = ']w',
-}
-
--- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
