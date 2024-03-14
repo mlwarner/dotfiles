@@ -10,6 +10,10 @@ return {
             -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
             { 'j-hui/fidget.nvim', opts = {} },
+
+            -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
+            -- used for completion, annotations and signatures of Neovim apis
+            { 'folke/neodev.nvim', opts = {} },
         },
         config = function()
             -- LSP servers and clients are able to communicate to each other what features they support.
@@ -38,10 +42,6 @@ return {
                     settings = {
                         Lua = {
                             telemetry = { enable = false },
-                            workspace = {
-                                checkThirdParty = false,
-                                library = { vim.env.VIMRUNTIME },
-                            },
                             -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
                             -- diagnostics = { disable = { 'missing-fields' } },
                         },
