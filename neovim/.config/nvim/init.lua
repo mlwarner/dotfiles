@@ -242,37 +242,40 @@ require('lazy').setup({
         { noremap = true, silent = true })
     end
   },
-
+      -- {
+  --   'RRethy/base16-nvim',
+  --   priority = 1000,
+  --   init = function()
+  --     vim.opt.termguicolors = true
+  --     vim.cmd.colorscheme 'base16-gruvbox-dark-hard'
+  --     vim.api.nvim_set_hl(0, "CursorLineNr", { bg = nil }) -- clear the backgorund highlights
+  --   end,
+  -- },
   {
-    'RRethy/base16-nvim',
+    -- Theme
+    'ellisonleao/gruvbox.nvim',
     priority = 1000,
     init = function()
+      vim.o.background = 'dark'
       vim.opt.termguicolors = true
-      vim.cmd.colorscheme 'base16-gruvbox-dark-hard'
-      vim.api.nvim_set_hl(0, "CursorLineNr", { bg = nil }) -- clear the backgorund highlights
-    end,
+
+      require('gruvbox').setup({
+        contrast = 'hard',
+        -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
+        -- See `:help vim.treesitter`
+        -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
+        palette_overrides = {
+          -- dark0 = "#1d2021", -- taken from `contrast = hard`
+        },
+        overrides = {
+          CursorLineNr = { bg = "#1d2021" },     -- Only highlight the number
+          SignColumn = { bg = "#1d2021" },       -- No constrast on sign column
+        },
+      })
+      vim.cmd.colorscheme 'gruvbox'
+    end
   },
-  -- {
-  --     -- Theme
-  --     'ellisonleao/gruvbox.nvim',
-  --     lazy = true,
-  --     -- lazy = false, -- make sure we load this during startup if it is your main colorscheme
-  --     priority = 1000,
-  --     config = true,
-  --     opts = {
-  --         contrast = 'hard',
-  --         -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
-  --         -- See `:help vim.treesitter`
-  --         -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
-  --         palette_overrides = {
-  --             -- dark0 = "#1d2021", -- taken from `contrast = hard`
-  --         },
-  --         overrides = {
-  --             CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
-  --             SignColumn = { bg = "#1d2021" },   -- No constrast on sign column
-  --         },
-  --     },
-  -- },
+
 
   { import = 'plugins' },
 }, {})
