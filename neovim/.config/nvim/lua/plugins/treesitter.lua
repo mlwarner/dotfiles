@@ -19,6 +19,7 @@ return {
                     'css',
                     'html',
                     'javascript',
+                    'jsdoc',
                     'json',
                     'lua',
                     'markdown',
