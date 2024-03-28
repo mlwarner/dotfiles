@@ -177,20 +177,6 @@ require('lazy').setup({
     { 'folke/which-key.nvim',  event = 'VimEnter', opts = {} },
 
     {
-        'opdavies/toggle-checkbox.nvim',
-        config = function()
-            vim.api.nvim_create_autocmd('FileType', {
-                pattern = { 'markdown' },
-                callback = function(args)
-                    vim.keymap.set("n", "<leader>tt",
-                        function() require('toggle-checkbox').toggle() end,
-                        { buffer = args.buf, desc = '[T]oggle [T]ask' })
-                end
-            })
-        end
-    },
-
-    {
         'folke/zen-mode.nvim',
         opts = {
             window = {
