@@ -12,9 +12,9 @@ end
 
 -- This is where you actually apply your config choices
 config.color_scheme = "Gruvbox dark, hard (base16)"
--- config.font = wezterm.font("JetBrains Mono")
-config.font = wezterm.font("Cascadia Code")
-config.font_size = 15.0
+config.font = wezterm.font("JetBrains Mono")
+-- config.font = wezterm.font("Cascadia Code")
+config.font_size = 14.0
 config.line_height = 1.2
 
 config.use_dead_keys = false
