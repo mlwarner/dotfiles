@@ -11,6 +11,7 @@ return {
             -- local wikiPath = '~/vimwiki',
             -- local wikiPath = '/Users/mwarner/wiki'
             local wikiPath = '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
+            -- local wikiPath = '/home/matt/wiki'
             local journalPath = wikiPath .. sep .. 'journal'
 
             require('kiwi').setup({
