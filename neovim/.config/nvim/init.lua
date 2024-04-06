@@ -129,24 +129,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- [[ Basic UserCommands ]]
 
--- silicon for screenshots
--- https://github.com/Aloxaf/silicon
-vim.api.nvim_create_user_command('Silicon',
-    function(opts)
-        local line1 = opts.line1
-        local line2 = opts.line2
-        local curDate = os.date('%Y-%m-%dT%T')
-        -- TODO handle missing file extension - Maybe a fallback we can use?
-        local fileExtension = vim.bo.filetype
-        local fileOutName = string.format('Screenshot-%s.png', curDate)
-        local writeCommand = string.format('%s,%swrite !silicon -l %s -o %s',
-            line1, line2, fileExtension, fileOutName
-        )
-        vim.cmd(writeCommand)
-    end,
-    { nargs = 0, range = '%' }
-)
-
 -- custom filetype detection
 vim.filetype.add({
     extension = {
@@ -169,6 +151,9 @@ vim.opt.rtp:prepend(lazypath)
 -- [[ Configure and install plugins ]]
 require('lazy').setup({
     'tpope/vim-fugitive', -- Git related plugin
+
+    -- Make pretty code snapshots
+    { "mistricky/codesnap.nvim", build = "make" },
 
     -- Useful plugin to show you pending keybinds.
     { 'folke/which-key.nvim',  event = 'VimEnter', opts = {} },
