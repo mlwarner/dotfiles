@@ -14,6 +14,9 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- Don't show the mode, since it's already in the status line
+vim.opt.showmode = false
+
 -- Default formatting. 4 spaces, no tabs
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -37,9 +40,9 @@ vim.opt.signcolumn = 'yes'
 -- Decrease update time
 vim.opt.updatetime = 250
 
--- Decrease mapped sequence wait time
--- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
+-- Configure how new splits should be opened
+vim.opt.splitright = true
+vim.opt.splitbelow = true
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
@@ -82,14 +85,6 @@ vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'mail', 'markdown', 'text' },
     command = 'setlocal spell spelllang=en_us'
 })
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'mail' },
-    command = 'setlocal formatoptions+=aw textwidth=150'
-})
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'crontab' },
-    command = 'setlocal nobackup | set nowritebackup'
-})
 
 -- LSP keymaps
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -127,18 +122,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
--- [[ Basic UserCommands ]]
-
--- custom filetype detection
-vim.filetype.add({
-    extension = {
-        m = "mason",
-        mi = "mason",
-        mhtml = "mason",
-        kata = "kata",
-    }
-})
-
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -154,9 +137,6 @@ require('lazy').setup({
 
     -- Make pretty code snapshots
     { "mistricky/codesnap.nvim", build = "make" },
-
-    -- Useful plugin to show you pending keybinds.
-    { 'folke/which-key.nvim',  event = 'VimEnter', opts = {} },
 
     {
         'folke/zen-mode.nvim',
@@ -212,9 +192,6 @@ require('lazy').setup({
             -- "gc" to comment visual regions/lines
             require('mini.comment').setup()
 
-            -- Autocompletion and signature help
-            require('mini.completion').setup()
-
             -- Better Around/Inside textobjects
             --
             -- Examples:
@@ -231,9 +208,7 @@ require('lazy').setup({
             require('mini.surround').setup()
 
             -- Simple and easy statusline.
-            --  You could remove this setup call if you don't like it,
-            --  and try some other statusline plugin
-            local statusline = require 'mini.statusline'
+            local statusline = require('mini.statusline')
             -- set use_icons to true if you have a Nerd Font
             statusline.setup { use_icons = vim.g.have_nerd_font }
 
@@ -245,8 +220,54 @@ require('lazy').setup({
                 return '%2l:%-2v'
             end
 
-            -- ... and there is more!
-            --  Check out: https://github.com/echasnovski/mini.nvim
+            -- Autocompletion and signature help
+            require('mini.completion').setup()
+
+            -- Show next key clues
+            local miniclue = require('mini.clue')
+            miniclue.setup({
+                triggers = {
+                    -- Leader triggers
+                    { mode = 'n', keys = '<Leader>' },
+                    { mode = 'x', keys = '<Leader>' },
+
+                    -- Built-in completion
+                    { mode = 'i', keys = '<C-x>' },
+
+                    -- `g` key
+                    { mode = 'n', keys = 'g' },
+                    { mode = 'x', keys = 'g' },
+
+                    -- Marks
+                    { mode = 'n', keys = "'" },
+                    { mode = 'n', keys = '`' },
+                    { mode = 'x', keys = "'" },
+                    { mode = 'x', keys = '`' },
+
+                    -- Registers
+                    { mode = 'n', keys = '"' },
+                    { mode = 'x', keys = '"' },
+                    { mode = 'i', keys = '<C-r>' },
+                    { mode = 'c', keys = '<C-r>' },
+
+                    -- Window commands
+                    { mode = 'n', keys = '<C-w>' },
+
+                    -- `z` key
+                    { mode = 'n', keys = 'z' },
+                    { mode = 'x', keys = 'z' },
+                },
+
+                clues = {
+                    -- Enhance this by adding descriptions for <Leader> mapping groups
+                    miniclue.gen_clues.builtin_completion(),
+                    miniclue.gen_clues.g(),
+                    miniclue.gen_clues.marks(),
+                    miniclue.gen_clues.registers(),
+                    miniclue.gen_clues.windows(),
+                    miniclue.gen_clues.z(),
+                },
+            })
         end,
     },
 
