@@ -154,38 +154,53 @@ require('lazy').setup({
                 { noremap = true, silent = true })
         end
     },
-    -- {
-    --   'RRethy/base16-nvim',
-    --   priority = 1000,
-    --   init = function()
-    --     vim.opt.termguicolors = true
-    --     vim.cmd.colorscheme 'base16-gruvbox-dark-hard'
-    --     vim.api.nvim_set_hl(0, "CursorLineNr", { bg = nil }) -- clear the backgorund highlights
-    --   end,
-    -- },
     {
-        -- Theme
-        'ellisonleao/gruvbox.nvim',
+        'RRethy/base16-nvim',
         priority = 1000,
         init = function()
             vim.opt.termguicolors = true
+            vim.cmd.colorscheme 'base16-gruvbox-dark-hard'
 
-            require('gruvbox').setup({
-                contrast = 'hard',
-                -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
-                -- See `:help vim.treesitter`
-                -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
-                palette_overrides = {
-                    -- dark0 = "#1d2021", -- taken from `contrast = hard`
-                },
-                overrides = {
-                    CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
-                    SignColumn = { bg = "#1d2021" },   -- No constrast on sign column
-                },
-            })
-            vim.cmd.colorscheme 'gruvbox'
-        end
+            vim.api.nvim_set_hl(0, "CursorLineNr", {}) -- clear the background highlights
+
+            -- Swap property and variable highlighting
+            local myTSVariable = vim.deepcopy(vim.api.nvim_get_hl(0, { name = "TSVariable" }))
+            local myTSField = vim.deepcopy(vim.api.nvim_get_hl(0, { name = "TSField" }))
+
+            vim.api.nvim_set_hl(0, "TSVariable", myTSField)
+            vim.api.nvim_set_hl(0, "TSVariableBuiltin", myTSField)
+            vim.api.nvim_set_hl(0, "TSField", myTSVariable)
+            vim.api.nvim_set_hl(0, "TSProperty", myTSVariable)
+
+            -- These are undefined in base16, resulting in inconsistent behavior
+            -- https://github.com/RRethy/base16-nvim/blob/master/lua/base16-colorscheme.lua#L596-L610
+            vim.api.nvim_set_hl(0, "@lsp.type.variable", { link = '@variable' })
+            vim.api.nvim_set_hl(0, "@lsp.type.property", { link = '@property' })
+        end,
     },
+    -- {
+    --     -- Theme
+    --     'ellisonleao/gruvbox.nvim',
+    --     priority = 1000,
+    --     init = function()
+    --         vim.opt.termguicolors = true
+    --
+    --         require('gruvbox').setup({
+    --             contrast = 'hard',
+    --             -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
+    --             -- See `:help vim.treesitter`
+    --             -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
+    --             palette_overrides = {
+    --                 -- dark0 = "#1d2021", -- taken from `contrast = hard`
+    --             },
+    --             overrides = {
+    --                 CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
+    --                 SignColumn = { bg = "#1d2021" },   -- No constrast on sign column
+    --             },
+    --         })
+    --         -- vim.cmd.colorscheme 'gruvbox'
+    --     end
+    -- },
     { -- Collection of various small independent plugins/modules
         'echasnovski/mini.nvim',
         config = function()
