@@ -10,8 +10,8 @@ return {
             -- local wikiPath = '/Users/mwarner/Library/CloudStorage/ProtonDrive-warnmat@proton.me/my_notes'
             -- local wikiPath = '~/vimwiki',
             -- local wikiPath = '/Users/mwarner/wiki'
-            -- local wikiPath = '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
-            local wikiPath = '/home/matt/wiki'
+            local wikiPath = '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes'
+            -- local wikiPath = '/home/matt/wiki'
             local journalPath = wikiPath .. sep .. 'journal'
 
             require('kiwi').setup({
@@ -43,10 +43,10 @@ return {
             vim.keymap.set('n', '<leader>tt', kiwi.todo.toggle, { desc = '[T]oggle [T]ask' })
 
             vim.keymap.set('n', '<leader>wsf', function()
-                require('mini.pick').builtin.files({}, { source = { items = vim.fn.readdir(wikiPath) } })
+                require('mini.pick').builtin.files({}, { source = { cwd = wikiPath } })
             end, { desc = '[W]iki [S]earch [F]iles' })
             vim.keymap.set('n', '<leader>wsg', function()
-                require('mini.pick').builtin.grep_live({}, { source = { items = vim.fn.readdir(wikiPath) } })
+                require('mini.pick').builtin.grep_live({}, { source = { cwd = wikiPath } })
             end, { desc = '[W]iki [S]earch by [G]rep' })
 
             -- vim.keymap.set('n', '<leader>wsf', function()

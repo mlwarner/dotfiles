@@ -64,10 +64,6 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float,
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
     { desc = 'Open diagnostic [Q]uickfix list' })
 
--- Swap lines in visual mode
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -204,9 +200,6 @@ require('lazy').setup({
     { -- Collection of various small independent plugins/modules
         'echasnovski/mini.nvim',
         config = function()
-            -- "gc" to comment visual regions/lines
-            require('mini.comment').setup()
-
             -- Better Around/Inside textobjects
             --
             -- Examples:
@@ -214,6 +207,15 @@ require('lazy').setup({
             --  - yinq - [Y]ank [I]nside [N]ext [']quote
             --  - ci'  - [C]hange [I]nside [']quote
             require('mini.ai').setup { n_lines = 500 }
+
+            -- "gc" to comment visual regions/lines
+            require('mini.comment').setup()
+
+            -- Autocompletion and signature help
+            require('mini.completion').setup()
+
+            -- Move any selection in any direction
+            require('mini.move').setup()
 
             -- Add/delete/replace surroundings (brackets, quotes, etc.)
             --
@@ -234,9 +236,6 @@ require('lazy').setup({
             statusline.section_location = function()
                 return '%2l:%-2v'
             end
-
-            -- Autocompletion and signature help
-            require('mini.completion').setup()
 
             -- General purpose picker
             local miniPick = require('mini.pick')
@@ -307,7 +306,6 @@ require('lazy').setup({
             })
         end,
     },
-
 
     { import = 'plugins' },
 }, {})
