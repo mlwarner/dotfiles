@@ -27,7 +27,7 @@ return {
                     'perl',
                     'python',
                     'rust',
-                    'swift',
+                    -- 'swift',
                     'tsx',
                     'typescript',
                     'vim',

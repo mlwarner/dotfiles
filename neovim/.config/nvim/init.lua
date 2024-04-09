@@ -238,6 +238,28 @@ require('lazy').setup({
             -- Autocompletion and signature help
             require('mini.completion').setup()
 
+            -- General purpose picker
+            local miniPick = require('mini.pick')
+            local miniExtra = require('mini.extra')
+
+            miniPick.setup()
+            miniExtra.setup()
+
+            local builtin = miniPick.builtin
+            local builtinExtra = miniExtra.pickers
+            vim.keymap.set('n', '<leader>sh', builtin.help, { desc = '[S]earch [H]elp' })
+            vim.keymap.set('n', '<leader>sk', builtinExtra.keymaps, { desc = '[S]earch [K]eymaps' })
+            vim.keymap.set('n', '<leader>sf', builtin.files, { desc = '[S]earch [F]iles' })
+            vim.keymap.set('n', '<leader>sw', builtin.grep, { desc = '[S]earch current [W]ord' })
+            vim.keymap.set('n', '<leader>sg', builtin.grep_live, { desc = '[S]earch by [G]rep' })
+            vim.keymap.set('n', '<leader>sd', builtinExtra.diagnostic, { desc = '[S]earch [D]iagnostics' })
+            vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+            vim.keymap.set('n', '<leader>s.', builtinExtra.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+            vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+            vim.keymap.set('n', '<leader>/', builtinExtra.buf_lines, { desc = '[/] Fuzzily search in current buffer' })
+            vim.keymap.set('n', '<c-p>', builtin.files, { desc = 'find files' })
+            vim.keymap.set('n', '<c-f>', builtin.grep_live, { desc = 'live grep' })
+
             -- Show next key clues
             local miniclue = require('mini.clue')
             miniclue.setup({
