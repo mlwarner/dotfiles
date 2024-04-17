@@ -3,5 +3,5 @@ padding = { x = 4, y = 4 }
 
 [font]
 normal = { family = "JetBrains Mono NL", style = "Regular" }
-size = 15.0
+size = 16.0
 offset = { x = 0, y = 8 }

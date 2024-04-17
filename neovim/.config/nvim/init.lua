@@ -223,6 +223,9 @@ require('lazy').setup({
             -- Move any selection in any direction
             require('mini.move').setup()
 
+            -- Show notifications
+            require('mini.notify').setup()
+
             -- Add/delete/replace surroundings (brackets, quotes, etc.)
             --
             -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
