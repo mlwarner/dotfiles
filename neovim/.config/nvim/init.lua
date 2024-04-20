@@ -169,15 +169,13 @@ require('lazy').setup({
             local myTSVariable = vim.deepcopy(vim.api.nvim_get_hl(0, { name = "TSVariable" }))
             local myTSField = vim.deepcopy(vim.api.nvim_get_hl(0, { name = "TSField" }))
 
+            -- https://github.com/RRethy/base16-nvim/blob/master/lua/base16-colorscheme.lua#L596-L610
+            -- TODO should there be a higher level mapping than TSVariable ? Maybe @variable? See below
+            -- vim.api.nvim_set_hl(0, "@lsp.type.variable", { link = '@variable' })
             vim.api.nvim_set_hl(0, "TSVariable", myTSField)
             vim.api.nvim_set_hl(0, "TSVariableBuiltin", myTSField)
             vim.api.nvim_set_hl(0, "TSField", myTSVariable)
             vim.api.nvim_set_hl(0, "TSProperty", myTSVariable)
-
-            -- These are undefined in base16, resulting in inconsistent behavior
-            -- https://github.com/RRethy/base16-nvim/blob/master/lua/base16-colorscheme.lua#L596-L610
-            vim.api.nvim_set_hl(0, "@lsp.type.variable", { link = '@variable' })
-            vim.api.nvim_set_hl(0, "@lsp.type.property", { link = '@property' })
         end,
     },
     -- {
@@ -219,6 +217,9 @@ require('lazy').setup({
 
             -- Autocompletion and signature help
             require('mini.completion').setup()
+
+            -- Work with diff hunks
+            require('mini.diff').setup()
 
             -- Move any selection in any direction
             require('mini.move').setup()
