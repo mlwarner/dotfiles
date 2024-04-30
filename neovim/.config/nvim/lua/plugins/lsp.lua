@@ -29,6 +29,8 @@ return {
                 marksman = {},
                 rust_analyzer = {},
                 tsserver = {},
+                vale = {},
+                vale_ls = {},
 
                 lua_ls = {
                     settings = {
