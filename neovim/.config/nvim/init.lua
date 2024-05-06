@@ -51,9 +51,6 @@ vim.opt.softtabstop    = 4
 vim.opt.shiftwidth     = 4
 vim.opt.expandtab      = true
 
--- Decrease update time
-vim.opt.updatetime     = 250
-
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff      = 8
 
