@@ -52,7 +52,7 @@ vim.opt.shiftwidth     = 4
 vim.opt.expandtab      = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff      = 8
+vim.opt.scrolloff      = 10
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`

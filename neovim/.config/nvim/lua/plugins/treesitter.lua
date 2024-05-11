@@ -17,6 +17,7 @@ return {
                     'bash',
                     'c_sharp',
                     'css',
+                    'diff',
                     'html',
                     'javascript',
                     'jsdoc',
