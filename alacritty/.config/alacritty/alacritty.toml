@@ -1,5 +1,6 @@
 [window]
 padding = { x = 4, y = 4 }
+option_as_alt = "OnlyLeft"
 
 [font]
 normal = { family = "JetBrains Mono NL", style = "Regular" }
