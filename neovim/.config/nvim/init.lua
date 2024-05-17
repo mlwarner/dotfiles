@@ -85,42 +85,6 @@ vim.api.nvim_create_autocmd('FileType', {
     command = 'setlocal spell spelllang=en_us'
 })
 
--- LSP keymaps
-vim.api.nvim_create_autocmd('LspAttach', {
-    desc = 'LSP actions',
-    callback = function(ev)
-        -- Buffer local mappings.
-        -- See `:help vim.lsp.*` for documentation on any of the below functions
-        local buffer = ev.buf
-
-        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename,
-            { buffer = buffer, desc = '[r]e[n]ame' })
-        vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action,
-            { buffer = buffer, desc = '[c]ode [a]ction' })
-
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition,
-            { buffer = buffer, desc = '[g]o to [d]efinition' })
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration,
-            { buffer = buffer, desc = '[g]o to [D]eclaration' })
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation,
-            { buffer = buffer, desc = '[g]o to [i]mplementation' })
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references,
-            { buffer = buffer, desc = '[g]o to [r]eferences' })
-        vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition,
-            { buffer = buffer, desc = 'type [D]efinition' })
-
-        -- See `:help K` for why this keymap
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover,
-            { buffer = buffer, desc = 'show hover' })
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help,
-            { buffer = buffer, desc = 'show signature' })
-
-        vim.keymap.set('n', '<space>f', function()
-            vim.lsp.buf.format { async = true }
-        end, { buffer = buffer, desc = '[f]ormat' })
-    end,
-})
-
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
