@@ -173,9 +173,6 @@ require('lazy').setup({
             --  - ci'  - [C]hange [I]nside [']quote
             require('mini.ai').setup { n_lines = 500 }
 
-            -- "gc" to comment visual regions/lines
-            require('mini.comment').setup()
-
             -- Autocompletion and signature help
             require('mini.completion').setup()
 
