@@ -96,7 +96,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
 require('lazy').setup({
-    'tpope/vim-fugitive', -- Git related plugin
+    -- 'tpope/vim-fugitive', -- Git related plugin
 
     -- Make pretty code snapshots
     { "mistricky/codesnap.nvim", build = "make" },
@@ -178,6 +178,9 @@ require('lazy').setup({
 
             -- Work with diff hunks
             require('mini.diff').setup()
+
+            -- Work with 'git'
+            require('mini.git').setup()
 
             -- Move any selection in any direction
             require('mini.move').setup()
