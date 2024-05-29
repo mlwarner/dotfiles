@@ -3,6 +3,7 @@ padding = { x = 4, y = 4 }
 option_as_alt = "OnlyLeft"
 
 [font]
-normal = { family = "JetBrains Mono NL", style = "Regular" }
+# normal = { family = "JetBrains Mono NL", style = "Regular" }
+normal = { family = "Cascadia Code NF", style = "Regular" }
 size = 16.0
 offset = { x = 0, y = 8 }
