@@ -24,7 +24,7 @@ vim.opt.cursorline     = true     -- Highlight current line
 vim.opt.cursorlineopt  = 'number' -- Only highlight the current line number
 vim.opt.linebreak      = true     -- Wrap long lines at 'breakat' (if 'wrap' is set)
 vim.opt.number         = true     -- Show line numbers
-vim.opt.relativenumber = true     -- Show relative line numbers
+-- vim.opt.relativenumber = true     -- Show relative line numbers
 vim.opt.splitbelow     = true     -- Horizontal splits will be below
 vim.opt.splitright     = true     -- Vertical splits will be to the right
 
@@ -67,6 +67,14 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float,
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
     { desc = 'Open diagnostic [Q]uickfix list' })
 
+-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
+-- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
+-- is not what someone will guess without a bit more experience.
+--
+-- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
+-- or just use <C-\><C-n> to exit terminal mode
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -96,8 +104,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
 require('lazy').setup({
-    -- 'tpope/vim-fugitive', -- Git related plugin
-
     -- Make pretty code snapshots
     { "mistricky/codesnap.nvim", build = "make" },
 
@@ -214,6 +220,9 @@ require('lazy').setup({
 
             miniPick.setup()
             miniExtra.setup()
+
+            -- Override `vim.ui.select()`
+            vim.ui.select = miniPick.ui_select
 
             local builtin = miniPick.builtin
             local builtinExtra = miniExtra.pickers
