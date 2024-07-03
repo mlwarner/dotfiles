@@ -188,6 +188,9 @@ require('lazy').setup({
             -- Work with diff hunks
             require('mini.diff').setup()
 
+            -- icon provider
+            require('mini.icons').setup()
+
             -- Work with 'git'
             require('mini.git').setup()
 
