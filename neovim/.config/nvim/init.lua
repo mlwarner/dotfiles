@@ -4,9 +4,6 @@
 vim.g.mapleader       = ' '
 vim.g.maplocalleader  = ' '
 
--- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font  = true
-
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 
@@ -185,6 +182,14 @@ require('lazy').setup({
             -- Autocompletion and signature help
             require('mini.completion').setup()
 
+            -- Tab through completions
+            vim.keymap.set('i', '<Tab>', function()
+              return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
+            end, { expr = true })
+            vim.keymap.set('i', '<S-Tab>', function()
+              return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
+            end, { expr = true })
+
             -- Work with diff hunks
             require('mini.diff').setup()
 
@@ -209,8 +214,7 @@ require('lazy').setup({
 
             -- Simple and easy statusline.
             local statusline = require('mini.statusline')
-            -- set use_icons to true if you have a Nerd Font
-            statusline.setup { use_icons = vim.g.have_nerd_font }
+            statusline.setup()
 
             -- You can configure sections in the statusline by overriding their
             -- default behavior. For example, here we set the section for
