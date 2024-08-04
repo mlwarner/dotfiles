@@ -34,7 +34,7 @@ return {
                     -- https://github.com/neovim/neovim/blob/master/runtime/doc/news.txt#L103
                     map('n', 'grn', vim.lsp.buf.rename, '[R]e[n]ame')
                     map('n', 'grr', vim.lsp.buf.references, '[R]efe[r]ences')
-                    map({'n', 'v'}, 'gra', vim.lsp.buf.code_action, 'Code [A]ction')
+                    map({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, 'Code [A]ction')
                     map('i', '<C-s>', vim.lsp.buf.signature_help, '[S]ignature Help')
 
                     -- Jump to the definition of the word under your cursor.
@@ -120,16 +120,21 @@ return {
             --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
             --  - settings (table): Override the default settings passed when initializing the server.
             --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+            local nvim_lsp = require('lspconfig')
+
             local servers = {
-                -- denols = {
-                --     single_file_support = true,
-                -- },
+                denols = {
+                    root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
+                    single_file_support = true,
+                },
                 marksman = {},
                 -- markdown_oxide = {},
                 rust_analyzer = {},
                 vale = {},
                 vale_ls = {},
                 tsserver = {
+                    root_dir = nvim_lsp.util.root_pattern("package.json"),
+                    single_file_support = false,
                     settings = {
                         typescript = {
                             inlayHints = {

@@ -193,6 +193,9 @@ require('lazy').setup({
             -- Work with diff hunks
             require('mini.diff').setup()
 
+            -- file explorer
+            require('mini.files').setup()
+
             -- icon provider
             require('mini.icons').setup()
 
@@ -213,16 +216,7 @@ require('lazy').setup({
             require('mini.surround').setup()
 
             -- Simple and easy statusline.
-            local statusline = require('mini.statusline')
-            statusline.setup()
-
-            -- You can configure sections in the statusline by overriding their
-            -- default behavior. For example, here we set the section for
-            -- cursor location to LINE:COLUMN
-            ---@diagnostic disable-next-line: duplicate-set-field
-            statusline.section_location = function()
-                return '%2l:%-2v'
-            end
+            require('mini.statusline').setup()
 
             -- General purpose picker
             local miniPick = require('mini.pick')
