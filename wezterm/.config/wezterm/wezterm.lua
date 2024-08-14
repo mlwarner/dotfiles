@@ -11,11 +11,16 @@ if wezterm.config_builder then
 end
 
 -- This is where you actually apply your config choices
-config.color_scheme = "Gruvbox dark, hard (base16)"
+config.color_scheme = "Tango (terminal.sexy)"
+-- config.color_scheme = "Gruvbox dark, hard (base16)"
 -- config.font = wezterm.font("JetBrains Mono")
-config.font = wezterm.font("Cascadia Code")
-config.font_size = 14.0
+config.font = wezterm.font({
+    family = "Cascadia Code NF",
+    weight = "Regular"
+})
+config.font_size = 16.0
 config.line_height = 1.2
+config.front_end = "WebGpu"
 
 config.use_dead_keys = false
 config.adjust_window_size_when_changing_font_size = false
