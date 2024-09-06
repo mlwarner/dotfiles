@@ -132,33 +132,30 @@ return {
                 rust_analyzer = {},
                 vale = {},
                 vale_ls = {},
-                tsserver = {
-                    root_dir = nvim_lsp.util.root_pattern("package.json"),
-                    single_file_support = false,
+                vtsls = {
                     settings = {
-                        typescript = {
-                            inlayHints = {
-                                includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
-                                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                                includeInlayVariableTypeHints = true,
-                                includeInlayFunctionParameterTypeHints = true,
-                                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                                includeInlayPropertyDeclarationTypeHints = true,
-                                includeInlayFunctionLikeReturnTypeHints = true,
-                                includeInlayEnumMemberValueHints = true,
+                        complete_function_calls = true,
+                        vtsls = {
+                            enableMoveToFileCodeAction = true,
+                            autoUseWorkspaceTsdk = true,
+                            experimental = {
+                                completion = {
+                                    enableServerSideFuzzyMatch = true,
+                                },
                             },
                         },
-                        javascript = {
+                        typescript = {
+                            updateImportsOnFileMove = { enabled = "always" },
+                            suggest = {
+                                completeFunctionCalls = true,
+                            },
                             inlayHints = {
-                                includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all'
-                                includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                                includeInlayVariableTypeHints = true,
-
-                                includeInlayFunctionParameterTypeHints = true,
-                                includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                                includeInlayPropertyDeclarationTypeHints = true,
-                                includeInlayFunctionLikeReturnTypeHints = true,
-                                includeInlayEnumMemberValueHints = true,
+                                enumMemberValues = { enabled = true },
+                                functionLikeReturnTypes = { enabled = true },
+                                parameterNames = { enabled = "literals" },
+                                parameterTypes = { enabled = true },
+                                propertyDeclarationTypes = { enabled = true },
+                                variableTypes = { enabled = false },
                             },
                         },
                     },
