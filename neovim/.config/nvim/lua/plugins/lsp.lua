@@ -123,10 +123,10 @@ return {
             local nvim_lsp = require('lspconfig')
 
             local servers = {
-                denols = {
-                    root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
-                    single_file_support = true,
-                },
+                -- denols = {
+                --     root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
+                --     single_file_support = true,
+                -- },
                 marksman = {},
                 -- markdown_oxide = {},
                 rust_analyzer = {},
@@ -142,6 +142,20 @@ return {
                                 completion = {
                                     enableServerSideFuzzyMatch = true,
                                 },
+                            },
+                        },
+                        javascript = {
+                            updateImportsOnFileMove = { enabled = "always" },
+                            suggest = {
+                                completeFunctionCalls = true,
+                            },
+                            inlayHints = {
+                                enumMemberValues = { enabled = true },
+                                functionLikeReturnTypes = { enabled = true },
+                                parameterNames = { enabled = "literals" },
+                                parameterTypes = { enabled = true },
+                                propertyDeclarationTypes = { enabled = true },
+                                variableTypes = { enabled = false },
                             },
                         },
                         typescript = {
@@ -172,6 +186,9 @@ return {
                     },
                 },
             }
+
+            -- Special formatted fields cannot be set above
+            servers.vtsls.settings['js/ts'] = { implicitProjectConfig = { checkJs = true } }
 
             require('mason').setup()
 

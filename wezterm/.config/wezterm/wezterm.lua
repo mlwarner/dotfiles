@@ -24,6 +24,8 @@ config.front_end = "WebGpu"
 
 config.use_dead_keys = false
 config.adjust_window_size_when_changing_font_size = false
+
+config.use_fancy_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
 config.native_macos_fullscreen_mode = true
 
