@@ -179,8 +179,14 @@ require('lazy').setup({
             --  - ci'  - [C]hange [I]nside [']quote
             require('mini.ai').setup { n_lines = 500 }
 
+            -- Go forward/backward with square brackets
+            require('mini.bracketed').setup()
+
             -- Autocompletion and signature help
             require('mini.completion').setup()
+
+            -- Highlight usages of the word under the cursor
+            require('mini.cursorword').setup()
 
             -- Tab through completions
             vim.keymap.set('i', '<Tab>', function()
