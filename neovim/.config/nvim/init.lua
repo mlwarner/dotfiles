@@ -185,9 +185,6 @@ require('lazy').setup({
             -- Autocompletion and signature help
             require('mini.completion').setup()
 
-            -- Highlight usages of the word under the cursor
-            require('mini.cursorword').setup()
-
             -- Tab through completions
             vim.keymap.set('i', '<Tab>', function()
               return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
@@ -195,6 +192,9 @@ require('lazy').setup({
             vim.keymap.set('i', '<S-Tab>', function()
               return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
             end, { expr = true })
+
+            -- Highlight usages of the word under the cursor
+            require('mini.cursorword').setup()
 
             -- Work with diff hunks
             require('mini.diff').setup()

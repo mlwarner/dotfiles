@@ -35,16 +35,13 @@ return {
                     map('n', 'grn', vim.lsp.buf.rename, '[R]e[n]ame')
                     map('n', 'grr', vim.lsp.buf.references, '[R]efe[r]ences')
                     map({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, 'Code [A]ction')
+                    map('n', 'gri', vim.lsp.buf.implementation, '[I]mplementation')
                     map('i', '<C-s>', vim.lsp.buf.signature_help, '[S]ignature Help')
 
                     -- Jump to the definition of the word under your cursor.
                     --  This is where a variable was first declared, or where a function is defined, etc.
                     --  To jump back, press <C-t>.
                     map('n', 'gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-
-                    -- Jump to the implementation of the word under your cursor.
-                    --  Useful when your language has ways of declaring types without an actual implementation.
-                    map('n', 'gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
 
                     -- Jump to the type of the word under your cursor.
                     --  Useful when you're not sure what type a variable is and you want to see
@@ -93,8 +90,8 @@ return {
                 marksman = {},
                 -- markdown_oxide = {},
                 rust_analyzer = {},
-                vale = {},
-                vale_ls = {},
+                -- vale = {},
+                -- vale_ls = {},
                 vtsls = {
                     settings = {
                         complete_function_calls = true,
