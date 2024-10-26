@@ -27,7 +27,7 @@ vim.opt.splitright    = true      -- Vertical splits will be to the right
 
 vim.opt.ruler         = false     -- Don't show cursor position in command line
 vim.opt.showmode      = false     -- Don't show mode in command line
--- vim.opt.wrap           = false    -- Display long lines as just one line
+vim.opt.wrap          = false     -- Display long lines as just one line
 
 vim.opt.signcolumn    = 'yes'  -- Always show sign column (otherwise it will shift text)
 
@@ -171,6 +171,9 @@ require('lazy').setup({
     { -- Collection of various small independent plugins/modules
         'echasnovski/mini.nvim',
         config = function()
+            -- Common configuration presets
+            require('mini.basics').setup()
+
             -- Better Around/Inside textobjects
             --
             -- Examples:
