@@ -8,39 +8,39 @@ vim.g.maplocalleader  = ' '
 -- See `:help vim.opt`
 
 -- General
-vim.opt.undofile      = true   -- Enable persistent undo (see also `:h undodir`)
+vim.opt.undofile      = true  -- Enable persistent undo (see also `:h undodir`)
 
-vim.opt.backup        = false  -- Don't store backup while overwriting the file
-vim.opt.writebackup   = false  -- Don't store backup while overwriting the file
+vim.opt.backup        = false -- Don't store backup while overwriting the file
+vim.opt.writebackup   = false -- Don't store backup while overwriting the file
 
-vim.opt.mouse         = 'a'    -- Enable mouse for all available modes
+vim.opt.mouse         = 'a'   -- Enable mouse for all available modes
 
 -- Appearance
-vim.opt.breakindent   = true      -- Indent wrapped lines to match line start
-vim.opt.cursorline    = true      -- Highlight current line
-vim.opt.cursorlineopt = 'number'  -- Only highlight the current line number
-vim.opt.linebreak     = true      -- Wrap long lines at 'breakat' (if 'wrap' is set)
-vim.opt.number        = true      -- Show line numbers
+vim.opt.breakindent   = true     -- Indent wrapped lines to match line start
+vim.opt.cursorline    = true     -- Highlight current line
+vim.opt.cursorlineopt = 'number' -- Only highlight the current line number
+vim.opt.linebreak     = true     -- Wrap long lines at 'breakat' (if 'wrap' is set)
+vim.opt.number        = true     -- Show line numbers
 -- vim.opt.relativenumber = true     -- Show relative line numbers
-vim.opt.splitbelow    = true      -- Horizontal splits will be below
-vim.opt.splitright    = true      -- Vertical splits will be to the right
+vim.opt.splitbelow    = true     -- Horizontal splits will be below
+vim.opt.splitright    = true     -- Vertical splits will be to the right
 
-vim.opt.ruler         = false     -- Don't show cursor position in command line
-vim.opt.showmode      = false     -- Don't show mode in command line
-vim.opt.wrap          = false     -- Display long lines as just one line
+vim.opt.ruler         = false    -- Don't show cursor position in command line
+vim.opt.showmode      = false    -- Don't show mode in command line
+vim.opt.wrap          = false    -- Display long lines as just one line
 
-vim.opt.signcolumn    = 'yes'  -- Always show sign column (otherwise it will shift text)
+vim.opt.signcolumn    = 'yes'    -- Always show sign column (otherwise it will shift text)
 
 -- Editing
-vim.opt.ignorecase    = true                         -- Ignore case when searching (use `\C` to force not doing that)
-vim.opt.incsearch     = true                         -- Show search results while typing
-vim.opt.infercase     = true                         -- Infer letter cases for a richer built-in keyword completion
-vim.opt.smartcase     = true                         -- Don't ignore case when searching if pattern has upper case
-vim.opt.smartindent   = true                         -- Make indenting smart
+vim.opt.ignorecase    = true                        -- Ignore case when searching (use `\C` to force not doing that)
+vim.opt.incsearch     = true                        -- Show search results while typing
+vim.opt.infercase     = true                        -- Infer letter cases for a richer built-in keyword completion
+vim.opt.smartcase     = true                        -- Don't ignore case when searching if pattern has upper case
+vim.opt.smartindent   = true                        -- Make indenting smart
 
-vim.opt.completeopt   = 'menuone,noinsert,noselect'  -- Customize completions
-vim.opt.virtualedit   = 'block'                      -- Allow going past the end of line in visual block mode
-vim.opt.formatoptions = 'qjl1'                       -- Don't autoformat comments
+vim.opt.completeopt   = 'menuone,noinsert,noselect' -- Customize completions
+vim.opt.virtualedit   = 'block'                     -- Allow going past the end of line in visual block mode
+vim.opt.formatoptions = 'qjl1'                      -- Don't autoformat comments
 
 -- Formatting. 4 spaces, no tabs
 vim.opt.tabstop       = 4
@@ -54,36 +54,13 @@ vim.opt.scrolloff     = 10
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
--- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev,
-    { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next,
-    { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float,
-    { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
-    { desc = 'Open diagnostic [Q]uickfix list' })
-
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
-vim.api.nvim_create_autocmd('TextYankPost', {
-    desc = 'Highlight when yanking (copying) text',
-    group = vim.api.nvim_create_augroup('kickstart-highlight-yank',
-        { clear = true }),
-    callback = function()
-        vim.highlight.on_yank()
-    end,
-})
 
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'mail', 'markdown', 'text' },
@@ -116,8 +93,7 @@ require('lazy').setup({
                     }
                 }
             })
-            vim.keymap.set('n', '<leader>gy', ':ZenMode<CR>',
-                { noremap = true, silent = true })
+            vim.keymap.set('n', 'gz', ':ZenMode<CR>', { noremap = true, silent = true })
         end
     },
     -- {
@@ -161,7 +137,7 @@ require('lazy').setup({
                 overrides = {
                     CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
                     SignColumn = { bg = "#1d2021" },   -- No constrast on sign column
-                    MiniPickNormal = { link = "Normal"},
+                    MiniPickNormal = { link = "Normal" },
                 },
             })
             vim.cmd.colorscheme 'gruvbox'
@@ -190,10 +166,10 @@ require('lazy').setup({
 
             -- Tab through completions
             vim.keymap.set('i', '<Tab>', function()
-              return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
+                return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
             end, { expr = true })
             vim.keymap.set('i', '<S-Tab>', function()
-              return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
+                return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
             end, { expr = true })
 
             -- Highlight usages of the word under the cursor
