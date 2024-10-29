@@ -34,8 +34,9 @@ return {
                     -- https://github.com/neovim/neovim/blob/master/runtime/doc/news.txt#L103
                     map('n', 'grn', vim.lsp.buf.rename, '[R]e[n]ame')
                     map('n', 'grr', vim.lsp.buf.references, '[R]efe[r]ences')
-                    map({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, 'Code [A]ction')
                     map('n', 'gri', vim.lsp.buf.implementation, '[I]mplementation')
+                    map('n', 'gO', vim.lsp.buf.document_symbol, 'D[o]cument symbol')
+                    map({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, 'Code [A]ction')
                     map('i', '<C-s>', vim.lsp.buf.signature_help, '[S]ignature Help')
 
                     -- Jump to the definition of the word under your cursor.
