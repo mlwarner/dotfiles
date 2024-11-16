@@ -71,6 +71,12 @@ return {
                             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
                         end, '[T]oggle Inlay [H]ints')
                     end
+
+                    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
+                        if vim.fn.has('nvim-0.11') then
+                            vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+                        end
+                    end
                 end,
             })
 
