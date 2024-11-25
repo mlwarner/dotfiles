@@ -228,9 +228,11 @@ require('lazy').setup({
             require('mini.bracketed').setup()
 
             -- Autocompletion and signature help
-            if vim.fn.has('nvim-0.11') == 0 then -- Prefer built in completion in nvim 0.11+
-                require('mini.completion').setup()
-            end
+            require('mini.completion').setup()
+            -- Prefer built in completion in nvim 0.11+
+            -- if vim.fn.has('nvim-0.11') == 0 then
+                -- require('mini.completion').setup()
+            -- end
 
             -- Highlight usages of the word under the cursor
             require('mini.cursorword').setup()

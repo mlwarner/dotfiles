@@ -72,11 +72,19 @@ return {
                         end, '[T]oggle Inlay [H]ints')
                     end
 
-                    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
-                        if vim.fn.has('nvim-0.11') then
-                            vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
-                        end
-                    end
+                    -- built in completion in nvim-0.11+, still has some limitations compared to other clients:
+                    -- 1. Only triggers on autotrigger characters by default (e.g. '[', '{', '.', etc). Most plugins
+                    -- auto trigger on any text entry
+                    -- 2. If autotrigger doesn't activate, manually triggering via `vim.lsp.completion.trigger` doesn't
+                    -- seem to consider the current cursor position and has to adjust.
+                    --  - I found while using it I didn't mind manual triggers, I just disliked that it didn't consider
+                    -- 3. Doesn't show function docs while completing.
+                    --  my cursor position.
+                    -- if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
+                    --     if vim.fn.has('nvim-0.11') then
+                    --         vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+                    --     end
+                    -- end
                 end,
             })
 
