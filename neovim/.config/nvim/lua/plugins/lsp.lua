@@ -80,11 +80,11 @@ return {
                     --  - I found while using it I didn't mind manual triggers, I just disliked that it didn't consider
                     -- 3. Doesn't show function docs while completing.
                     --  my cursor position.
-                    -- if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
-                    --     if vim.fn.has('nvim-0.11') then
-                    --         vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
-                    --     end
-                    -- end
+                    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
+                        if vim.fn.has('nvim-0.11') then
+                            vim.lsp.completion.enable(true, client.id, event.buf, { autotrigger = true })
+                        end
+                    end
                 end,
             })
 
