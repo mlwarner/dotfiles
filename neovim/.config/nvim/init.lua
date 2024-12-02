@@ -95,6 +95,9 @@ vim.keymap.set('i', '<C-n>', function()
     end
 end, { desc = 'Trigger/select next completion' })
 
+-- Buffer completions.
+vim.keymap.set('i', '<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' })
+
 -- Use <Tab> to accept a Copilot suggestion, navigate between snippet tabstops,
 -- or select the next completion.
 -- Do something similar with <S-Tab>.

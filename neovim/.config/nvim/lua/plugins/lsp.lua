@@ -37,7 +37,7 @@ return {
                     map('n', 'gri', vim.lsp.buf.implementation, '[I]mplementation')
                     map('n', 'gO', vim.lsp.buf.document_symbol, 'D[o]cument symbol')
                     map({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, 'Code [A]ction')
-                    map('i', '<C-s>', vim.lsp.buf.signature_help, '[S]ignature Help')
+                    map({ 'i', 's' }, '<C-s>', vim.lsp.buf.signature_help, '[S]ignature Help')
 
                     -- Jump to the definition of the word under your cursor.
                     --  This is where a variable was first declared, or where a function is defined, etc.
@@ -48,10 +48,6 @@ return {
                     --  Useful when you're not sure what type a variable is and you want to see
                     --  the definition of its *type*, not where it was *defined*.
                     map('n', '<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-
-                    -- Fuzzy find all the symbols in your current document.
-                    --  Symbols are things like variables, functions, types, etc.
-                    map('n', '<leader>ds', vim.lsp.buf.document_symbol, '[D]ocument [S]ymbols')
 
                     -- Fuzzy find all the symbols in your current workspace.
                     --  Similar to document symbols, except searches over your entire project.
