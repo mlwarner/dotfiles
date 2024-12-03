@@ -228,7 +228,10 @@ require('lazy').setup({
             require('mini.ai').setup { n_lines = 500 }
 
             -- Go forward/backward with square brackets
-            require('mini.bracketed').setup()
+            -- Prefer built in vim-unimpaired keybinds
+            if vim.fn.has('nvim-0.11') == 0 then
+                require('mini.bracketed').setup()
+            end
 
             -- Autocompletion and signature help
             -- Prefer built in completion in nvim 0.11+

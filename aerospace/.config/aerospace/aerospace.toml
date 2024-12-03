@@ -126,6 +126,7 @@ alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 alt-e = 'workspace E' # for Email
 alt-i = 'workspace I' # for IDE (Intellij)
+alt-n = 'workspace N' # for Notes
 alt-p = 'workspace P' # for Personal
 alt-s = 'workspace S' # for Slack
 alt-t = 'workspace T' # for Terminal
@@ -143,6 +144,7 @@ alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-e = 'move-node-to-workspace E' # for Email
 alt-shift-i = 'move-node-to-workspace I' # for IDE (Intellij)
+alt-shift-n = 'move-node-to-workspace N' # for Notes
 alt-shift-p = 'move-node-to-workspace P' # for Personal
 alt-shift-s = 'move-node-to-workspace S' # for Slack
 alt-shift-t = 'move-node-to-workspace T' # for Terminal
@@ -176,17 +178,34 @@ alt-shift-l = ['join-with right', 'mode main']
 # See: https://nikitabobko.github.io/AeroSpace/guide#on-window-detected-callback
 
 [[on-window-detected]]
-if.app-id = 'org.alacritty'
-run = 'move-node-to-workspace T'
+if.app-id = 'com.apple.mail'
+run = 'move-node-to-workspace E'
 
 [[on-window-detected]]
 if.app-id = 'com.jetbrains.intellij'
 run = 'move-node-to-workspace I'
 
 [[on-window-detected]]
+if.app-id = 'com.apple.Notes'
+run = 'move-node-to-workspace N'
+
+[[on-window-detected]]
+if.app-id = 'md.obsidian'
+run = 'move-node-to-workspace N'
+
+[[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
 run = 'move-node-to-workspace S'
 
 [[on-window-detected]]
+if.app-id = 'org.alacritty'
+run = 'move-node-to-workspace T'
+
+[[on-window-detected]]
 if.app-id = 'org.mozilla.firefox'
 run = 'move-node-to-workspace W'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Safari'
+run = 'move-node-to-workspace W'
+
