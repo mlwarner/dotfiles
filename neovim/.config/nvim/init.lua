@@ -231,6 +231,13 @@ require('lazy').setup({
             -- Prefer built in vim-unimpaired keybinds
             if vim.fn.has('nvim-0.11') == 0 then
                 require('mini.bracketed').setup()
+            else
+                -- default for vim.diagnostic.JumpOpts sets float to false
+                vim.diagnostic.config({
+                    jump = {
+                        float = true,
+                    }
+                })
             end
 
             -- Autocompletion and signature help
