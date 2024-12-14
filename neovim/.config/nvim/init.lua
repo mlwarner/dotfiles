@@ -149,6 +149,21 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     -- Make pretty code snapshots
     { "mistricky/codesnap.nvim", build = "make" },
+    {
+        "Exafunction/codeium.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            -- "hrsh7th/nvim-cmp",
+        },
+        config = function()
+            require("codeium").setup({
+                enable_cmp_source = false,
+                virtual_text = {
+                    enabled = true,
+                }
+            })
+        end
+    },
 
     {
         'folke/zen-mode.nvim',
