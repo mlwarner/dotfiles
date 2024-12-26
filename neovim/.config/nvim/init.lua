@@ -51,6 +51,14 @@ vim.opt.expandtab     = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff     = 10
 
+-- Diagnostics
+-- default for vim.diagnostic.JumpOpts sets float to false
+vim.diagnostic.config({
+    jump = {
+        float = true,
+    }
+})
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -230,6 +238,8 @@ require('lazy').setup({
     },
     { -- Collection of various small independent plugins/modules
         'echasnovski/mini.nvim',
+        -- Add snippet repo for mini.snippets
+        -- dependencies = { 'rafamadriz/friendly-snippets', },
         config = function()
             -- Common configuration presets
             require('mini.basics').setup()
@@ -246,13 +256,6 @@ require('lazy').setup({
             -- Prefer built in vim-unimpaired keybinds
             if vim.fn.has('nvim-0.11') == 0 then
                 require('mini.bracketed').setup()
-            else
-                -- default for vim.diagnostic.JumpOpts sets float to false
-                vim.diagnostic.config({
-                    jump = {
-                        float = true,
-                    }
-                })
             end
 
             -- Autocompletion and signature help
@@ -362,6 +365,19 @@ require('lazy').setup({
                     miniclue.gen_clues.z(),
                 },
             })
+
+            -- Manage and expand snippets
+            -- local gen_loader = require('mini.snippets').gen_loader
+            -- require('mini.snippets').setup({
+            --     snippets = {
+            --         -- Load custom file with global snippets first (adjust for Windows)
+            --         gen_loader.from_file('~/.config/nvim/snippets/global.json'),
+            --
+            --         -- Load snippets based on current language by reading files from
+            --         -- "snippets/" subdirectories from 'runtimepath' directories.
+            --         gen_loader.from_lang(),
+            --     },
+            -- })
         end,
     },
 

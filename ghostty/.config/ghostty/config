@@ -1,0 +1,11 @@
+# https://ghostty.org/docs/config/reference#font-size
+font-size=16
+
+# Draw fonts with a thicker stroke, if supported. This is only supported currently on macOS.
+# https://ghostty.org/docs/config/reference#font-thicken
+font-thicken=true
+
+# To see a list of available themes, run `ghostty +list-themes`.
+# https://ghostty.org/docs/config/reference#theme
+theme=GruvboxDarkHard
+
