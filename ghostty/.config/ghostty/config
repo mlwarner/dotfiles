@@ -9,3 +9,6 @@ font-thicken=true
 # https://ghostty.org/docs/config/reference#theme
 theme=GruvboxDarkHard
 
+# https://ghostty.org/docs/config/reference#keybind
+# https://ghostty.org/docs/config/keybind
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
