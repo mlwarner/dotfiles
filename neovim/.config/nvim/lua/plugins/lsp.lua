@@ -9,10 +9,21 @@ return {
 
             -- lazydev.nvim is a plugin that properly configures LuaLS for editing your Neovim config by
             -- lazily updating your workspace libraries.
-            { 'folke/lazydev.nvim', opts = {} },
+            {
+                'folke/lazydev.nvim',
+                ft = 'lua',
+                opts = {
+                    library = {
+                        -- See the configuration section for more details
+                        -- Load luvit types when the `vim.uv` word is found
+                        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                    },
+                }
+            },
 
             {
                 'saghen/blink.cmp',
+                -- dev = true,
                 dependencies = { 'rafamadriz/friendly-snippets', },
                 version = 'v0.*',
                 opts = {
@@ -176,7 +187,7 @@ return {
                         Lua = {
                             telemetry = { enable = false },
                             -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-                            -- diagnostics = { disable = { 'missing-fields' } },
+                            diagnostics = { disable = { 'missing-fields' } },
                             hint = { enable = true },
                         },
                     },

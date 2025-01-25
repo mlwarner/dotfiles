@@ -64,7 +64,7 @@ vim.diagnostic.config({
 
 --- keymaps for builtin completion
 --- https://gist.github.com/MariaSolOs/2e44a86f569323c478e5a078d0cf98cc
----@param keys string
+-----@param keys string
 -- local function feedkeys(keys)
 --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
 -- end
@@ -172,51 +172,30 @@ require('lazy').setup({
     --         })
     --     end
     -- },
-
     {
-        'folke/zen-mode.nvim',
-        config = function()
-            require('zen-mode').setup({
-                window = {
-                    options = {
-                        signcolumn = "no",
-                        number = false,
-                        relativenumber = false
-                    }
-                }
-            })
-            vim.keymap.set('n', 'gz', ':ZenMode<CR>', { noremap = true, silent = true })
-        end
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        ---@type snacks.Config
+        opts = {
+            input = { enabled = true },
+        },
+        keys = {
+            { "gz",        function() Snacks.zen() end,            desc = "Toggle Zen Mode" },
+            { "gZ",        function() Snacks.zen.zoom() end,       desc = "Toggle Zoom" },
+            { "<leader>.", function() Snacks.scratch() end,        desc = "Toggle Scratch Buffer" },
+            { "<leader>S", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
+            { "<c-/>",     function() Snacks.terminal() end,       desc = "Toggle Terminal" },
+        },
     },
-    -- {
-    --     'RRethy/base16-nvim',
-    --     priority = 1000,
-    --     init = function()
-    --         vim.opt.termguicolors = true
-    --         vim.cmd.colorscheme 'base16-gruvbox-dark-hard'
-    --
-    --         vim.api.nvim_set_hl(0, "LineNr", { link = "NonText" }) -- don't emphasize line numbers
-    --         vim.api.nvim_set_hl(0, "CursorLineNr", {})            -- clear the background highlights
-    --
-    --         -- Swap property and variable highlighting
-    --         local myTSVariable = vim.deepcopy(vim.api.nvim_get_hl(0, { name = "TSVariable" }))
-    --         local myTSField = vim.deepcopy(vim.api.nvim_get_hl(0, { name = "TSField" }))
-    --
-    --         -- https://github.com/RRethy/base16-nvim/blob/master/lua/base16-colorscheme.lua#L596-L610
-    --         -- TODO should there be a higher level mapping than TSVariable ? Maybe @variable? See below
-    --         -- vim.api.nvim_set_hl(0, "@lsp.type.variable", { link = '@variable' })
-    --         vim.api.nvim_set_hl(0, "TSVariable", myTSField)
-    --         vim.api.nvim_set_hl(0, "TSVariableBuiltin", myTSField)
-    --         vim.api.nvim_set_hl(0, "TSField", myTSVariable)
-    --         vim.api.nvim_set_hl(0, "TSProperty", myTSVariable)
-    --     end,
-    -- },
+
     {
         -- Theme
         'ellisonleao/gruvbox.nvim',
+        lazy = false,
         priority = 1000,
-        init = function()
-            vim.opt.termguicolors = true
+        config = function()
+            -- vim.opt.termguicolors = true
 
             require('gruvbox').setup({
                 contrast = 'hard',
