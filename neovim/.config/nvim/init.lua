@@ -223,6 +223,9 @@ require('lazy').setup({
             -- Common configuration presets
             require('mini.basics').setup()
 
+            -- Align text interactively
+            require('mini.align').setup()
+
             -- Better Around/Inside textobjects
             --
             -- Examples:
@@ -255,6 +258,9 @@ require('lazy').setup({
             -- icon provider
             require('mini.icons').setup()
 
+            -- Visualize and work with indent scope
+            require('mini.indentscope').setup()
+
             -- Work with 'git'
             require('mini.git').setup()
 
@@ -273,6 +279,9 @@ require('lazy').setup({
 
             -- Simple and easy statusline.
             require('mini.statusline').setup()
+
+            -- Trailspace (highlight and remove)
+            require('mini.trailspace').setup()
 
             -- General purpose picker
             local miniPick = require('mini.pick')
