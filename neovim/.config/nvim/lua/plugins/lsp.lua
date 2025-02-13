@@ -134,7 +134,13 @@ return {
             --  - settings (table): Override the default settings passed when initializing the server.
             --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
             local servers = {
-                harper_ls = {},
+                harper_ls = {
+                    settings = {
+                        ["harper-ls"] = {
+                            userDictPath = vim.fn.stdpath("config") .. "/spell/en.utf-8.add",
+                        }
+                    },
+                },
                 marksman = {},
                 -- markdown_oxide = {},
                 rust_analyzer = {},
