@@ -1,55 +1,55 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader       = ' '
-vim.g.maplocalleader  = ' '
+vim.g.mapleader        = ' '
+vim.g.maplocalleader   = ' '
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 
 -- General
-vim.opt.undofile      = true  -- Enable persistent undo (see also `:h undodir`)
+vim.opt.undofile       = true -- Enable persistent undo (see also `:h undodir`)
 
-vim.opt.backup        = false -- Don't store backup while overwriting the file
-vim.opt.writebackup   = false -- Don't store backup while overwriting the file
+vim.opt.backup         = false -- Don't store backup while overwriting the file
+vim.opt.writebackup    = false -- Don't store backup while overwriting the file
 
-vim.opt.mouse         = 'a'   -- Enable mouse for all available modes
+vim.opt.mouse          = 'a'  -- Enable mouse for all available modes
 
 -- Appearance
-vim.opt.breakindent   = true     -- Indent wrapped lines to match line start
-vim.opt.cursorline    = true     -- Highlight current line
-vim.opt.cursorlineopt = 'number' -- Only highlight the current line number
-vim.opt.linebreak     = true     -- Wrap long lines at 'breakat' (if 'wrap' is set)
-vim.opt.number        = true     -- Show line numbers
--- vim.opt.relativenumber = true -- Show relative line numbers
-vim.opt.splitbelow    = true     -- Horizontal splits will be below
-vim.opt.splitright    = true     -- Vertical splits will be to the right
+vim.opt.breakindent    = true    -- Indent wrapped lines to match line start
+vim.opt.cursorline     = true    -- Highlight current line
+vim.opt.cursorlineopt  = 'number' -- Only highlight the current line number
+vim.opt.linebreak      = true    -- Wrap long lines at 'breakat' (if 'wrap' is set)
+vim.opt.number         = true    -- Show line numbers
+vim.opt.relativenumber = true    -- Show relative line numbers
+vim.opt.splitbelow     = true    -- Horizontal splits will be below
+vim.opt.splitright     = true    -- Vertical splits will be to the right
 
-vim.opt.ruler         = false    -- Don't show cursor position in command line
-vim.opt.showmode      = false    -- Don't show mode in command line
-vim.opt.wrap          = false    -- Display long lines as just one line
+vim.opt.ruler          = false   -- Don't show cursor position in command line
+vim.opt.showmode       = false   -- Don't show mode in command line
+vim.opt.wrap           = false   -- Display long lines as just one line
 
-vim.opt.signcolumn    = 'yes'    -- Always show sign column (otherwise it will shift text)
+vim.opt.signcolumn     = 'yes'   -- Always show sign column (otherwise it will shift text)
 
 -- Editing
-vim.opt.ignorecase    = true                        -- Ignore case when searching (use `\C` to force not doing that)
-vim.opt.incsearch     = true                        -- Show search results while typing
-vim.opt.infercase     = true                        -- Infer letter cases for a richer built-in keyword completion
-vim.opt.smartcase     = true                        -- Don't ignore case when searching if pattern has upper case
-vim.opt.smartindent   = true                        -- Make indenting smart
+vim.opt.ignorecase     = true                       -- Ignore case when searching (use `\C` to force not doing that)
+vim.opt.incsearch      = true                       -- Show search results while typing
+vim.opt.infercase      = true                       -- Infer letter cases for a richer built-in keyword completion
+vim.opt.smartcase      = true                       -- Don't ignore case when searching if pattern has upper case
+vim.opt.smartindent    = true                       -- Make indenting smart
 
-vim.opt.completeopt   = 'menuone,noinsert,noselect' -- Customize completions
-vim.opt.virtualedit   = 'block'                     -- Allow going past the end of line in visual block mode
-vim.opt.formatoptions = 'qjl1'                      -- Don't autoformat comments
+vim.opt.completeopt    = 'menuone,noinsert,noselect' -- Customize completions
+vim.opt.virtualedit    = 'block'                    -- Allow going past the end of line in visual block mode
+vim.opt.formatoptions  = 'qjl1'                     -- Don't autoformat comments
 
 -- Formatting. 4 spaces, no tabs
-vim.opt.tabstop       = 4
-vim.opt.softtabstop   = 4
-vim.opt.shiftwidth    = 4
-vim.opt.expandtab     = true
+vim.opt.tabstop        = 4
+vim.opt.softtabstop    = 4
+vim.opt.shiftwidth     = 4
+vim.opt.expandtab      = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff     = 10
+vim.opt.scrolloff      = 10
 
 -- Diagnostics
 -- default for vim.diagnostic.JumpOpts sets float to false
@@ -303,6 +303,9 @@ require('lazy').setup({
             -- Trailspace (highlight and remove)
             require('mini.trailspace').setup()
 
+            -- Track and reuse file system visits
+            require('mini.visits').setup()
+
             -- General purpose picker
             local miniPick = require('mini.pick')
             local miniExtra = require('mini.extra')
@@ -322,6 +325,7 @@ require('lazy').setup({
             vim.keymap.set('n', '<leader>sh', builtin.help, { desc = '[S]earch [H]elp' })
             vim.keymap.set('n', '<leader>sk', builtinExtra.keymaps, { desc = '[S]earch [K]eymaps' })
             vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+            vim.keymap.set('n', '<leader>sv', builtinExtra.visit_paths, { desc = '[S]earch [V]isits' })
             vim.keymap.set('n', '<leader>sw', builtin.grep, { desc = '[S]earch current [W]ord' })
             vim.keymap.set('n', '<leader>s.', builtinExtra.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
             vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
