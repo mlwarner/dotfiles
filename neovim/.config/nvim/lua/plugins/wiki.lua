@@ -1,13 +1,7 @@
 return {
     'opdavies/toggle-checkbox.nvim',
     config = function()
-        -- local wikiPath = '~/Documents/my_notes'
-        -- local wikiPath = '/Users/mwarner/Library/CloudStorage/ProtonDrive-warnmat@proton.me/my_notes'
-        -- local wikiPath = '~/vimwiki',
-        -- local wikiPath = '/Users/mwarner/wiki'
-        -- local wikiPath = '/home/matt/wiki'
-        local wikiPath = vim.fs.normalize(
-        '/Users/mwarner/Library/Mobile Documents/iCloud~md~obsidian/Documents/my_notes')
+        local wikiPath = vim.fs.normalize('~/Documents/my-notes')
 
         local open_wiki_index = function()
             local wikiIndexPath = vim.fs.joinpath(wikiPath, 'index.md')

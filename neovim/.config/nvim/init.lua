@@ -8,39 +8,39 @@ vim.g.maplocalleader   = ' '
 -- See `:help vim.opt`
 
 -- General
-vim.opt.undofile       = true -- Enable persistent undo (see also `:h undodir`)
+vim.opt.undofile       = true  -- Enable persistent undo (see also `:h undodir`)
 
 vim.opt.backup         = false -- Don't store backup while overwriting the file
 vim.opt.writebackup    = false -- Don't store backup while overwriting the file
 
-vim.opt.mouse          = 'a'  -- Enable mouse for all available modes
+vim.opt.mouse          = 'a'   -- Enable mouse for all available modes
 
 -- Appearance
-vim.opt.breakindent    = true    -- Indent wrapped lines to match line start
-vim.opt.cursorline     = true    -- Highlight current line
+vim.opt.breakindent    = true     -- Indent wrapped lines to match line start
+vim.opt.cursorline     = true     -- Highlight current line
 vim.opt.cursorlineopt  = 'number' -- Only highlight the current line number
-vim.opt.linebreak      = true    -- Wrap long lines at 'breakat' (if 'wrap' is set)
-vim.opt.number         = true    -- Show line numbers
-vim.opt.relativenumber = true    -- Show relative line numbers
-vim.opt.splitbelow     = true    -- Horizontal splits will be below
-vim.opt.splitright     = true    -- Vertical splits will be to the right
+vim.opt.linebreak      = true     -- Wrap long lines at 'breakat' (if 'wrap' is set)
+vim.opt.number         = true     -- Show line numbers
+vim.opt.relativenumber = true     -- Show relative line numbers
+vim.opt.splitbelow     = true     -- Horizontal splits will be below
+vim.opt.splitright     = true     -- Vertical splits will be to the right
 
-vim.opt.ruler          = false   -- Don't show cursor position in command line
-vim.opt.showmode       = false   -- Don't show mode in command line
-vim.opt.wrap           = false   -- Display long lines as just one line
+vim.opt.ruler          = false    -- Don't show cursor position in command line
+vim.opt.showmode       = false    -- Don't show mode in command line
+vim.opt.wrap           = false    -- Display long lines as just one line
 
-vim.opt.signcolumn     = 'yes'   -- Always show sign column (otherwise it will shift text)
+vim.opt.signcolumn     = 'yes'    -- Always show sign column (otherwise it will shift text)
 
 -- Editing
-vim.opt.ignorecase     = true                       -- Ignore case when searching (use `\C` to force not doing that)
-vim.opt.incsearch      = true                       -- Show search results while typing
-vim.opt.infercase      = true                       -- Infer letter cases for a richer built-in keyword completion
-vim.opt.smartcase      = true                       -- Don't ignore case when searching if pattern has upper case
-vim.opt.smartindent    = true                       -- Make indenting smart
+vim.opt.ignorecase     = true                        -- Ignore case when searching (use `\C` to force not doing that)
+vim.opt.incsearch      = true                        -- Show search results while typing
+vim.opt.infercase      = true                        -- Infer letter cases for a richer built-in keyword completion
+vim.opt.smartcase      = true                        -- Don't ignore case when searching if pattern has upper case
+vim.opt.smartindent    = true                        -- Make indenting smart
 
 vim.opt.completeopt    = 'menuone,noinsert,noselect' -- Customize completions
-vim.opt.virtualedit    = 'block'                    -- Allow going past the end of line in visual block mode
-vim.opt.formatoptions  = 'qjl1'                     -- Don't autoformat comments
+vim.opt.virtualedit    = 'block'                     -- Allow going past the end of line in visual block mode
+vim.opt.formatoptions  = 'qjl1'                      -- Don't autoformat comments
 
 -- Formatting. 4 spaces, no tabs
 vim.opt.tabstop        = 4
@@ -180,6 +180,7 @@ require('lazy').setup({
         opts = {
             -- explorer = { enabled = true },
             input = { enabled = true },
+            -- notifier = { enabled = true },
             -- picker = { enabled = true },
         },
         keys = {
@@ -199,12 +200,15 @@ require('lazy').setup({
             -- { "<leader>sw",      function() Snacks.picker.grep_word() end,       desc = "[S]earch current [W]ord" },
             -- { "<leader>sr",      function() Snacks.picker.resume() end,          desc = "[S]earch [R]esume" },
             -- Other
-            { "gz",        function() Snacks.zen() end,            desc = "Toggle Zen Mode" },
-            { "gZ",        function() Snacks.zen.zoom() end,       desc = "Toggle Zoom" },
-            { "<leader>.", function() Snacks.scratch() end,        desc = "Toggle Scratch Buffer" },
-            { "<leader>S", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
-            { "<c-/>",     function() Snacks.terminal() end,       desc = "Toggle Terminal" },
+            { "gz",         function() Snacks.zen() end,                   desc = "Toggle Zen Mode" },
+            { "gZ",         function() Snacks.zen.zoom() end,              desc = "Toggle Zoom" },
+            { "<leader>.",  function() Snacks.scratch() end,               desc = "Toggle Scratch Buffer" },
+            { "<leader>S",  function() Snacks.scratch.select() end,        desc = "Select Scratch Buffer" },
+            { "<leader>cR", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
+            { "<c-/>",      function() Snacks.terminal() end,              desc = "Toggle Terminal" },
         },
+        init = function()
+        end
     },
 
     {
@@ -274,6 +278,12 @@ require('lazy').setup({
             require('mini.files').setup()
             vim.keymap.set('n', '<leader>e', function() require('mini.files').open() end,
                 { desc = '[E]xplorer' })
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "MiniFilesActionRename",
+                callback = function(event)
+                    Snacks.rename.on_rename_file(event.data.from, event.data.to)
+                end,
+            })
 
             -- icon provider
             require('mini.icons').setup()
