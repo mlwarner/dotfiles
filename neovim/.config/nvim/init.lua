@@ -65,24 +65,24 @@ vim.diagnostic.config({
 --- keymaps for builtin completion
 --- https://gist.github.com/MariaSolOs/2e44a86f569323c478e5a078d0cf98cc
 -----@param keys string
--- local function feedkeys(keys)
---     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
--- end
+local function feedkeys(keys)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
+end
 
 ---Is the completion menu open?
--- local function pumvisible()
---     return tonumber(vim.fn.pumvisible()) ~= 0
--- end
+local function pumvisible()
+    return tonumber(vim.fn.pumvisible()) ~= 0
+end
 
 -- Use enter to accept completions.
--- vim.keymap.set('i', '<cr>', function()
---     return pumvisible() and '<C-y>' or '<cr>'
--- end, { expr = true })
+vim.keymap.set('i', '<cr>', function()
+    return pumvisible() and '<C-y>' or '<cr>'
+end, { expr = true })
 
 -- Use slash to dismiss the completion menu.
--- vim.keymap.set('i', '/', function()
---     return pumvisible() and '<C-e>' or '/'
--- end, { expr = true })
+vim.keymap.set('i', '/', function()
+    return pumvisible() and '<C-e>' or '/'
+end, { expr = true })
 
 -- Use <C-n> to navigate to the next completion or:
 -- - Trigger LSP completion.
@@ -109,24 +109,24 @@ vim.diagnostic.config({
 -- Use <Tab> to accept a Copilot suggestion, navigate between snippet tabstops,
 -- or select the next completion.
 -- Do something similar with <S-Tab>.
--- vim.keymap.set({ 'i', 's' }, '<Tab>', function()
---     if pumvisible() then
---         feedkeys '<C-n>'
---     elseif vim.snippet.active { direction = 1 } then
---         vim.snippet.jump(1)
---     else
---         feedkeys '<Tab>'
---     end
--- end, {})
--- vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
---     if pumvisible() then
---         feedkeys '<C-p>'
---     elseif vim.snippet.active { direction = -1 } then
---         vim.snippet.jump(-1)
---     else
---         feedkeys '<S-Tab>'
---     end
--- end, {})
+vim.keymap.set({ 'i', 's' }, '<Tab>', function()
+    if pumvisible() then
+        feedkeys '<C-n>'
+    elseif vim.snippet.active { direction = 1 } then
+        vim.snippet.jump(1)
+    else
+        feedkeys '<Tab>'
+    end
+end, {})
+vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
+    if pumvisible() then
+        feedkeys '<C-p>'
+    elseif vim.snippet.active { direction = -1 } then
+        vim.snippet.jump(-1)
+    else
+        feedkeys '<S-Tab>'
+    end
+end, {})
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -200,20 +200,21 @@ require('lazy').setup({
             -- { "<leader>sw",      function() Snacks.picker.grep_word() end,       desc = "[S]earch current [W]ord" },
             -- { "<leader>sr",      function() Snacks.picker.resume() end,          desc = "[S]earch [R]esume" },
             -- Other
-            { "gz",         function() Snacks.zen() end,                   desc = "Toggle Zen Mode" },
-            { "gZ",         function() Snacks.zen.zoom() end,              desc = "Toggle Zoom" },
-            { "<leader>.",  function() Snacks.scratch() end,               desc = "Toggle Scratch Buffer" },
-            { "<leader>S",  function() Snacks.scratch.select() end,        desc = "Select Scratch Buffer" },
-            { "<leader>cR", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
-            { "<c-/>",      function() Snacks.terminal() end,              desc = "Toggle Terminal" },
+            { "gz",         function() Snacks.zen() end,                desc = "Toggle Zen Mode" },
+            { "gZ",         function() Snacks.zen.zoom() end,           desc = "Toggle Zoom" },
+            { "<leader>.",  function() Snacks.scratch() end,            desc = "Toggle Scratch Buffer" },
+            { "<leader>S",  function() Snacks.scratch.select() end,     desc = "Select Scratch Buffer" },
+            { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
+            { "<c-/>",      function() Snacks.terminal() end,           desc = "Toggle Terminal" },
+            { "<leader>ps", function() Snacks.profiler.scratch() end,   desc = "Profiler Scratch Bufer" },
+            { "<leader>pp", function() Snacks.profiler.toggle() end,    desc = "Toggle the profiler" },
+            { "<leader>ph", function() Snacks.profiler.highlight() end, desc = "Toggle the profiler highlights" },
         },
-        init = function()
-        end
     },
-
     {
         -- Theme
         'ellisonleao/gruvbox.nvim',
+        enabled = false,
         lazy = false,
         priority = 1000,
         config = function()
@@ -237,10 +238,58 @@ require('lazy').setup({
             -- vim.api.nvim_set_hl(0, "MiniPickNormal", { link = "Normal"}) -- Clear highlights
         end
     },
+    {
+        -- Theme
+        'sainnhe/gruvbox-material',
+        enabled = false,
+        lazy = false,
+        priority = 1000,
+        config = function()
+            vim.g.gruvbox_material_foreground = 'original'
+            vim.g.gruvbox_material_background = 'hard'
+            vim.cmd.colorscheme 'gruvbox-material'
+        end
+    },
+    {
+        -- Theme
+        'rebelot/kanagawa.nvim',
+        -- enabled = false,
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require('kanagawa').setup({
+                colors = {
+                    theme = {
+                        all = {
+                            ui = {
+                                bg_gutter = "none"
+                            }
+                        }
+                    }
+                },
+                theme = "dragon",    -- vim.o.background = ""
+                background = {
+                    dark = "dragon", -- vim.o.background = "dark"
+                    light = "lotus"  -- vim.o.background = "light"
+                },
+            })
+            vim.cmd.colorscheme 'kanagawa'
+        end
+    },
+    {
+        -- Theme
+        'rose-pine/neovim',
+        enabled = false,
+        lazy = false,
+        priority = 1000,
+        config = function()
+            vim.cmd.colorscheme 'rose-pine'
+        end
+    },
     { -- Collection of various small independent plugins/modules
         'echasnovski/mini.nvim',
         -- Add snippet repo for mini.snippets
-        -- dependencies = { 'rafamadriz/friendly-snippets', },
+        dependencies = { 'rafamadriz/friendly-snippets', },
         config = function()
             -- Common configuration presets
             require('mini.basics').setup()
@@ -262,11 +311,11 @@ require('lazy').setup({
                 require('mini.bracketed').setup()
             end
 
+            -- Comment lines
+            require('mini.comment').setup()
+
             -- Autocompletion and signature help
-            -- Prefer built in completion in nvim 0.11+
-            -- if vim.fn.has('nvim-0.11') == 0 then
-            --     require('mini.completion').setup()
-            -- end
+            require('mini.completion').setup()
 
             -- Highlight usages of the word under the cursor
             require('mini.cursorword').setup()
@@ -390,17 +439,21 @@ require('lazy').setup({
             })
 
             -- Manage and expand snippets
-            -- local gen_loader = require('mini.snippets').gen_loader
-            -- require('mini.snippets').setup({
-            --     snippets = {
-            --         -- Load custom file with global snippets first (adjust for Windows)
-            --         gen_loader.from_file('~/.config/nvim/snippets/global.json'),
-            --
-            --         -- Load snippets based on current language by reading files from
-            --         -- "snippets/" subdirectories from 'runtimepath' directories.
-            --         gen_loader.from_lang(),
-            --     },
-            -- })
+            local gen_loader = require('mini.snippets').gen_loader
+            require('mini.snippets').setup({
+                -- Use Neovim's built-in snippet expansion
+                expand = {
+                    insert = function(snippet, _) vim.snippet.expand(snippet.body) end
+                },
+                snippets = {
+                    -- Load custom file with global snippets first (adjust for Windows)
+                    gen_loader.from_file('~/.config/nvim/snippets/global.json'),
+
+                    -- Load snippets based on current language by reading files from
+                    -- "snippets/" subdirectories from 'runtimepath' directories.
+                    gen_loader.from_lang(),
+                },
+            })
         end,
     },
 
