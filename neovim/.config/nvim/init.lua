@@ -178,27 +178,27 @@ require('lazy').setup({
         lazy = false,
         ---@type snacks.Config
         opts = {
-            -- explorer = { enabled = true },
+            explorer = { enabled = true },
             input = { enabled = true },
             -- notifier = { enabled = true },
-            -- picker = { enabled = true },
+            picker = { enabled = true },
         },
         keys = {
             -- Top Pickers & Explorer
-            -- { "<leader><space>", function() Snacks.picker.smart() end,           desc = "Smart Find Files" },
-            -- { "<leader>,",       function() Snacks.picker.buffers() end,         desc = "Buffers" },
-            -- { "<leader>/",       function() Snacks.picker.grep() end,            desc = "Grep" },
-            -- { "<leader>:",       function() Snacks.picker.command_history() end, desc = "Command History" },
-            -- { "<leader>n",       function() Snacks.picker.notifications() end,   desc = "Notification History" },
-            -- { "<leader>e",       function() Snacks.explorer() end,               desc = "File Explorer" },
+            { "<leader><space>", function() Snacks.picker.smart() end,           desc = "Smart Find Files" },
+            { "<leader>,",       function() Snacks.picker.buffers() end,         desc = "Buffers" },
+            { "<leader>/",       function() Snacks.picker.grep() end,            desc = "Grep" },
+            { "<leader>:",       function() Snacks.picker.command_history() end, desc = "Command History" },
+            { "<leader>n",       function() Snacks.picker.notifications() end,   desc = "Notification History" },
+            { "<leader>e",       function() Snacks.explorer() end,               desc = "File Explorer" },
             -- search
-            -- { "<leader>sd",      function() Snacks.picker.diagnostics() end,     desc = "[S]earch [D]iagnostics" },
-            -- { "<leader>sf",      function() Snacks.picker.files() end,           desc = "[S]earch [F]iles" },
-            -- { "<leader>sg",      function() Snacks.picker.grep() end,            desc = "[S]earch by [G]rep" },
-            -- { "<leader>sh",      function() Snacks.picker.help() end,            desc = "[S]earch [H]elp" },
-            -- { "<leader>sk",      function() Snacks.picker.keymaps() end,         desc = "[S]earch [K]eymaps" },
-            -- { "<leader>sw",      function() Snacks.picker.grep_word() end,       desc = "[S]earch current [W]ord" },
-            -- { "<leader>sr",      function() Snacks.picker.resume() end,          desc = "[S]earch [R]esume" },
+            { "<leader>sd",      function() Snacks.picker.diagnostics() end,     desc = "[S]earch [D]iagnostics" },
+            { "<leader>sf",      function() Snacks.picker.files() end,           desc = "[S]earch [F]iles" },
+            { "<leader>sg",      function() Snacks.picker.grep() end,            desc = "[S]earch by [G]rep" },
+            { "<leader>sh",      function() Snacks.picker.help() end,            desc = "[S]earch [H]elp" },
+            { "<leader>sk",      function() Snacks.picker.keymaps() end,         desc = "[S]earch [K]eymaps" },
+            { "<leader>sw",      function() Snacks.picker.grep_word() end,       desc = "[S]earch current [W]ord" },
+            { "<leader>sr",      function() Snacks.picker.resume() end,          desc = "[S]earch [R]esume" },
             -- Other
             { "gz",         function() Snacks.zen() end,                desc = "Toggle Zen Mode" },
             { "gZ",         function() Snacks.zen.zoom() end,           desc = "Toggle Zoom" },
@@ -315,7 +315,7 @@ require('lazy').setup({
             require('mini.comment').setup()
 
             -- Autocompletion and signature help
-            require('mini.completion').setup()
+            -- require('mini.completion').setup()
 
             -- Highlight usages of the word under the cursor
             require('mini.cursorword').setup()
@@ -324,15 +324,15 @@ require('lazy').setup({
             require('mini.diff').setup()
 
             -- file explorer
-            require('mini.files').setup()
-            vim.keymap.set('n', '<leader>e', function() require('mini.files').open() end,
-                { desc = '[E]xplorer' })
-            vim.api.nvim_create_autocmd("User", {
-                pattern = "MiniFilesActionRename",
-                callback = function(event)
-                    Snacks.rename.on_rename_file(event.data.from, event.data.to)
-                end,
-            })
+            -- require('mini.files').setup()
+            -- vim.keymap.set('n', '<leader>e', function() require('mini.files').open() end,
+            --     { desc = '[E]xplorer' })
+            -- vim.api.nvim_create_autocmd("User", {
+            --     pattern = "MiniFilesActionRename",
+            --     callback = function(event)
+            --         Snacks.rename.on_rename_file(event.data.from, event.data.to)
+            --     end,
+            -- })
 
             -- icon provider
             require('mini.icons').setup()
@@ -369,28 +369,28 @@ require('lazy').setup({
             local miniPick = require('mini.pick')
             local miniExtra = require('mini.extra')
 
-            miniPick.setup()
-            miniExtra.setup()
+            -- miniPick.setup()
+            -- miniExtra.setup()
 
             -- Override `vim.ui.select()`
-            vim.ui.select = miniPick.ui_select
+            -- vim.ui.select = miniPick.ui_select
 
             local builtin = miniPick.builtin
             local builtinExtra = miniExtra.pickers
-            vim.keymap.set('n', '<leader>sc', builtinExtra.git_commits, { desc = '[S]earch [C]ommits' })
-            vim.keymap.set('n', '<leader>sd', builtinExtra.diagnostic, { desc = '[S]earch [D]iagnostics' })
-            vim.keymap.set('n', '<leader>sf', builtin.files, { desc = '[S]earch [F]iles' })
-            vim.keymap.set('n', '<leader>sg', builtin.grep_live, { desc = '[S]earch by [G]rep' })
-            vim.keymap.set('n', '<leader>sh', builtin.help, { desc = '[S]earch [H]elp' })
-            vim.keymap.set('n', '<leader>sk', builtinExtra.keymaps, { desc = '[S]earch [K]eymaps' })
-            vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-            vim.keymap.set('n', '<leader>sv', builtinExtra.visit_paths, { desc = '[S]earch [V]isits' })
-            vim.keymap.set('n', '<leader>sw', builtin.grep, { desc = '[S]earch current [W]ord' })
-            vim.keymap.set('n', '<leader>s.', builtinExtra.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-            vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-            vim.keymap.set('n', '<leader>/', builtinExtra.buf_lines, { desc = '[/] Fuzzily search in current buffer' })
-            vim.keymap.set('n', '<c-p>', builtin.files, { desc = 'find files' })
-            vim.keymap.set('n', '<c-f>', builtin.grep_live, { desc = 'live grep' })
+            -- vim.keymap.set('n', '<leader>sc', builtinExtra.git_commits, { desc = '[S]earch [C]ommits' })
+            -- vim.keymap.set('n', '<leader>sd', builtinExtra.diagnostic, { desc = '[S]earch [D]iagnostics' })
+            -- vim.keymap.set('n', '<leader>sf', builtin.files, { desc = '[S]earch [F]iles' })
+            -- vim.keymap.set('n', '<leader>sg', builtin.grep_live, { desc = '[S]earch by [G]rep' })
+            -- vim.keymap.set('n', '<leader>sh', builtin.help, { desc = '[S]earch [H]elp' })
+            -- vim.keymap.set('n', '<leader>sk', builtinExtra.keymaps, { desc = '[S]earch [K]eymaps' })
+            -- vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+            -- vim.keymap.set('n', '<leader>sv', builtinExtra.visit_paths, { desc = '[S]earch [V]isits' })
+            -- vim.keymap.set('n', '<leader>sw', builtin.grep, { desc = '[S]earch current [W]ord' })
+            -- vim.keymap.set('n', '<leader>s.', builtinExtra.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+            -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+            -- vim.keymap.set('n', '<leader>/', builtinExtra.buf_lines, { desc = '[/] Fuzzily search in current buffer' })
+            -- vim.keymap.set('n', '<c-p>', builtin.files, { desc = 'find files' })
+            -- vim.keymap.set('n', '<c-f>', builtin.grep_live, { desc = 'live grep' })
 
             -- Show next key clues
             local miniclue = require('mini.clue')
