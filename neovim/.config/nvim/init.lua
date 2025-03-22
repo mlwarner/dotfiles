@@ -191,24 +191,36 @@ require('lazy').setup({
             { "<leader>:",       function() Snacks.picker.command_history() end, desc = "Command History" },
             { "<leader>n",       function() Snacks.picker.notifications() end,   desc = "Notification History" },
             { "<leader>e",       function() Snacks.explorer() end,               desc = "File Explorer" },
+            -- git
+            { "<leader>gb",      function() Snacks.picker.git_branches() end,    desc = "Git Branches" },
+            { "<leader>gl",      function() Snacks.picker.git_log() end,         desc = "Git Log" },
+            { "<leader>gL",      function() Snacks.picker.git_log_line() end,    desc = "Git Log Line" },
+            { "<leader>gs",      function() Snacks.picker.git_status() end,      desc = "Git Status" },
+            { "<leader>gS",      function() Snacks.picker.git_stash() end,       desc = "Git Stash" },
+            { "<leader>gd",      function() Snacks.picker.git_diff() end,        desc = "Git Diff (Hunks)" },
+            { "<leader>gf",      function() Snacks.picker.git_log_file() end,    desc = "Git Log File" },
+            -- Grep
+            { "<leader>sb",      function() Snacks.picker.lines() end,           desc = "Buffer Lines" },
+            { "<leader>sB",      function() Snacks.picker.grep_buffers() end,    desc = "Grep Open Buffers" },
+            { "<leader>sg",      function() Snacks.picker.grep() end,            desc = "Grep" },
+            { "<leader>sw",      function() Snacks.picker.grep_word() end,       desc = "Visual selection or word",      mode = { "n", "x" } },
             -- search
             { "<leader>sd",      function() Snacks.picker.diagnostics() end,     desc = "[S]earch [D]iagnostics" },
             { "<leader>sf",      function() Snacks.picker.files() end,           desc = "[S]earch [F]iles" },
-            { "<leader>sg",      function() Snacks.picker.grep() end,            desc = "[S]earch by [G]rep" },
             { "<leader>sh",      function() Snacks.picker.help() end,            desc = "[S]earch [H]elp" },
             { "<leader>sk",      function() Snacks.picker.keymaps() end,         desc = "[S]earch [K]eymaps" },
             { "<leader>sw",      function() Snacks.picker.grep_word() end,       desc = "[S]earch current [W]ord" },
             { "<leader>sr",      function() Snacks.picker.resume() end,          desc = "[S]earch [R]esume" },
             -- Other
-            { "gz",         function() Snacks.zen() end,                desc = "Toggle Zen Mode" },
-            { "gZ",         function() Snacks.zen.zoom() end,           desc = "Toggle Zoom" },
-            { "<leader>.",  function() Snacks.scratch() end,            desc = "Toggle Scratch Buffer" },
-            { "<leader>S",  function() Snacks.scratch.select() end,     desc = "Select Scratch Buffer" },
-            { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
-            { "<c-/>",      function() Snacks.terminal() end,           desc = "Toggle Terminal" },
-            { "<leader>ps", function() Snacks.profiler.scratch() end,   desc = "Profiler Scratch Bufer" },
-            { "<leader>pp", function() Snacks.profiler.toggle() end,    desc = "Toggle the profiler" },
-            { "<leader>ph", function() Snacks.profiler.highlight() end, desc = "Toggle the profiler highlights" },
+            { "gz",              function() Snacks.zen() end,                    desc = "Toggle Zen Mode" },
+            { "gZ",              function() Snacks.zen.zoom() end,               desc = "Toggle Zoom" },
+            { "<leader>.",       function() Snacks.scratch() end,                desc = "Toggle Scratch Buffer" },
+            { "<leader>S",       function() Snacks.scratch.select() end,         desc = "Select Scratch Buffer" },
+            { "<leader>cR",      function() Snacks.rename.rename_file() end,     desc = "Rename File" },
+            { "<c-/>",           function() Snacks.terminal() end,               desc = "Toggle Terminal" },
+            { "<leader>ps",      function() Snacks.profiler.scratch() end,       desc = "Profiler Scratch Bufer" },
+            { "<leader>pp",      function() Snacks.profiler.toggle() end,        desc = "Toggle the profiler" },
+            { "<leader>ph",      function() Snacks.profiler.highlight() end,     desc = "Toggle the profiler highlights" },
         },
     },
     {
@@ -306,10 +318,7 @@ require('lazy').setup({
             require('mini.ai').setup { n_lines = 500 }
 
             -- Go forward/backward with square brackets
-            -- Prefer built in vim-unimpaired keybinds
-            if vim.fn.has('nvim-0.11') == 0 then
-                require('mini.bracketed').setup()
-            end
+            require('mini.bracketed').setup()
 
             -- Comment lines
             require('mini.comment').setup()
@@ -363,11 +372,11 @@ require('lazy').setup({
             require('mini.trailspace').setup()
 
             -- Track and reuse file system visits
-            require('mini.visits').setup()
+            -- require('mini.visits').setup()
 
             -- General purpose picker
-            local miniPick = require('mini.pick')
-            local miniExtra = require('mini.extra')
+            -- local miniPick = require('mini.pick')
+            -- local miniExtra = require('mini.extra')
 
             -- miniPick.setup()
             -- miniExtra.setup()
@@ -375,8 +384,8 @@ require('lazy').setup({
             -- Override `vim.ui.select()`
             -- vim.ui.select = miniPick.ui_select
 
-            local builtin = miniPick.builtin
-            local builtinExtra = miniExtra.pickers
+            -- local builtin = miniPick.builtin
+            -- local builtinExtra = miniExtra.pickers
             -- vim.keymap.set('n', '<leader>sc', builtinExtra.git_commits, { desc = '[S]earch [C]ommits' })
             -- vim.keymap.set('n', '<leader>sd', builtinExtra.diagnostic, { desc = '[S]earch [D]iagnostics' })
             -- vim.keymap.set('n', '<leader>sf', builtin.files, { desc = '[S]earch [F]iles' })
@@ -435,6 +444,8 @@ require('lazy').setup({
                     miniclue.gen_clues.registers(),
                     miniclue.gen_clues.windows(),
                     miniclue.gen_clues.z(),
+                    { mode = 'n', keys = '<Leader>s', desc = '+Search' },
+                    { mode = 'n', keys = '<Leader>g', desc = '+Git' },
                 },
             })
 

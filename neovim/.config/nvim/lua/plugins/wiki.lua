@@ -25,11 +25,9 @@ return {
         -- vim.keymap.set('n', '<leader>wsg', function()
         --     require('mini.pick').builtin.grep_live({}, { source = { cwd = wikiPath } })
         -- end, { desc = '[W]iki [S]earch by [G]rep' })
-        vim.keymap.set('n', '<leader>wsf', function()
-            require('snacks.picker').files({ dirs = { wikiPath } })
-        end, { desc = '[W]iki [S]earch [F]iles' })
-        vim.keymap.set('n', '<leader>wsg', function()
-            require('snacks.picker').grep({ dirs = { wikiPath } })
-        end, { desc = '[W]iki [S]earch by [G]rep' })
+        vim.keymap.set('n', '<leader>wsf', function() Snacks.picker.files({ cwd = wikiPath }) end,
+            { desc = '[W]iki [S]earch [F]iles' })
+        vim.keymap.set('n', '<leader>wsg', function() Snacks.picker.grep({ cwd = wikiPath }) end,
+            { desc = '[W]iki [S]earch by [G]rep' })
     end,
 }
