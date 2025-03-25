@@ -31,17 +31,14 @@ return {
                     keymap = { preset = 'default' },
 
                     completion = {
+                        -- Disable showing for all alphanumeric keywords by default. Prefer LSP specific trigger
+                        -- characters.
+                        -- trigger = { show_on_keyword = false },
                         -- Controls whether the documentation window will automatically show when selecting a completion item
                         documentation = { auto_show = true },
                     },
 
                     signature = { enabled = true },
-
-                    appearance = {
-                        use_nvim_cmp_as_default = true,
-                        nerd_font_variant = 'mono'
-                    },
-
                 },
             },
         },
