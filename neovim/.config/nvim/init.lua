@@ -31,6 +31,22 @@ vim.opt.wrap           = false    -- Display long lines as just one line
 
 vim.opt.signcolumn     = 'yes'    -- Always show sign column (otherwise it will shift text)
 
+-- See `:help statusline`
+-- local statusline = {
+--     ' ',
+--     '%t',
+--     '%r',
+--     '%m',
+--     '%=', -- separation point.
+--     '%y',
+--     ' ',
+--     '%2p%%',
+--     ' ',
+--     '%3l:%-2c '
+-- }
+--
+-- vim.o.statusline = table.concat(statusline, '')
+
 -- Editing
 vim.opt.ignorecase     = true                        -- Ignore case when searching (use `\C` to force not doing that)
 vim.opt.incsearch      = true                        -- Show search results while typing
