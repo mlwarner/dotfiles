@@ -68,8 +68,14 @@ vim.opt.expandtab      = true
 vim.opt.scrolloff      = 10
 
 -- Diagnostics
--- default for vim.diagnostic.JumpOpts sets float to false
+-- See `:help vim.diagnostic.config()`
 vim.diagnostic.config({
+    underline = true,
+    update_in_insert = false, -- Diagnostics are only updated when not entering text
+    virtual_text = { current_line = true, severity = { min = "HINT", max = "WARN" } },
+    virtual_lines = { current_line = true, severity = { min = "ERROR" } },
+    severity_sort = true,
+    -- default for vim.diagnostic.JumpOpts sets float to false
     jump = {
         float = true,
     }
@@ -343,10 +349,10 @@ require('lazy').setup({
             require('mini.ai').setup { n_lines = 500 }
 
             -- Go forward/backward with square brackets
-            require('mini.bracketed').setup()
+            -- require('mini.bracketed').setup()
 
             -- Comment lines
-            require('mini.comment').setup()
+            -- require('mini.comment').setup()
 
             -- Autocompletion and signature help
             -- require('mini.completion').setup()
