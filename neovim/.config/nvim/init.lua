@@ -196,6 +196,7 @@ require('lazy').setup({
     -- },
     {
         "folke/snacks.nvim",
+        enabled = false,
         priority = 1000,
         lazy = false,
         dependencies = {
@@ -364,9 +365,9 @@ require('lazy').setup({
             require('mini.diff').setup()
 
             -- file explorer
-            -- require('mini.files').setup()
-            -- vim.keymap.set('n', '<leader>e', function() require('mini.files').open() end,
-            --     { desc = '[E]xplorer' })
+            require('mini.files').setup()
+            vim.keymap.set('n', '<leader>e', function() require('mini.files').open() end,
+                { desc = '[E]xplorer' })
             -- vim.api.nvim_create_autocmd("User", {
             --     pattern = "MiniFilesActionRename",
             --     callback = function(event)
@@ -382,6 +383,24 @@ require('lazy').setup({
 
             -- Work with 'git'
             require('mini.git').setup()
+
+            -- Highlight patterns in text
+            local hipatterns = require('mini.hipatterns')
+            hipatterns.setup({
+                highlighters = {
+                    -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+                    fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+                    hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+                    todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+                    note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+
+                    -- Highlight hex color strings (`#rrggbb`) using that color
+                    hex_color = hipatterns.gen_highlighter.hex_color(),
+                },
+            })
+
+            local miniMisc = require('mini.misc')
+            vim.keymap.set('n', '<leader>z', function() miniMisc.zoom() end, { desc = 'Zoom window' })
 
             -- Move any selection in any direction
             require('mini.move').setup()
@@ -403,34 +422,44 @@ require('lazy').setup({
             require('mini.trailspace').setup()
 
             -- Track and reuse file system visits
-            -- require('mini.visits').setup()
+            require('mini.visits').setup()
+            -- TODO keymaps for mini visits
+            -- vim.keymap.set('n', '<leader>va', builtin.files, { desc = 'find files' })
+            -- vim.keymap.set('n', '<c-f>', builtin.grep_live, { desc = 'live grep' })
 
             -- General purpose picker
-            -- local miniPick = require('mini.pick')
-            -- local miniExtra = require('mini.extra')
+            local miniPick = require('mini.pick')
+            local miniExtra = require('mini.extra')
 
-            -- miniPick.setup()
-            -- miniExtra.setup()
+            miniPick.setup()
+            miniExtra.setup()
 
             -- Override `vim.ui.select()`
-            -- vim.ui.select = miniPick.ui_select
+            vim.ui.select = miniPick.ui_select
 
-            -- local builtin = miniPick.builtin
-            -- local builtinExtra = miniExtra.pickers
-            -- vim.keymap.set('n', '<leader>sc', builtinExtra.git_commits, { desc = '[S]earch [C]ommits' })
-            -- vim.keymap.set('n', '<leader>sd', builtinExtra.diagnostic, { desc = '[S]earch [D]iagnostics' })
-            -- vim.keymap.set('n', '<leader>sf', builtin.files, { desc = '[S]earch [F]iles' })
-            -- vim.keymap.set('n', '<leader>sg', builtin.grep_live, { desc = '[S]earch by [G]rep' })
-            -- vim.keymap.set('n', '<leader>sh', builtin.help, { desc = '[S]earch [H]elp' })
-            -- vim.keymap.set('n', '<leader>sk', builtinExtra.keymaps, { desc = '[S]earch [K]eymaps' })
-            -- vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-            -- vim.keymap.set('n', '<leader>sv', builtinExtra.visit_paths, { desc = '[S]earch [V]isits' })
-            -- vim.keymap.set('n', '<leader>sw', builtin.grep, { desc = '[S]earch current [W]ord' })
-            -- vim.keymap.set('n', '<leader>s.', builtinExtra.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-            -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-            -- vim.keymap.set('n', '<leader>/', builtinExtra.buf_lines, { desc = '[/] Fuzzily search in current buffer' })
-            -- vim.keymap.set('n', '<c-p>', builtin.files, { desc = 'find files' })
-            -- vim.keymap.set('n', '<c-f>', builtin.grep_live, { desc = 'live grep' })
+            local builtin = miniPick.builtin
+            local builtinExtra = miniExtra.pickers
+
+            -- Top pickers
+            vim.keymap.set('n', '<c-p>', builtin.files, { desc = 'find files' })
+            vim.keymap.set('n', '<c-f>', builtin.grep_live, { desc = 'live grep' })
+            vim.keymap.set('n', '<leader>,', builtin.buffers, { desc = '[ ] Find existing buffers' })
+            vim.keymap.set('n', '<leader>/', builtinExtra.buf_lines, { desc = '[/] Fuzzily search in current buffer' })
+            vim.keymap.set('n', '<leader>s.', builtinExtra.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+            -- git
+            vim.keymap.set('n', '<leader>gc', builtinExtra.git_commits, { desc = 'Git Commits' })
+            vim.keymap.set('n', '<leader>gb', builtinExtra.git_branches, { desc = 'Git Branches' })
+            vim.keymap.set('n', '<leader>gh', builtinExtra.git_hunks, { desc = 'Git Hunks' })
+            -- grep
+            vim.keymap.set('n', '<leader>sd', builtinExtra.diagnostic, { desc = '[S]earch [D]iagnostics' })
+            vim.keymap.set('n', '<leader>sg', builtin.grep_live, { desc = '[S]earch by [G]rep' })
+            vim.keymap.set('n', '<leader>sw', builtin.grep, { desc = '[S]earch current [W]ord' })
+            -- search
+            vim.keymap.set('n', '<leader>sf', builtin.files, { desc = '[S]earch [F]iles' })
+            vim.keymap.set('n', '<leader>sh', builtin.help, { desc = '[S]earch [H]elp' })
+            vim.keymap.set('n', '<leader>sk', builtinExtra.keymaps, { desc = '[S]earch [K]eymaps' })
+            vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+            vim.keymap.set('n', '<leader>sv', builtinExtra.visit_paths, { desc = '[S]earch [V]isits' })
 
             -- Show next key clues
             local miniclue = require('mini.clue')
