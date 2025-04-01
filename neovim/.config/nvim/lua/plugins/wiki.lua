@@ -18,16 +18,5 @@ return {
         vim.keymap.set('n', '<leader>ww', open_wiki_index, { desc = 'Open [W]iki index' })
         vim.keymap.set('n', '<leader>wd', open_daily_journal, { desc = 'Open [W]iki [D]aily journal' })
         vim.keymap.set("n", "<leader>tt", ":lua require('toggle-checkbox').toggle()<CR>")
-
-        -- vim.keymap.set('n', '<leader>wsf', function()
-        --     require('mini.pick').builtin.files({}, { source = { cwd = wikiPath } })
-        -- end, { desc = '[W]iki [S]earch [F]iles' })
-        -- vim.keymap.set('n', '<leader>wsg', function()
-        --     require('mini.pick').builtin.grep_live({}, { source = { cwd = wikiPath } })
-        -- end, { desc = '[W]iki [S]earch by [G]rep' })
-        vim.keymap.set('n', '<leader>wsf', function() Snacks.picker.files({ cwd = wikiPath }) end,
-            { desc = '[W]iki [S]earch [F]iles' })
-        vim.keymap.set('n', '<leader>wsg', function() Snacks.picker.grep({ cwd = wikiPath }) end,
-            { desc = '[W]iki [S]earch by [G]rep' })
     end,
 }

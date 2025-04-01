@@ -73,12 +73,12 @@ return {
                     -- Jump to the definition of the word under your cursor.
                     --  This is where a variable was first declared, or where a function is defined, etc.
                     --  To jump back, press <C-t>.
-                    map('n', 'gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+                    -- map('n', 'gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
 
                     -- Jump to the type of the word under your cursor.
                     --  Useful when you're not sure what type a variable is and you want to see
                     --  the definition of its *type*, not where it was *defined*.
-                    map('n', '<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+                    -- map('n', '<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
 
                     -- Fuzzy find all the symbols in your current workspace.
                     --  Similar to document symbols, except searches over your entire project.
@@ -86,7 +86,7 @@ return {
 
                     -- WARN: This is not Goto Definition, this is Goto Declaration.
                     --  For example, in C this would take you to the header.
-                    map('n', 'gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+                    -- map('n', 'gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
                     map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, '[f]ormat')
 

@@ -84,6 +84,15 @@ vim.diagnostic.config({
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+local map = vim.keymap.set
+
+-- LSP
+map("n", "gd", "<Cmd>Pick lsp scope='definition'<CR>", { desc = "Definitions" })
+map("n", "gD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "Declaration" })
+map("n", "gr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "References" })
+map("n", "gI", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "Implementation" })
+map("n", "gy", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "Type Definitions" })
+
 --- keymaps for builtin completion
 --- https://gist.github.com/MariaSolOs/2e44a86f569323c478e5a078d0cf98cc
 -----@param keys string
@@ -132,18 +141,18 @@ end, { expr = true })
 -- or select the next completion.
 -- Do something similar with <S-Tab>.
 vim.keymap.set({ 'i', 's' }, '<Tab>', function()
-    -- if pumvisible() then
-    --     feedkeys '<C-n>'
-    if vim.snippet.active { direction = 1 } then
+    if pumvisible() then
+        feedkeys '<C-n>'
+    elseif vim.snippet.active { direction = 1 } then
         vim.snippet.jump(1)
     else
         feedkeys '<Tab>'
     end
 end, {})
 vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
-    -- if pumvisible() then
-    --     feedkeys '<C-p>'
-    if vim.snippet.active { direction = -1 } then
+    if pumvisible() then
+        feedkeys '<C-p>'
+    elseif vim.snippet.active { direction = -1 } then
         vim.snippet.jump(-1)
     else
         feedkeys '<S-Tab>'
@@ -399,6 +408,7 @@ require('lazy').setup({
                 },
             })
 
+            -- Miscellaneous useful functions
             local miniMisc = require('mini.misc')
             vim.keymap.set('n', '<leader>z', function() miniMisc.zoom() end, { desc = 'Zoom window' })
 
@@ -423,22 +433,34 @@ require('lazy').setup({
 
             -- Track and reuse file system visits
             require('mini.visits').setup()
-            -- TODO keymaps for mini visits
-            -- vim.keymap.set('n', '<leader>va', builtin.files, { desc = 'find files' })
-            -- vim.keymap.set('n', '<c-f>', builtin.grep_live, { desc = 'live grep' })
+            vim.keymap.set('n', '<leader>vv', '<Cmd>Pick visit_labels<CR>', { desc = 'Visit labels' })
+            vim.keymap.set('n', '<leader>va', '<Cmd>lua MiniVisits.add_label()<CR>', { desc = 'Add label' })
+            vim.keymap.set('n', '<leader>vr', '<Cmd>lua MiniVisits.remove_label()<CR>', { desc = 'Remove label' })
 
             -- General purpose picker
-            local miniPick = require('mini.pick')
-            local miniExtra = require('mini.extra')
+            local MiniPick = require('mini.pick')
+            local MiniExtra = require('mini.extra')
 
-            miniPick.setup()
-            miniExtra.setup()
+            MiniPick.setup()
+            MiniExtra.setup()
 
             -- Override `vim.ui.select()`
-            vim.ui.select = miniPick.ui_select
+            vim.ui.select = MiniPick.ui_select
 
-            local builtin = miniPick.builtin
-            local builtinExtra = miniExtra.pickers
+            local builtin = MiniPick.builtin
+            local builtinExtra = MiniExtra.pickers
+
+            local notes_dir = vim.fs.normalize('~/Documents/my-notes')
+
+            MiniPick.registry.notes = function(local_opts)
+                local opts = { source = { cwd = notes_dir } }
+                return MiniPick.builtin.files(local_opts, opts)
+            end
+
+            MiniPick.registry.notes_grep = function(local_opts)
+                local opts = { source = { cwd = notes_dir } }
+                return MiniPick.builtin.grep_live(local_opts, opts)
+            end
 
             -- Top pickers
             vim.keymap.set('n', '<c-p>', builtin.files, { desc = 'find files' })
@@ -460,6 +482,9 @@ require('lazy').setup({
             vim.keymap.set('n', '<leader>sk', builtinExtra.keymaps, { desc = '[S]earch [K]eymaps' })
             vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
             vim.keymap.set('n', '<leader>sv', builtinExtra.visit_paths, { desc = '[S]earch [V]isits' })
+            -- notes
+            vim.keymap.set('n', '<leader>wsf', '<cmd>Pick notes<cr>', { desc = '[W]iki [S]earch [F]iles' })
+            vim.keymap.set('n', '<leader>wsg', '<cmd>Pick notes_grep<cr>', { desc = '[W]iki [S]earch by [G]rep' })
 
             -- Show next key clues
             local miniclue = require('mini.clue')
