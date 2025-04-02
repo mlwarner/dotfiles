@@ -31,22 +31,6 @@ vim.opt.wrap           = false    -- Display long lines as just one line
 
 vim.opt.signcolumn     = 'yes'    -- Always show sign column (otherwise it will shift text)
 
--- See `:help statusline`
--- local statusline = {
---     ' ',
---     '%t',
---     '%r',
---     '%m',
---     '%=', -- separation point.
---     '%y',
---     ' ',
---     '%2p%%',
---     ' ',
---     '%3l:%-2c '
--- }
---
--- vim.o.statusline = table.concat(statusline, '')
-
 -- Editing
 vim.opt.ignorecase     = true                        -- Ignore case when searching (use `\C` to force not doing that)
 vim.opt.incsearch      = true                        -- Show search results while typing
@@ -86,12 +70,52 @@ vim.diagnostic.config({
 
 local map = vim.keymap.set
 
+-- mini.pick
+-- Top pickers
+map('n', '<c-p>', '<cmd>Pick files<cr>', { desc = 'find files' })
+map('n', '<c-f>', '<cmd>Pick grep_live<cr>', { desc = 'live grep' })
+map('n', '<leader>,', '<cmd>Pick buffers<cr>', { desc = '[ ] Find existing buffers' })
+map('n', '<leader>/', '<cmd>Pick buf_lines<cr>', { desc = '[/] Fuzzily search in current buffer' })
+map('n', '<leader>s.', '<cmd>Pick oldfiles<cr>', { desc = '[S]earch Recent Files ("." for repeat)' })
+
+-- git
+map('n', '<leader>gc', '<cmd>Pick git_commits<cr>', { desc = 'Git Commits' })
+map('n', '<leader>gb', '<cmd>Pick git_branches<cr>', { desc = 'Git Branches' })
+map('n', '<leader>gh', '<cmd>Pick git_hunks<cr>', { desc = 'Git Hunks' })
+
+-- grep
+map('n', '<leader>sd', '<cmd>Pick diagnostic<cr>', { desc = '[S]earch [D]iagnostics' })
+map('n', '<leader>sg', '<cmd>Pick grep_live<cr>', { desc = '[S]earch by [G]rep' })
+map('n', '<leader>sw', '<cmd>Pick grep<cr>', { desc = '[S]earch current [W]ord' })
+
+-- search
+map('n', '<leader>sf', '<cmd>Pick files<cr>', { desc = '[S]earch [F]iles' })
+map('n', '<leader>sh', '<cmd>Pick help<cr>', { desc = '[S]earch [H]elp' })
+map('n', '<leader>sk', '<cmd>Pick keymaps<cr>', { desc = '[S]earch [K]eymaps' })
+map('n', '<leader>sr', '<cmd>Pick resume<cr>', { desc = '[S]earch [R]esume' })
+map('n', '<leader>sv', '<cmd>Pick visit_paths<cr>', { desc = '[S]earch [V]isits' })
+
+-- notes
+map('n', '<leader>wsf', '<cmd>Pick notes<cr>', { desc = '[W]iki [S]earch [F]iles' })
+map('n', '<leader>wsg', '<cmd>Pick notes_grep<cr>', { desc = '[W]iki [S]earch by [G]rep' })
+
 -- LSP
 map("n", "gd", "<Cmd>Pick lsp scope='definition'<CR>", { desc = "Definitions" })
 map("n", "gD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "Declaration" })
 map("n", "gr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "References" })
 map("n", "gI", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "Implementation" })
 map("n", "gy", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "Type Definitions" })
+
+-- mini.files
+map('n', '<leader>e', function() require('mini.files').open() end, { desc = '[E]xplorer' })
+
+-- mini.misc
+map('n', '<leader>z', function() require('mini.misc').zoom() end, { desc = 'Zoom window' })
+
+-- mini.visits
+map('n', '<leader>vv', '<Cmd>Pick visit_labels<CR>', { desc = 'Visit labels' })
+map('n', '<leader>va', '<Cmd>lua MiniVisits.add_label()<CR>', { desc = 'Add label' })
+map('n', '<leader>vr', '<Cmd>lua MiniVisits.remove_label()<CR>', { desc = 'Remove label' })
 
 --- keymaps for builtin completion
 --- https://gist.github.com/MariaSolOs/2e44a86f569323c478e5a078d0cf98cc
@@ -375,8 +399,6 @@ require('lazy').setup({
 
             -- file explorer
             require('mini.files').setup()
-            vim.keymap.set('n', '<leader>e', function() require('mini.files').open() end,
-                { desc = '[E]xplorer' })
             -- vim.api.nvim_create_autocmd("User", {
             --     pattern = "MiniFilesActionRename",
             --     callback = function(event)
@@ -409,8 +431,7 @@ require('lazy').setup({
             })
 
             -- Miscellaneous useful functions
-            local miniMisc = require('mini.misc')
-            vim.keymap.set('n', '<leader>z', function() miniMisc.zoom() end, { desc = 'Zoom window' })
+            require('mini.misc')
 
             -- Move any selection in any direction
             require('mini.move').setup()
@@ -433,9 +454,6 @@ require('lazy').setup({
 
             -- Track and reuse file system visits
             require('mini.visits').setup()
-            vim.keymap.set('n', '<leader>vv', '<Cmd>Pick visit_labels<CR>', { desc = 'Visit labels' })
-            vim.keymap.set('n', '<leader>va', '<Cmd>lua MiniVisits.add_label()<CR>', { desc = 'Add label' })
-            vim.keymap.set('n', '<leader>vr', '<Cmd>lua MiniVisits.remove_label()<CR>', { desc = 'Remove label' })
 
             -- General purpose picker
             local MiniPick = require('mini.pick')
@@ -446,9 +464,6 @@ require('lazy').setup({
 
             -- Override `vim.ui.select()`
             vim.ui.select = MiniPick.ui_select
-
-            local builtin = MiniPick.builtin
-            local builtinExtra = MiniExtra.pickers
 
             local notes_dir = vim.fs.normalize('~/Documents/my-notes')
 
@@ -461,30 +476,6 @@ require('lazy').setup({
                 local opts = { source = { cwd = notes_dir } }
                 return MiniPick.builtin.grep_live(local_opts, opts)
             end
-
-            -- Top pickers
-            vim.keymap.set('n', '<c-p>', builtin.files, { desc = 'find files' })
-            vim.keymap.set('n', '<c-f>', builtin.grep_live, { desc = 'live grep' })
-            vim.keymap.set('n', '<leader>,', builtin.buffers, { desc = '[ ] Find existing buffers' })
-            vim.keymap.set('n', '<leader>/', builtinExtra.buf_lines, { desc = '[/] Fuzzily search in current buffer' })
-            vim.keymap.set('n', '<leader>s.', builtinExtra.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-            -- git
-            vim.keymap.set('n', '<leader>gc', builtinExtra.git_commits, { desc = 'Git Commits' })
-            vim.keymap.set('n', '<leader>gb', builtinExtra.git_branches, { desc = 'Git Branches' })
-            vim.keymap.set('n', '<leader>gh', builtinExtra.git_hunks, { desc = 'Git Hunks' })
-            -- grep
-            vim.keymap.set('n', '<leader>sd', builtinExtra.diagnostic, { desc = '[S]earch [D]iagnostics' })
-            vim.keymap.set('n', '<leader>sg', builtin.grep_live, { desc = '[S]earch by [G]rep' })
-            vim.keymap.set('n', '<leader>sw', builtin.grep, { desc = '[S]earch current [W]ord' })
-            -- search
-            vim.keymap.set('n', '<leader>sf', builtin.files, { desc = '[S]earch [F]iles' })
-            vim.keymap.set('n', '<leader>sh', builtin.help, { desc = '[S]earch [H]elp' })
-            vim.keymap.set('n', '<leader>sk', builtinExtra.keymaps, { desc = '[S]earch [K]eymaps' })
-            vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-            vim.keymap.set('n', '<leader>sv', builtinExtra.visit_paths, { desc = '[S]earch [V]isits' })
-            -- notes
-            vim.keymap.set('n', '<leader>wsf', '<cmd>Pick notes<cr>', { desc = '[W]iki [S]earch [F]iles' })
-            vim.keymap.set('n', '<leader>wsg', '<cmd>Pick notes_grep<cr>', { desc = '[W]iki [S]earch by [G]rep' })
 
             -- Show next key clues
             local miniclue = require('mini.clue')
