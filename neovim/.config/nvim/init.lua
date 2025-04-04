@@ -19,6 +19,7 @@ vim.opt.mouse          = 'a'   -- Enable mouse for all available modes
 vim.opt.breakindent    = true     -- Indent wrapped lines to match line start
 vim.opt.cursorline     = true     -- Highlight current line
 vim.opt.cursorlineopt  = 'number' -- Only highlight the current line number
+vim.opt.laststatus     = 3        -- Always show status line
 vim.opt.linebreak      = true     -- Wrap long lines at 'breakat' (if 'wrap' is set)
 vim.opt.number         = true     -- Show line numbers
 vim.opt.relativenumber = true     -- Show relative line numbers
@@ -32,15 +33,15 @@ vim.opt.wrap           = false    -- Display long lines as just one line
 vim.opt.signcolumn     = 'yes'    -- Always show sign column (otherwise it will shift text)
 
 -- Editing
-vim.opt.ignorecase     = true                        -- Ignore case when searching (use `\C` to force not doing that)
-vim.opt.incsearch      = true                        -- Show search results while typing
-vim.opt.infercase      = true                        -- Infer letter cases for a richer built-in keyword completion
-vim.opt.smartcase      = true                        -- Don't ignore case when searching if pattern has upper case
-vim.opt.smartindent    = true                        -- Make indenting smart
+vim.opt.ignorecase     = true                                    -- Ignore case when searching (use `\C` to force not doing that)
+vim.opt.incsearch      = true                                    -- Show search results while typing
+vim.opt.infercase      = true                                    -- Infer letter cases for a richer built-in keyword completion
+vim.opt.smartcase      = true                                    -- Don't ignore case when searching if pattern has upper case
+vim.opt.smartindent    = true                                    -- Make indenting smart
 
-vim.opt.completeopt    = 'menuone,noinsert,noselect' -- Customize completions
-vim.opt.virtualedit    = 'block'                     -- Allow going past the end of line in visual block mode
-vim.opt.formatoptions  = 'qjl1'                      -- Don't autoformat comments
+vim.opt.completeopt    = 'menuone,noinsert,noselect,popup,fuzzy' -- Customize completions
+vim.opt.virtualedit    = 'block'                                 -- Allow going past the end of line in visual block mode
+vim.opt.formatoptions  = 'qjl1'                                  -- Don't autoformat comments
 
 -- Formatting. 4 spaces, no tabs
 vim.opt.tabstop        = 4
@@ -48,8 +49,9 @@ vim.opt.softtabstop    = 4
 vim.opt.shiftwidth     = 4
 vim.opt.expandtab      = true
 
--- Minimal number of screen lines to keep above and below the cursor.
+-- Minimal number of screen lines to keep around the cursor.
 vim.opt.scrolloff      = 10
+vim.opt.sidescrolloff  = 10
 
 -- Diagnostics
 -- See `:help vim.diagnostic.config()`
@@ -130,41 +132,41 @@ local function pumvisible()
 end
 
 -- Use enter to accept completions.
-vim.keymap.set('i', '<cr>', function()
+map('i', '<cr>', function()
     return pumvisible() and '<C-y>' or '<cr>'
 end, { expr = true })
 
 -- Use slash to dismiss the completion menu.
-vim.keymap.set('i', '/', function()
+map('i', '/', function()
     return pumvisible() and '<C-e>' or '/'
 end, { expr = true })
 
 -- Use <C-n> to navigate to the next completion or:
 -- - Trigger LSP completion.
 -- - If there's no one, fallback to vanilla omnifunc.
--- vim.keymap.set('i', '<C-n>', function()
---     if pumvisible() then
---         feedkeys '<C-n>'
---     else
---         if next(vim.lsp.get_clients { bufnr = 0 }) then
---             vim.lsp.completion.trigger()
---         else
---             if vim.bo.omnifunc == '' then
---                 feedkeys '<C-x><C-n>'
---             else
---                 feedkeys '<C-x><C-o>'
---             end
---         end
---     end
--- end, { desc = 'Trigger/select next completion' })
+map('i', '<C-n>', function()
+    if pumvisible() then
+        feedkeys '<C-n>'
+    else
+        if next(vim.lsp.get_clients { bufnr = 0 }) then
+            vim.lsp.completion.trigger()
+        else
+            if vim.bo.omnifunc == '' then
+                feedkeys '<C-x><C-n>'
+            else
+                feedkeys '<C-x><C-o>'
+            end
+        end
+    end
+end, { desc = 'Trigger/select next completion' })
 
 -- Buffer completions.
--- vim.keymap.set('i', '<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' })
+map('i', '<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' })
 
 -- Use <Tab> to accept a Copilot suggestion, navigate between snippet tabstops,
 -- or select the next completion.
 -- Do something similar with <S-Tab>.
-vim.keymap.set({ 'i', 's' }, '<Tab>', function()
+map({ 'i', 's' }, '<Tab>', function()
     if pumvisible() then
         feedkeys '<C-n>'
     elseif vim.snippet.active { direction = 1 } then
@@ -173,7 +175,7 @@ vim.keymap.set({ 'i', 's' }, '<Tab>', function()
         feedkeys '<Tab>'
     end
 end, {})
-vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
+map({ 'i', 's' }, '<S-Tab>', function()
     if pumvisible() then
         feedkeys '<C-p>'
     elseif vim.snippet.active { direction = -1 } then
@@ -186,7 +188,7 @@ end, {})
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -295,8 +297,6 @@ require('lazy').setup({
         lazy = false,
         priority = 1000,
         config = function()
-            -- vim.opt.termguicolors = true
-
             require('gruvbox').setup({
                 contrast = 'hard',
                 -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
@@ -383,13 +383,18 @@ require('lazy').setup({
             require('mini.ai').setup { n_lines = 500 }
 
             -- Go forward/backward with square brackets
-            -- require('mini.bracketed').setup()
+            require('mini.bracketed').setup()
 
             -- Comment lines
-            -- require('mini.comment').setup()
+            require('mini.comment').setup()
 
             -- Autocompletion and signature help
-            -- require('mini.completion').setup()
+            require('mini.completion').setup({
+                delay = {
+                    signature = 200,
+                }
+            })
+            require('mini.icons').tweak_lsp_kind()
 
             -- Highlight usages of the word under the cursor
             require('mini.cursorword').setup()
