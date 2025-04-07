@@ -16,42 +16,41 @@ vim.opt.writebackup    = false -- Don't store backup while overwriting the file
 vim.opt.mouse          = 'a'   -- Enable mouse for all available modes
 
 -- Appearance
-vim.opt.breakindent    = true     -- Indent wrapped lines to match line start
-vim.opt.cursorline     = true     -- Highlight current line
-vim.opt.cursorlineopt  = 'number' -- Only highlight the current line number
-vim.opt.laststatus     = 3        -- Always show status line
-vim.opt.linebreak      = true     -- Wrap long lines at 'breakat' (if 'wrap' is set)
-vim.opt.number         = true     -- Show line numbers
-vim.opt.relativenumber = true     -- Show relative line numbers
-vim.opt.splitbelow     = true     -- Horizontal splits will be below
-vim.opt.splitright     = true     -- Vertical splits will be to the right
-
-vim.opt.ruler          = false    -- Don't show cursor position in command line
-vim.opt.showmode       = false    -- Don't show mode in command line
-vim.opt.wrap           = false    -- Display long lines as just one line
-
-vim.opt.signcolumn     = 'yes'    -- Always show sign column (otherwise it will shift text)
+vim.opt.breakindent    = true         -- Indent wrapped lines to match line start
+vim.opt.cursorline     = true         -- Highlight current line
+vim.opt.cursorlineopt  = 'number'     -- Only highlight the current line number
+vim.opt.laststatus     = 3            -- Always show status line
+vim.opt.linebreak      = true         -- Wrap long lines at 'breakat' (if 'wrap' is set)
+vim.opt.number         = true         -- Show line numbers
+vim.opt.relativenumber = true         -- Show relative line numbers
+vim.opt.ruler          = false        -- Don't show cursor position in command line
+vim.opt.scrolloff      = 8            -- scroll context
+vim.opt.shortmess      = 'aoOtTWcCFS' -- Disable certain messages from |ins-completion-menu|
+vim.opt.showmode       = false        -- Don't show mode in command line
+vim.opt.sidescrolloff  = 8            -- line scroll context
+vim.opt.signcolumn     = 'yes'        -- Always show sign column (otherwise it will shift text)
+vim.opt.splitbelow     = true         -- Horizontal splits will be below
+vim.opt.splitright     = true         -- Vertical splits will be to the right
+vim.opt.wrap           = false        -- Display long lines as just one line
 
 -- Editing
+vim.opt.cindent        = true                                    -- Or else comments do not indent in visualmode + > or <
+vim.opt.completeopt    = 'menuone,noinsert,noselect,popup,fuzzy' -- Customize completions
+vim.opt.expandtab      = true
+vim.opt.formatoptions  = 'rqnl1j'                                -- Improve comment editing
 vim.opt.ignorecase     = true                                    -- Ignore case when searching (use `\C` to force not doing that)
 vim.opt.incsearch      = true                                    -- Show search results while typing
 vim.opt.infercase      = true                                    -- Infer letter cases for a richer built-in keyword completion
+vim.opt.shiftwidth     = 4
 vim.opt.smartcase      = true                                    -- Don't ignore case when searching if pattern has upper case
 vim.opt.smartindent    = true                                    -- Make indenting smart
-
-vim.opt.completeopt    = 'menuone,noinsert,noselect,popup,fuzzy' -- Customize completions
-vim.opt.virtualedit    = 'block'                                 -- Allow going past the end of line in visual block mode
-vim.opt.formatoptions  = 'qjl1'                                  -- Don't autoformat comments
-
--- Formatting. 4 spaces, no tabs
+vim.opt.softtabstop    = -1                                      -- Copy shiftwidth value
 vim.opt.tabstop        = 4
-vim.opt.softtabstop    = 4
-vim.opt.shiftwidth     = 4
-vim.opt.expandtab      = true
+vim.opt.virtualedit    = 'block'                                 -- Allow going past the end of line in visual block mode
 
--- Minimal number of screen lines to keep around the cursor.
-vim.opt.scrolloff      = 10
-vim.opt.sidescrolloff  = 10
+-- Spelling
+vim.o.spelllang        = 'en_us' -- Define spelling dictionaries
+vim.o.spelloptions     = 'camel' -- Treat parts of camelCase words as separate words
 
 -- Diagnostics
 -- See `:help vim.diagnostic.config()`
