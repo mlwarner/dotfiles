@@ -59,16 +59,16 @@ return {
                     -- Defaults in nvim >= 0.10
                     -- Opens a popup that displays documentation about the word under your cursor
                     --  See `:help K` for why this keymap.
-                    map('n', 'K', vim.lsp.buf.hover, 'Hover Documentation')
+                    -- map('n', 'K', vim.lsp.buf.hover, 'Hover Documentation')
 
                     -- Taken from defaults in nvim >= 0.11
                     -- https://github.com/neovim/neovim/blob/master/runtime/doc/news.txt#L103
-                    map('n', 'grn', vim.lsp.buf.rename, '[R]e[n]ame')
-                    map('n', 'grr', vim.lsp.buf.references, '[R]efe[r]ences')
-                    map('n', 'gri', vim.lsp.buf.implementation, '[I]mplementation')
-                    map('n', 'gO', vim.lsp.buf.document_symbol, 'D[o]cument symbol')
-                    map({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, 'Code [A]ction')
-                    map({ 'i', 's' }, '<C-s>', vim.lsp.buf.signature_help, '[S]ignature Help')
+                    -- map('n', 'grn', vim.lsp.buf.rename, '[R]e[n]ame')
+                    -- map('n', 'grr', vim.lsp.buf.references, '[R]efe[r]ences')
+                    -- map('n', 'gri', vim.lsp.buf.implementation, '[I]mplementation')
+                    -- map('n', 'gO', vim.lsp.buf.document_symbol, 'D[o]cument symbol')
+                    -- map({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, 'Code [A]ction')
+                    -- map({ 'i', 's' }, '<C-s>', vim.lsp.buf.signature_help, '[S]ignature Help')
 
                     -- Jump to the definition of the word under your cursor.
                     --  This is where a variable was first declared, or where a function is defined, etc.
@@ -82,22 +82,25 @@ return {
 
                     -- Fuzzy find all the symbols in your current workspace.
                     --  Similar to document symbols, except searches over your entire project.
-                    map('n', '<leader>ws', vim.lsp.buf.workspace_symbol, '[W]orkspace [S]ymbols')
+                    -- map('n', '<leader>ws', vim.lsp.buf.workspace_symbol, '[W]orkspace [S]ymbols')
 
                     -- WARN: This is not Goto Definition, this is Goto Declaration.
                     --  For example, in C this would take you to the header.
                     -- map('n', 'gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-                    map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, '[f]ormat')
+                    -- map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, '[f]ormat')
+                    -- map('n', '<leader>th', function()
+                    --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                    -- end, '[T]oggle Inlay [H]ints')
 
                     -- The following autocommand is used to enable inlay hints in your
                     -- code, if the language server you are using supports them
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
-                    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-                        map('n', '<leader>th', function()
-                            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-                        end, '[T]oggle Inlay [H]ints')
-                    end
+                    -- if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+                    --     map('n', '<leader>th', function()
+                    --         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                    --     end, '[T]oggle Inlay [H]ints')
+                    -- end
 
                     -- built in completion in nvim-0.11+, still has some limitations compared to other clients:
                     -- 1. Only triggers on autotrigger characters by default (e.g. '[', '{', '.', etc). Most plugins
@@ -114,6 +117,55 @@ return {
                     -- end
                 end,
             })
+
+            -- vim.api.nvim_create_autocmd('LspAttach', {
+            --     callback = function(args)
+            --         local map = function(mode, keys, func, desc)
+            --             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            --         end
+            --
+            --         ---[[Code required to activate autocompletion and trigger it on each keypress
+            --         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+            --         client.server_capabilities.completionProvider.triggerCharacters = vim.split("qwertyuiopasdfghjklzxcvbnm. ", "")
+            --         vim.api.nvim_create_autocmd({ 'TextChangedI' }, {
+            --             buffer = args.buf,
+            --             callback = function()
+            --                 vim.lsp.completion.get()
+            --             end
+            --         })
+            --         vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+            --         ---]]
+            --
+            --         ---[[Code required to add documentation popup for an item
+            --         local _, cancel_prev = nil, function() end
+            --         vim.api.nvim_create_autocmd('CompleteChanged', {
+            --             buffer = args.buf,
+            --             callback = function()
+            --                 cancel_prev()
+            --                 local info = vim.fn.complete_info({ 'selected' })
+            --                 local completionItem = vim.tbl_get(vim.v.completed_item, 'user_data', 'nvim', 'lsp',
+            --                     'completion_item')
+            --                 if nil == completionItem then
+            --                     return
+            --                 end
+            --                 _, cancel_prev = vim.lsp.buf_request(args.buf,
+            --                     vim.lsp.protocol.Methods.completionItem_resolve,
+            --                     completionItem,
+            --                     function(err, item, ctx)
+            --                         if not item then
+            --                             return
+            --                         end
+            --                         local docs = (item.documentation or {}).value
+            --                         local win = vim.api.nvim__complete_set(info['selected'], { info = docs })
+            --                         if win.winid and vim.api.nvim_win_is_valid(win.winid) then
+            --                             vim.treesitter.start(win.bufnr, 'markdown')
+            --                             vim.wo[win.winid].conceallevel = 3
+            --                         end
+            --                     end)
+            --             end
+            --         })
+            --     end
+            -- })
 
             -- LSP servers and clients are able to communicate to each other what features they support.
             --  By default, Neovim doesn't support everything that is in the LSP specification.

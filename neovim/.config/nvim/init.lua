@@ -71,6 +71,21 @@ vim.diagnostic.config({
 
 local map = vim.keymap.set
 
+-- Copy/paste with system clipboard
+map({ 'n', 'x' }, 'gy', '"+y', { desc = 'Copy to system clipboard' })
+map('n', 'gp', '"+p', { desc = 'Paste from system clipboard' })
+
+-- Paste in Visual with `P` to not copy selected text (`:h v_P`)
+map('x', 'gp', '"+P', { desc = 'Paste from system clipboard' })
+
+-- Moves lines
+map("v", "J", ":m '>+1<CR>gv=gv")
+map("v", "K", ":m '<-2<CR>gv=gv")
+
+-- Navigate wrapped lines
+map("n", "j", "gj")
+map("n", "k", "gk")
+
 -- mini.pick
 -- Top pickers
 map('n', '<c-p>', '<cmd>Pick files<cr>', { desc = 'find files' })
@@ -106,6 +121,8 @@ map("n", "gD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "Declaration" }
 map("n", "gr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "References" })
 map("n", "gI", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "Implementation" })
 map("n", "gy", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "Type Definitions" })
+map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = '[f]ormat' })
+map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })) end, { desc = '[T]oggle Inlay [H]ints' })
 
 -- mini.files
 map('n', '<leader>e', function() require('mini.files').open() end, { desc = '[E]xplorer' })
@@ -148,7 +165,7 @@ map('i', '<C-n>', function()
         feedkeys '<C-n>'
     else
         if next(vim.lsp.get_clients { bufnr = 0 }) then
-            vim.lsp.completion.trigger()
+            vim.lsp.completion.get()
         else
             if vim.bo.omnifunc == '' then
                 feedkeys '<C-x><C-n>'
@@ -157,7 +174,7 @@ map('i', '<C-n>', function()
             end
         end
     end
-end, { desc = 'Trigger/select next completion' })
+end, { desc = 'Get/select next completion' })
 
 -- Buffer completions.
 map('i', '<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' })
@@ -368,7 +385,14 @@ require('lazy').setup({
         dependencies = { 'rafamadriz/friendly-snippets', },
         config = function()
             -- Common configuration presets
-            require('mini.basics').setup()
+            require('mini.basics').setup({
+                options = {
+                    basic = false,
+                },
+                mappings = {
+                    basic = false,
+                },
+            })
 
             -- Align text interactively
             require('mini.align').setup()
