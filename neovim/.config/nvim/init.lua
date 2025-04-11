@@ -112,20 +112,25 @@ map('n', '<leader>sr', '<cmd>Pick resume<cr>', { desc = '[S]earch [R]esume' })
 map('n', '<leader>sv', '<cmd>Pick visit_paths<cr>', { desc = '[S]earch [V]isits' })
 
 -- notes
-map('n', '<leader>wsf', '<cmd>Pick notes<cr>', { desc = '[W]iki [S]earch [F]iles' })
-map('n', '<leader>wsg', '<cmd>Pick notes_grep<cr>', { desc = '[W]iki [S]earch by [G]rep' })
+map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
+map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
 
 -- LSP
-map("n", "gd", "<Cmd>Pick lsp scope='definition'<CR>", { desc = "Definitions" })
-map("n", "gD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "Declaration" })
-map("n", "gr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "References" })
-map("n", "gI", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "Implementation" })
-map("n", "gy", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "Type Definitions" })
-map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = '[f]ormat' })
-map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })) end, { desc = '[T]oggle Inlay [H]ints' })
+map('n', 'grn', vim.lsp.buf.rename, { desc = '[R]e[n]ame' })
+map({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action, { desc = '[G]oto Code [A]ction' })
+map("n", "gO", "<Cmd>Pick lsp scope='document_symbol'<CR>", { desc = "Open document symbols" })
+map("n", "gW", "<Cmd>Pick lsp scope='workspace_symbol'<CR>", { desc = "Open workspace symbols" })
+map("n", "grr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "[R]eferences" })
+map("n", "gri", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "[I]mplementation" })
+map("n", "grd", "<Cmd>Pick lsp scope='definition'<CR>", { desc = "[G]oto [D]efinition" })
+map("n", "grD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "[G]oto [D]eclaration" })
+map("n", "grt", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "[G]oto [T]ype Definition" })
+map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = '[F]ormat' })
+map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })) end,
+    { desc = '[T]oggle Inlay [H]ints' })
 
 -- mini.files
-map('n', '<leader>e', function() require('mini.files').open() end, { desc = '[E]xplorer' })
+map('n', '<leader>e', function() require('mini.files').open() end, { desc = 'File [E]xplorer' })
 
 -- mini.misc
 map('n', '<leader>z', function() require('mini.misc').zoom() end, { desc = 'Zoom window' })
@@ -209,6 +214,18 @@ map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd('TextYankPost', {
+    desc = 'Highlight when yanking (copying) text',
+    group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
+})
+
+-- Enable spell checking in text files
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'mail', 'markdown', 'text' },
     command = 'setlocal spell spelllang=en_us'
@@ -308,43 +325,6 @@ require('lazy').setup({
     },
     {
         -- Theme
-        'ellisonleao/gruvbox.nvim',
-        enabled = false,
-        lazy = false,
-        priority = 1000,
-        config = function()
-            require('gruvbox').setup({
-                contrast = 'hard',
-                -- We can debug the text under the cursor using `lua vim.print(vim.treesitter.get_captures_under_cursor())`
-                -- See `:help vim.treesitter`
-                -- See palette colors in https://github.com/ellisonleao/gruvbox.nvim/blob/main/lua/gruvbox.lua#L73-L128
-                palette_overrides = {
-                    -- dark0 = "#1d2021", -- taken from `contrast = hard`
-                },
-                overrides = {
-                    CursorLineNr = { bg = "#1d2021" }, -- Only highlight the number
-                    SignColumn = { bg = "#1d2021" },   -- No constrast on sign column
-                    MiniPickNormal = { link = "Normal" },
-                },
-            })
-            vim.cmd.colorscheme 'gruvbox'
-            -- vim.api.nvim_set_hl(0, "MiniPickNormal", { link = "Normal"}) -- Clear highlights
-        end
-    },
-    {
-        -- Theme
-        'sainnhe/gruvbox-material',
-        enabled = false,
-        lazy = false,
-        priority = 1000,
-        config = function()
-            vim.g.gruvbox_material_foreground = 'original'
-            vim.g.gruvbox_material_background = 'hard'
-            vim.cmd.colorscheme 'gruvbox-material'
-        end
-    },
-    {
-        -- Theme
         'rebelot/kanagawa.nvim',
         -- enabled = false,
         lazy = false,
@@ -384,16 +364,6 @@ require('lazy').setup({
         -- Add snippet repo for mini.snippets
         dependencies = { 'rafamadriz/friendly-snippets', },
         config = function()
-            -- Common configuration presets
-            require('mini.basics').setup({
-                options = {
-                    basic = false,
-                },
-                mappings = {
-                    basic = false,
-                },
-            })
-
             -- Align text interactively
             require('mini.align').setup()
 
@@ -404,12 +374,6 @@ require('lazy').setup({
             --  - yinq - [Y]ank [I]nside [N]ext [']quote
             --  - ci'  - [C]hange [I]nside [']quote
             require('mini.ai').setup { n_lines = 500 }
-
-            -- Go forward/backward with square brackets
-            require('mini.bracketed').setup()
-
-            -- Comment lines
-            require('mini.comment').setup()
 
             -- Autocompletion and signature help
             require('mini.completion').setup({
@@ -548,8 +512,10 @@ require('lazy').setup({
                     miniclue.gen_clues.registers(),
                     miniclue.gen_clues.windows(),
                     miniclue.gen_clues.z(),
-                    { mode = 'n', keys = '<Leader>s', desc = '+Search' },
-                    { mode = 'n', keys = '<Leader>g', desc = '+Git' },
+                    { mode = 'n', keys = '<Leader>g', desc = '[G]it' },
+                    { mode = 'n', keys = '<Leader>n', desc = '[N]otes' },
+                    { mode = 'n', keys = '<Leader>s', desc = '[S]earch' },
+                    { mode = 'n', keys = '<Leader>t', desc = '[T]oggle' },
                 },
             })
 
