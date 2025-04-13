@@ -17,6 +17,8 @@ return {
 
         vim.keymap.set('n', '<leader>ww', open_wiki_index, { desc = 'Open [W]iki index' })
         vim.keymap.set('n', '<leader>wd', open_daily_journal, { desc = 'Open [W]iki [D]aily journal' })
+        vim.keymap.set('n', '<leader>ni', open_wiki_index, { desc = 'Open [N]otes index' })
+        vim.keymap.set('n', '<leader>nd', open_daily_journal, { desc = 'Open [N]otes [D]aily journal' })
         vim.keymap.set("n", "<leader>tt", ":lua require('toggle-checkbox').toggle()<CR>")
     end,
 }
