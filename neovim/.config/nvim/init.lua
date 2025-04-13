@@ -376,12 +376,12 @@ require('lazy').setup({
             require('mini.ai').setup { n_lines = 500 }
 
             -- Autocompletion and signature help
-            require('mini.completion').setup({
-                delay = {
-                    signature = 200,
-                }
-            })
-            require('mini.icons').tweak_lsp_kind()
+            -- require('mini.completion').setup({
+            --     delay = {
+            --         signature = 200,
+            --     }
+            -- })
+            -- require('mini.icons').tweak_lsp_kind()
 
             -- Highlight usages of the word under the cursor
             require('mini.cursorword').setup()

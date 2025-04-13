@@ -22,7 +22,7 @@ return {
 
             {
                 'saghen/blink.cmp',
-                enabled = false,
+                -- enabled = false,
                 -- dev = true,
                 dependencies = { 'rafamadriz/friendly-snippets', },
                 version = '1.*',
