@@ -54,6 +54,8 @@ return {
                 rust_analyzer = {},
                 vtsls = {
                     settings = {
+                        ['js/ts'] = { implicitProjectConfig = { checkJs = true } },
+
                         complete_function_calls = true,
                         vtsls = {
                             enableMoveToFileCodeAction = true,
@@ -106,9 +108,6 @@ return {
                     },
                 },
             }
-
-            -- Special formatted fields cannot be set above
-            servers.vtsls.settings['js/ts'] = { implicitProjectConfig = { checkJs = true } }
 
             local ensure_installed = vim.tbl_keys(servers or {})
 
