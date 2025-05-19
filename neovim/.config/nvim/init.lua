@@ -5,48 +5,48 @@ vim.g.mapleader        = ' '
 vim.g.maplocalleader   = ' '
 
 -- [[ Setting options ]]
--- See `:help vim.opt`
+-- See `:help vim.o`
 
 -- General
-vim.opt.undofile       = true  -- Enable persistent undo (see also `:h undodir`)
+vim.o.undofile       = true  -- Enable persistent undo (see also `:h undodir`)
 
-vim.opt.backup         = false -- Don't store backup while overwriting the file
-vim.opt.writebackup    = false -- Don't store backup while overwriting the file
+vim.o.backup         = false -- Don't store backup while overwriting the file
+vim.o.writebackup    = false -- Don't store backup while overwriting the file
 
-vim.opt.mouse          = 'a'   -- Enable mouse for all available modes
+vim.o.mouse          = 'a'   -- Enable mouse for all available modes
 
 -- Appearance
-vim.opt.breakindent    = true         -- Indent wrapped lines to match line start
-vim.opt.cursorline     = true         -- Highlight current line
-vim.opt.cursorlineopt  = 'number'     -- Only highlight the current line number
-vim.opt.laststatus     = 3            -- Always show status line
-vim.opt.linebreak      = true         -- Wrap long lines at 'breakat' (if 'wrap' is set)
-vim.opt.number         = true         -- Show line numbers
-vim.opt.relativenumber = true         -- Show relative line numbers
-vim.opt.ruler          = false        -- Don't show cursor position in command line
-vim.opt.scrolloff      = 8            -- scroll context
-vim.opt.shortmess      = 'aoOtTWcCFS' -- Disable certain messages from |ins-completion-menu|
-vim.opt.showmode       = false        -- Don't show mode in command line
-vim.opt.sidescrolloff  = 8            -- line scroll context
-vim.opt.signcolumn     = 'yes'        -- Always show sign column (otherwise it will shift text)
-vim.opt.splitbelow     = true         -- Horizontal splits will be below
-vim.opt.splitright     = true         -- Vertical splits will be to the right
-vim.opt.wrap           = false        -- Display long lines as just one line
+vim.o.breakindent    = true         -- Indent wrapped lines to match line start
+vim.o.cursorline     = true         -- Highlight current line
+vim.o.cursorlineopt  = 'number'     -- Only highlight the current line number
+vim.o.laststatus     = 3            -- Always show status line
+vim.o.linebreak      = true         -- Wrap long lines at 'breakat' (if 'wrap' is set)
+vim.o.number         = true         -- Show line numbers
+vim.o.relativenumber = true         -- Show relative line numbers
+vim.o.ruler          = false        -- Don't show cursor position in command line
+vim.o.scrolloff      = 8            -- scroll context
+vim.o.shortmess      = 'aoOtTWcCFS' -- Disable certain messages from |ins-completion-menu|
+vim.o.showmode       = false        -- Don't show mode in command line
+vim.o.sidescrolloff  = 8            -- line scroll context
+vim.o.signcolumn     = 'yes'        -- Always show sign column (otherwise it will shift text)
+vim.o.splitbelow     = true         -- Horizontal splits will be below
+vim.o.splitright     = true         -- Vertical splits will be to the right
+vim.o.wrap           = false        -- Display long lines as just one line
 
 -- Editing
-vim.opt.cindent        = true                                    -- Or else comments do not indent in visualmode + > or <
-vim.opt.completeopt    = 'menuone,noinsert,noselect,popup,fuzzy' -- Customize completions
-vim.opt.expandtab      = true
-vim.opt.formatoptions  = 'rqnl1j'                                -- Improve comment editing
-vim.opt.ignorecase     = true                                    -- Ignore case when searching (use `\C` to force not doing that)
-vim.opt.incsearch      = true                                    -- Show search results while typing
-vim.opt.infercase      = true                                    -- Infer letter cases for a richer built-in keyword completion
-vim.opt.shiftwidth     = 4
-vim.opt.smartcase      = true                                    -- Don't ignore case when searching if pattern has upper case
-vim.opt.smartindent    = true                                    -- Make indenting smart
-vim.opt.softtabstop    = -1                                      -- Copy shiftwidth value
-vim.opt.tabstop        = 4
-vim.opt.virtualedit    = 'block'                                 -- Allow going past the end of line in visual block mode
+vim.o.cindent        = true                                    -- Or else comments do not indent in visualmode + > or <
+vim.o.completeopt    = 'menuone,noinsert,noselect,popup,fuzzy' -- Customize completions
+vim.o.expandtab      = true
+vim.o.formatoptions  = 'rqnl1j'                                -- Improve comment editing
+vim.o.ignorecase     = true                                    -- Ignore case when searching (use `\C` to force not doing that)
+vim.o.incsearch      = true                                    -- Show search results while typing
+vim.o.infercase      = true                                    -- Infer letter cases for a richer built-in keyword completion
+vim.o.shiftwidth     = 4
+vim.o.smartcase      = true                                    -- Don't ignore case when searching if pattern has upper case
+vim.o.smartindent    = true                                    -- Make indenting smart
+vim.o.softtabstop    = -1                                      -- Copy shiftwidth value
+vim.o.tabstop        = 4
+vim.o.virtualedit    = 'block'                                 -- Allow going past the end of line in visual block mode
 
 -- Spelling
 vim.o.spelllang        = 'en_us' -- Define spelling dictionaries
@@ -221,7 +221,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
     callback = function()
-        vim.highlight.on_yank()
+        vim.hl.on_yank()
     end,
 })
 

@@ -3,8 +3,8 @@ return {
         'neovim/nvim-lspconfig',
         dependencies = {
             -- Automatically install LSPs and related tools to stdpath for neovim
-            'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim',
+            'mason-org/mason.nvim',
+            'mason-org/mason-lspconfig.nvim',
 
             -- lazydev.nvim is a plugin that properly configures LuaLS for editing your Neovim config by
             -- lazily updating your workspace libraries.
@@ -51,6 +51,7 @@ return {
                     },
                 },
                 marksman = {},
+                pyright = {},
                 rust_analyzer = {},
                 vtsls = {
                     settings = {
@@ -96,7 +97,6 @@ return {
                         },
                     },
                 },
-
                 lua_ls = {
                     settings = {
                         Lua = {
