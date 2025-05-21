@@ -1,8 +1,8 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader        = ' '
-vim.g.maplocalleader   = ' '
+vim.g.mapleader      = ' '
+vim.g.maplocalleader = ' '
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -49,8 +49,8 @@ vim.o.tabstop        = 4
 vim.o.virtualedit    = 'block'                                 -- Allow going past the end of line in visual block mode
 
 -- Spelling
-vim.o.spelllang        = 'en_us' -- Define spelling dictionaries
-vim.o.spelloptions     = 'camel' -- Treat parts of camelCase words as separate words
+vim.o.spelllang      = 'en_us' -- Define spelling dictionaries
+vim.o.spelloptions   = 'camel' -- Treat parts of camelCase words as separate words
 
 -- Diagnostics
 -- See `:help vim.diagnostic.config()`
@@ -414,6 +414,7 @@ require('lazy').setup({
                     -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
                     fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
                     hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+                    tk        = { pattern = '%f[%w]()TK()%f[%W]', group = 'MiniHipatternsTodo' },
                     todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
                     note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
 
