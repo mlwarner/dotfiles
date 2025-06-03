@@ -70,6 +70,7 @@ vim.diagnostic.config({
 --  See `:help vim.keymap.set()`
 
 local map = vim.keymap.set
+local notes_dir = vim.fs.normalize('~/Documents/my-notes')
 
 -- Copy/paste with system clipboard
 map({ 'n', 'x' }, 'gy', '"+y', { desc = 'Copy to system clipboard' })
@@ -88,57 +89,57 @@ map("n", "k", "gk")
 
 -- mini.pick
 -- Top pickers
-map('n', '<c-p>', '<cmd>Pick files<cr>', { desc = 'find files' })
-map('n', '<c-f>', '<cmd>Pick grep_live<cr>', { desc = 'live grep' })
-map('n', '<leader>,', '<cmd>Pick buffers<cr>', { desc = '[ ] Find existing buffers' })
-map('n', '<leader>/', '<cmd>Pick buf_lines<cr>', { desc = '[/] Fuzzily search in current buffer' })
-map('n', '<leader>s.', '<cmd>Pick oldfiles<cr>', { desc = '[S]earch Recent Files ("." for repeat)' })
+-- map('n', '<c-p>', '<cmd>Pick files<cr>', { desc = 'find files' })
+-- map('n', '<c-f>', '<cmd>Pick grep_live<cr>', { desc = 'live grep' })
+-- map('n', '<leader>,', '<cmd>Pick buffers<cr>', { desc = '[ ] Find existing buffers' })
+-- map('n', '<leader>/', '<cmd>Pick buf_lines<cr>', { desc = '[/] Fuzzily search in current buffer' })
+-- map('n', '<leader>s.', '<cmd>Pick oldfiles<cr>', { desc = '[S]earch Recent Files ("." for repeat)' })
 
 -- git
-map('n', '<leader>gc', '<cmd>Pick git_commits<cr>', { desc = 'Git Commits' })
-map('n', '<leader>gb', '<cmd>Pick git_branches<cr>', { desc = 'Git Branches' })
-map('n', '<leader>gh', '<cmd>Pick git_hunks<cr>', { desc = 'Git Hunks' })
+-- map('n', '<leader>gc', '<cmd>Pick git_commits<cr>', { desc = 'Git Commits' })
+-- map('n', '<leader>gb', '<cmd>Pick git_branches<cr>', { desc = 'Git Branches' })
+-- map('n', '<leader>gh', '<cmd>Pick git_hunks<cr>', { desc = 'Git Hunks' })
 
 -- grep
-map('n', '<leader>sd', '<cmd>Pick diagnostic<cr>', { desc = '[S]earch [D]iagnostics' })
-map('n', '<leader>sg', '<cmd>Pick grep_live<cr>', { desc = '[S]earch by [G]rep' })
-map('n', '<leader>sw', '<cmd>Pick grep<cr>', { desc = '[S]earch current [W]ord' })
+-- map('n', '<leader>sd', '<cmd>Pick diagnostic<cr>', { desc = '[S]earch [D]iagnostics' })
+-- map('n', '<leader>sg', '<cmd>Pick grep_live<cr>', { desc = '[S]earch by [G]rep' })
+-- map('n', '<leader>sw', '<cmd>Pick grep<cr>', { desc = '[S]earch current [W]ord' })
 
 -- search
-map('n', '<leader>sf', '<cmd>Pick files<cr>', { desc = '[S]earch [F]iles' })
-map('n', '<leader>sh', '<cmd>Pick help<cr>', { desc = '[S]earch [H]elp' })
-map('n', '<leader>sk', '<cmd>Pick keymaps<cr>', { desc = '[S]earch [K]eymaps' })
-map('n', '<leader>sr', '<cmd>Pick resume<cr>', { desc = '[S]earch [R]esume' })
-map('n', '<leader>sv', '<cmd>Pick visit_paths<cr>', { desc = '[S]earch [V]isits' })
+-- map('n', '<leader>sf', '<cmd>Pick files<cr>', { desc = '[S]earch [F]iles' })
+-- map('n', '<leader>sh', '<cmd>Pick help<cr>', { desc = '[S]earch [H]elp' })
+-- map('n', '<leader>sk', '<cmd>Pick keymaps<cr>', { desc = '[S]earch [K]eymaps' })
+-- map('n', '<leader>sr', '<cmd>Pick resume<cr>', { desc = '[S]earch [R]esume' })
+-- map('n', '<leader>sv', '<cmd>Pick visit_paths<cr>', { desc = '[S]earch [V]isits' })
 
 -- notes
-map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
-map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
+-- map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
+-- map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
 
 -- LSP
 map('n', 'grn', vim.lsp.buf.rename, { desc = '[R]e[n]ame' })
 map({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action, { desc = '[G]oto Code [A]ction' })
-map("n", "gO", "<Cmd>Pick lsp scope='document_symbol'<CR>", { desc = "Open document symbols" })
-map("n", "gW", "<Cmd>Pick lsp scope='workspace_symbol'<CR>", { desc = "Open workspace symbols" })
-map("n", "grr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "[R]eferences" })
-map("n", "gri", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "[I]mplementation" })
-map("n", "grd", "<Cmd>Pick lsp scope='definition'<CR>", { desc = "[G]oto [D]efinition" })
-map("n", "grD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "[G]oto [D]eclaration" })
-map("n", "grt", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "[G]oto [T]ype Definition" })
+-- map("n", "gO", "<Cmd>Pick lsp scope='document_symbol'<CR>", { desc = "Open document symbols" })
+-- map("n", "gW", "<Cmd>Pick lsp scope='workspace_symbol'<CR>", { desc = "Open workspace symbols" })
+-- map("n", "grr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "[R]eferences" })
+-- map("n", "gri", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "[I]mplementation" })
+-- map("n", "grd", "<Cmd>Pick lsp scope='definition'<CR>", { desc = "[G]oto [D]efinition" })
+-- map("n", "grD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "[G]oto [D]eclaration" })
+-- map("n", "grt", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "[G]oto [T]ype Definition" })
 map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = '[F]ormat' })
 map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })) end,
     { desc = '[T]oggle Inlay [H]ints' })
 
 -- mini.files
-map('n', '<leader>e', function() require('mini.files').open() end, { desc = 'File [E]xplorer' })
+-- map('n', '<leader>e', function() require('mini.files').open() end, { desc = 'File [E]xplorer' })
 
 -- mini.misc
-map('n', '<leader>z', function() require('mini.misc').zoom() end, { desc = 'Zoom window' })
+-- map('n', '<leader>z', function() require('mini.misc').zoom() end, { desc = 'Zoom window' })
 
 -- mini.visits
-map('n', '<leader>vv', '<Cmd>Pick visit_labels<CR>', { desc = 'Visit labels' })
-map('n', '<leader>va', '<Cmd>lua MiniVisits.add_label()<CR>', { desc = 'Add label' })
-map('n', '<leader>vr', '<Cmd>lua MiniVisits.remove_label()<CR>', { desc = 'Remove label' })
+-- map('n', '<leader>vv', '<Cmd>Pick visit_labels<CR>', { desc = 'Visit labels' })
+-- map('n', '<leader>va', '<Cmd>lua MiniVisits.add_label()<CR>', { desc = 'Add label' })
+-- map('n', '<leader>vr', '<Cmd>lua MiniVisits.remove_label()<CR>', { desc = 'Remove label' })
 
 --- keymaps for builtin completion
 --- https://gist.github.com/MariaSolOs/2e44a86f569323c478e5a078d0cf98cc
@@ -153,58 +154,58 @@ local function pumvisible()
 end
 
 -- Use enter to accept completions.
-map('i', '<cr>', function()
-    return pumvisible() and '<C-y>' or '<cr>'
-end, { expr = true })
+-- map('i', '<cr>', function()
+--     return pumvisible() and '<C-y>' or '<cr>'
+-- end, { expr = true })
 
 -- Use slash to dismiss the completion menu.
-map('i', '/', function()
-    return pumvisible() and '<C-e>' or '/'
-end, { expr = true })
+-- map('i', '/', function()
+--     return pumvisible() and '<C-e>' or '/'
+-- end, { expr = true })
 
 -- Use <C-n> to navigate to the next completion or:
 -- - Trigger LSP completion.
 -- - If there's no one, fallback to vanilla omnifunc.
-map('i', '<C-n>', function()
-    if pumvisible() then
-        feedkeys '<C-n>'
-    else
-        if next(vim.lsp.get_clients { bufnr = 0 }) then
-            vim.lsp.completion.get()
-        else
-            if vim.bo.omnifunc == '' then
-                feedkeys '<C-x><C-n>'
-            else
-                feedkeys '<C-x><C-o>'
-            end
-        end
-    end
-end, { desc = 'Get/select next completion' })
+-- map('i', '<C-n>', function()
+--     if pumvisible() then
+--         feedkeys '<C-n>'
+--     else
+--         if next(vim.lsp.get_clients { bufnr = 0 }) then
+--             vim.lsp.completion.get()
+--         else
+--             if vim.bo.omnifunc == '' then
+--                 feedkeys '<C-x><C-n>'
+--             else
+--                 feedkeys '<C-x><C-o>'
+--             end
+--         end
+--     end
+-- end, { desc = 'Get/select next completion' })
 
 -- Buffer completions.
-map('i', '<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' })
+-- map('i', '<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' })
 
 -- Use <Tab> to accept a Copilot suggestion, navigate between snippet tabstops,
 -- or select the next completion.
 -- Do something similar with <S-Tab>.
-map({ 'i', 's' }, '<Tab>', function()
-    if pumvisible() then
-        feedkeys '<C-n>'
-    elseif vim.snippet.active { direction = 1 } then
-        vim.snippet.jump(1)
-    else
-        feedkeys '<Tab>'
-    end
-end, {})
-map({ 'i', 's' }, '<S-Tab>', function()
-    if pumvisible() then
-        feedkeys '<C-p>'
-    elseif vim.snippet.active { direction = -1 } then
-        vim.snippet.jump(-1)
-    else
-        feedkeys '<S-Tab>'
-    end
-end, {})
+-- map({ 'i', 's' }, '<Tab>', function()
+--     if pumvisible() then
+--         feedkeys '<C-n>'
+--     elseif vim.snippet.active { direction = 1 } then
+--         vim.snippet.jump(1)
+--     else
+--         feedkeys '<Tab>'
+--     end
+-- end, {})
+-- map({ 'i', 's' }, '<S-Tab>', function()
+--     if pumvisible() then
+--         feedkeys '<C-p>'
+--     elseif vim.snippet.active { direction = -1 } then
+--         vim.snippet.jump(-1)
+--     else
+--         feedkeys '<S-Tab>'
+--     end
+-- end, {})
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -264,16 +265,20 @@ require('lazy').setup({
     -- },
     {
         "folke/snacks.nvim",
-        enabled = false,
+        -- enabled = false,
         priority = 1000,
         lazy = false,
         dependencies = {
             {
                 "folke/todo-comments.nvim",
-                opts = {},
+                opts = {
+                    keywords = {
+                        TODO = { alt = { "TK" } },
+                    },
+                },
                 keys = {
-                    { "<leader>st", function() Snacks.picker.todo_comments() end,                                          desc = "Todo" },
-                    { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
+                    { "<leader>st", function() Snacks.picker.todo_comments() end,                                                desc = "Todo" },
+                    { "<leader>sT", function() Snacks.picker.todo_comments({ keywords = { "TODO", "TK", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
                 },
             }
         },
@@ -282,45 +287,57 @@ require('lazy').setup({
             explorer = { enabled = true },
             input = { enabled = true },
             picker = { enabled = true },
+            words = { enabled = true },
         },
         keys = {
             -- Top Pickers & Explorer
-            { "<leader><space>", function() Snacks.picker.smart() end,           desc = "Smart Find Files" },
-            { "<leader>,",       function() Snacks.picker.buffers() end,         desc = "Buffers" },
-            { "<leader>/",       function() Snacks.picker.grep() end,            desc = "Grep" },
-            { "<leader>:",       function() Snacks.picker.command_history() end, desc = "Command History" },
-            { "<leader>n",       function() Snacks.picker.notifications() end,   desc = "Notification History" },
-            { "<leader>e",       function() Snacks.explorer() end,               desc = "File Explorer" },
+            { "<leader><space>", function() Snacks.picker.smart() end,                    desc = "Smart Find Files" },
+            { "<leader>,",       function() Snacks.picker.buffers() end,                  desc = "Buffers" },
+            { "<leader>/",       function() Snacks.picker.grep() end,                     desc = "Grep" },
+            { "<leader>:",       function() Snacks.picker.command_history() end,          desc = "Command History" },
+            { "<leader>n",       function() Snacks.picker.notifications() end,            desc = "Notification History" },
+            { "<leader>e",       function() Snacks.explorer() end,                        desc = "File Explorer" },
             -- git
-            { "<leader>gb",      function() Snacks.picker.git_branches() end,    desc = "Git Branches" },
-            { "<leader>gl",      function() Snacks.picker.git_log() end,         desc = "Git Log" },
-            { "<leader>gL",      function() Snacks.picker.git_log_line() end,    desc = "Git Log Line" },
-            { "<leader>gs",      function() Snacks.picker.git_status() end,      desc = "Git Status" },
-            { "<leader>gS",      function() Snacks.picker.git_stash() end,       desc = "Git Stash" },
-            { "<leader>gd",      function() Snacks.picker.git_diff() end,        desc = "Git Diff (Hunks)" },
-            { "<leader>gf",      function() Snacks.picker.git_log_file() end,    desc = "Git Log File" },
+            { "<leader>gb",      function() Snacks.picker.git_branches() end,             desc = "Git Branches" },
+            { "<leader>gl",      function() Snacks.picker.git_log() end,                  desc = "Git Log" },
+            { "<leader>gL",      function() Snacks.picker.git_log_line() end,             desc = "Git Log Line" },
+            { "<leader>gs",      function() Snacks.picker.git_status() end,               desc = "Git Status" },
+            { "<leader>gS",      function() Snacks.picker.git_stash() end,                desc = "Git Stash" },
+            { "<leader>gd",      function() Snacks.picker.git_diff() end,                 desc = "Git Diff (Hunks)" },
+            { "<leader>gf",      function() Snacks.picker.git_log_file() end,             desc = "Git Log File" },
             -- Grep
-            { "<leader>sb",      function() Snacks.picker.lines() end,           desc = "Buffer Lines" },
-            { "<leader>sB",      function() Snacks.picker.grep_buffers() end,    desc = "Grep Open Buffers" },
-            { "<leader>sg",      function() Snacks.picker.grep() end,            desc = "Grep" },
-            { "<leader>sw",      function() Snacks.picker.grep_word() end,       desc = "Visual selection or word",      mode = { "n", "x" } },
+            { "<leader>sb",      function() Snacks.picker.lines() end,                    desc = "Buffer Lines" },
+            { "<leader>sB",      function() Snacks.picker.grep_buffers() end,             desc = "Grep Open Buffers" },
+            { "<leader>sg",      function() Snacks.picker.grep() end,                     desc = "Grep" },
+            { "<leader>sw",      function() Snacks.picker.grep_word() end,                desc = "Visual selection or word",      mode = { "n", "x" } },
             -- search
-            { "<leader>sd",      function() Snacks.picker.diagnostics() end,     desc = "[S]earch [D]iagnostics" },
-            { "<leader>sf",      function() Snacks.picker.files() end,           desc = "[S]earch [F]iles" },
-            { "<leader>sh",      function() Snacks.picker.help() end,            desc = "[S]earch [H]elp" },
-            { "<leader>sk",      function() Snacks.picker.keymaps() end,         desc = "[S]earch [K]eymaps" },
-            { "<leader>sw",      function() Snacks.picker.grep_word() end,       desc = "[S]earch current [W]ord" },
-            { "<leader>sr",      function() Snacks.picker.resume() end,          desc = "[S]earch [R]esume" },
+            { "<leader>sd",      function() Snacks.picker.diagnostics() end,              desc = "[S]earch [D]iagnostics" },
+            { "<leader>sf",      function() Snacks.picker.files() end,                    desc = "[S]earch [F]iles" },
+            { "<leader>sh",      function() Snacks.picker.help() end,                     desc = "[S]earch [H]elp" },
+            { "<leader>sk",      function() Snacks.picker.keymaps() end,                  desc = "[S]earch [K]eymaps" },
+            { "<leader>sw",      function() Snacks.picker.grep_word() end,                desc = "[S]earch current [W]ord" },
+            { "<leader>sr",      function() Snacks.picker.resume() end,                   desc = "[S]earch [R]esume" },
+            -- notes
+            { "<leader>nsf",     function() Snacks.picker.files({ cwd = notes_dir }) end, desc = "[N]otes [S]earch [F]iles" },
+            { "<leader>nsg",     function() Snacks.picker.grep({ cwd = notes_dir }) end,  desc = "[N]otes [S]earch by [G]rep" },
+            -- LSP
+            { "gO",              function() Snacks.picker.lsp_symbols() end,              desc = "LSP Symbols" },
+            { "gW",              function() Snacks.picker.lsp_workspace_symbols() end,    desc = "LSP Workspace Symbols" },
+            { "grr",             function() Snacks.picker.lsp_references() end,           nowait = true,                          desc = "References" },
+            { "gri",             function() Snacks.picker.lsp_implementations() end,      desc = "Goto Implementation" },
+            { "grd",             function() Snacks.picker.lsp_definitions() end,          desc = "Goto Definition" },
+            { "grD",             function() Snacks.picker.lsp_declarations() end,         desc = "Goto Declaration" },
+            { "grt",             function() Snacks.picker.lsp_type_definitions() end,     desc = "Goto T[y]pe Definition" },
             -- Other
-            { "gz",              function() Snacks.zen() end,                    desc = "Toggle Zen Mode" },
-            { "gZ",              function() Snacks.zen.zoom() end,               desc = "Toggle Zoom" },
-            { "<leader>.",       function() Snacks.scratch() end,                desc = "Toggle Scratch Buffer" },
-            { "<leader>S",       function() Snacks.scratch.select() end,         desc = "Select Scratch Buffer" },
-            { "<leader>cR",      function() Snacks.rename.rename_file() end,     desc = "Rename File" },
-            { "<c-/>",           function() Snacks.terminal() end,               desc = "Toggle Terminal" },
-            { "<leader>ps",      function() Snacks.profiler.scratch() end,       desc = "Profiler Scratch Bufer" },
-            { "<leader>pp",      function() Snacks.profiler.toggle() end,        desc = "Toggle the profiler" },
-            { "<leader>ph",      function() Snacks.profiler.highlight() end,     desc = "Toggle the profiler highlights" },
+            { "gz",              function() Snacks.zen() end,                             desc = "Toggle Zen Mode" },
+            { "gZ",              function() Snacks.zen.zoom() end,                        desc = "Toggle Zoom" },
+            { "<leader>.",       function() Snacks.scratch() end,                         desc = "Toggle Scratch Buffer" },
+            { "<leader>S",       function() Snacks.scratch.select() end,                  desc = "Select Scratch Buffer" },
+            { "<leader>cR",      function() Snacks.rename.rename_file() end,              desc = "Rename File" },
+            { "<c-/>",           function() Snacks.terminal() end,                        desc = "Toggle Terminal" },
+            { "<leader>ps",      function() Snacks.profiler.scratch() end,                desc = "Profiler Scratch Bufer" },
+            { "<leader>pp",      function() Snacks.profiler.toggle() end,                 desc = "Toggle the profiler" },
+            { "<leader>ph",      function() Snacks.profiler.highlight() end,              desc = "Toggle the profiler highlights" },
         },
     },
     {
@@ -384,13 +401,13 @@ require('lazy').setup({
             -- require('mini.icons').tweak_lsp_kind()
 
             -- Highlight usages of the word under the cursor
-            require('mini.cursorword').setup()
+            -- require('mini.cursorword').setup()
 
             -- Work with diff hunks
             require('mini.diff').setup()
 
             -- file explorer
-            require('mini.files').setup()
+            -- require('mini.files').setup()
             -- vim.api.nvim_create_autocmd("User", {
             --     pattern = "MiniFilesActionRename",
             --     callback = function(event)
@@ -408,20 +425,20 @@ require('lazy').setup({
             require('mini.git').setup()
 
             -- Highlight patterns in text
-            local hipatterns = require('mini.hipatterns')
-            hipatterns.setup({
-                highlighters = {
-                    -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-                    fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-                    hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-                    tk        = { pattern = '%f[%w]()TK()%f[%W]', group = 'MiniHipatternsTodo' },
-                    todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-                    note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-
-                    -- Highlight hex color strings (`#rrggbb`) using that color
-                    hex_color = hipatterns.gen_highlighter.hex_color(),
-                },
-            })
+            -- local hipatterns = require('mini.hipatterns')
+            -- hipatterns.setup({
+            --     highlighters = {
+            --         -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+            --         fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+            --         hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+            --         tk        = { pattern = '%f[%w]()TK()%f[%W]', group = 'MiniHipatternsTodo' },
+            --         todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+            --         note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+            --
+            --         -- Highlight hex color strings (`#rrggbb`) using that color
+            --         hex_color = hipatterns.gen_highlighter.hex_color(),
+            --     },
+            -- })
 
             -- Miscellaneous useful functions
             require('mini.misc')
@@ -449,26 +466,26 @@ require('lazy').setup({
             require('mini.visits').setup()
 
             -- General purpose picker
-            local MiniPick = require('mini.pick')
-            local MiniExtra = require('mini.extra')
-
-            MiniPick.setup()
-            MiniExtra.setup()
+            -- local MiniPick = require('mini.pick')
+            -- local MiniExtra = require('mini.extra')
+            --
+            -- MiniPick.setup()
+            -- MiniExtra.setup()
 
             -- Override `vim.ui.select()`
-            vim.ui.select = MiniPick.ui_select
-
-            local notes_dir = vim.fs.normalize('~/Documents/my-notes')
-
-            MiniPick.registry.notes = function(local_opts)
-                local opts = { source = { cwd = notes_dir } }
-                return MiniPick.builtin.files(local_opts, opts)
-            end
-
-            MiniPick.registry.notes_grep = function(local_opts)
-                local opts = { source = { cwd = notes_dir } }
-                return MiniPick.builtin.grep_live(local_opts, opts)
-            end
+            -- vim.ui.select = MiniPick.ui_select
+            --
+            -- local notes_dir = vim.fs.normalize('~/Documents/my-notes')
+            --
+            -- MiniPick.registry.notes = function(local_opts)
+            --     local opts = { source = { cwd = notes_dir } }
+            --     return MiniPick.builtin.files(local_opts, opts)
+            -- end
+            --
+            -- MiniPick.registry.notes_grep = function(local_opts)
+            --     local opts = { source = { cwd = notes_dir } }
+            --     return MiniPick.builtin.grep_live(local_opts, opts)
+            -- end
 
             -- Show next key clues
             local miniclue = require('mini.clue')
