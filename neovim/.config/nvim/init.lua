@@ -270,9 +270,12 @@ require('lazy').setup({
         ---@type snacks.Config
         opts = {
             explorer = { enabled = true },
-            indent = { enabled = true },
+            indent = {
+                indent = { enabled = false },
+            },
             input = { enabled = true },
             picker = { enabled = true },
+            scope = { enabled = true },
             statuscolumn = { enabled = true },
             words = { enabled = true },
         },
