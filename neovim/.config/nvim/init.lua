@@ -248,21 +248,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     -- Make pretty code snapshots
     { "mistricky/codesnap.nvim", build = "make" },
-    -- {
-    --     "Exafunction/codeium.nvim",
-    --     dependencies = {
-    --         "nvim-lua/plenary.nvim",
-    --         -- "hrsh7th/nvim-cmp",
-    --     },
-    --     config = function()
-    --         require("codeium").setup({
-    --             enable_cmp_source = false,
-    --             virtual_text = {
-    --                 enabled = true,
-    --             }
-    --         })
-    --     end
-    -- },
     {
         "folke/snacks.nvim",
         -- enabled = false,
@@ -285,8 +270,10 @@ require('lazy').setup({
         ---@type snacks.Config
         opts = {
             explorer = { enabled = true },
+            indent = { enabled = true },
             input = { enabled = true },
             picker = { enabled = true },
+            statuscolumn = { enabled = true },
             words = { enabled = true },
         },
         keys = {
@@ -334,6 +321,8 @@ require('lazy').setup({
             { "<leader>.",       function() Snacks.scratch() end,                         desc = "Toggle Scratch Buffer" },
             { "<leader>S",       function() Snacks.scratch.select() end,                  desc = "Select Scratch Buffer" },
             { "<leader>cR",      function() Snacks.rename.rename_file() end,              desc = "Rename File" },
+            { "<leader>gb",      function() Snacks.git.blame_line() end,                  desc = "Git blame",                     mode = { "n", "v" } },
+            { "<leader>gB",      function() Snacks.gitbrowse() end,                       desc = "Git Browse",                    mode = { "n", "v" } },
             { "<c-/>",           function() Snacks.terminal() end,                        desc = "Toggle Terminal" },
             { "<leader>ps",      function() Snacks.profiler.scratch() end,                desc = "Profiler Scratch Bufer" },
             { "<leader>pp",      function() Snacks.profiler.toggle() end,                 desc = "Toggle the profiler" },
@@ -404,7 +393,7 @@ require('lazy').setup({
             -- require('mini.cursorword').setup()
 
             -- Work with diff hunks
-            require('mini.diff').setup()
+            -- require('mini.diff').setup()
 
             -- file explorer
             -- require('mini.files').setup()
@@ -419,10 +408,10 @@ require('lazy').setup({
             require('mini.icons').setup()
 
             -- Visualize and work with indent scope
-            require('mini.indentscope').setup()
+            -- require('mini.indentscope').setup()
 
             -- Work with 'git'
-            require('mini.git').setup()
+            -- require('mini.git').setup()
 
             -- Highlight patterns in text
             -- local hipatterns = require('mini.hipatterns')
