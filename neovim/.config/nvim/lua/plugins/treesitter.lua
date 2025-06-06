@@ -27,6 +27,7 @@ return {
                     'markdown_inline',
                     'perl',
                     'python',
+                    'regex',
                     'rust',
                     'swift',
                     'tsx',

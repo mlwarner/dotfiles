@@ -270,6 +270,7 @@ require('lazy').setup({
         ---@type snacks.Config
         opts = {
             explorer = { enabled = true },
+            image = { enabled = true },
             indent = {
                 indent = { enabled = false },
             },
