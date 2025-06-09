@@ -19,7 +19,7 @@ vim.o.mouse          = 'a'   -- Enable mouse for all available modes
 vim.o.breakindent    = true         -- Indent wrapped lines to match line start
 vim.o.cursorline     = true         -- Highlight current line
 vim.o.cursorlineopt  = 'number'     -- Only highlight the current line number
-vim.o.laststatus     = 3            -- Always show status line
+vim.o.laststatus     = 2            -- Always show status line
 vim.o.linebreak      = true         -- Wrap long lines at 'breakat' (if 'wrap' is set)
 vim.o.number         = true         -- Show line numbers
 vim.o.relativenumber = true         -- Show relative line numbers
@@ -68,7 +68,6 @@ vim.diagnostic.config({
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
-
 local map = vim.keymap.set
 local notes_dir = vim.fs.normalize('~/Documents/my-notes')
 
@@ -141,71 +140,8 @@ map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hi
 -- map('n', '<leader>va', '<Cmd>lua MiniVisits.add_label()<CR>', { desc = 'Add label' })
 -- map('n', '<leader>vr', '<Cmd>lua MiniVisits.remove_label()<CR>', { desc = 'Remove label' })
 
---- keymaps for builtin completion
+--- NOTE: ref to keymaps for builtin completion
 --- https://gist.github.com/MariaSolOs/2e44a86f569323c478e5a078d0cf98cc
------@param keys string
-local function feedkeys(keys)
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
-end
-
----Is the completion menu open?
-local function pumvisible()
-    return tonumber(vim.fn.pumvisible()) ~= 0
-end
-
--- Use enter to accept completions.
--- map('i', '<cr>', function()
---     return pumvisible() and '<C-y>' or '<cr>'
--- end, { expr = true })
-
--- Use slash to dismiss the completion menu.
--- map('i', '/', function()
---     return pumvisible() and '<C-e>' or '/'
--- end, { expr = true })
-
--- Use <C-n> to navigate to the next completion or:
--- - Trigger LSP completion.
--- - If there's no one, fallback to vanilla omnifunc.
--- map('i', '<C-n>', function()
---     if pumvisible() then
---         feedkeys '<C-n>'
---     else
---         if next(vim.lsp.get_clients { bufnr = 0 }) then
---             vim.lsp.completion.get()
---         else
---             if vim.bo.omnifunc == '' then
---                 feedkeys '<C-x><C-n>'
---             else
---                 feedkeys '<C-x><C-o>'
---             end
---         end
---     end
--- end, { desc = 'Get/select next completion' })
-
--- Buffer completions.
--- map('i', '<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' })
-
--- Use <Tab> to accept a Copilot suggestion, navigate between snippet tabstops,
--- or select the next completion.
--- Do something similar with <S-Tab>.
--- map({ 'i', 's' }, '<Tab>', function()
---     if pumvisible() then
---         feedkeys '<C-n>'
---     elseif vim.snippet.active { direction = 1 } then
---         vim.snippet.jump(1)
---     else
---         feedkeys '<Tab>'
---     end
--- end, {})
--- map({ 'i', 's' }, '<S-Tab>', function()
---     if pumvisible() then
---         feedkeys '<C-p>'
---     elseif vim.snippet.active { direction = -1 } then
---         vim.snippet.jump(-1)
---     else
---         feedkeys '<S-Tab>'
---     end
--- end, {})
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -230,6 +166,22 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'mail', 'markdown', 'text' },
     command = 'setlocal spell spelllang=en_us'
+})
+
+-- Simple LSP Progress
+vim.api.nvim_create_autocmd("LspProgress", {
+    ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+    callback = function(ev)
+        local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+        vim.notify(vim.lsp.status(), "info", {
+            id = "lsp_progress",
+            title = "LSP Progress",
+            opts = function(notif)
+                notif.icon = ev.data.params.value.kind == "end" and " "
+                    or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+            end,
+        })
+    end,
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -275,6 +227,7 @@ require('lazy').setup({
                 indent = { enabled = false },
             },
             input = { enabled = true },
+            notifier = { enabled = true },
             picker = { enabled = true },
             scope = { enabled = true },
             statuscolumn = { enabled = true },
@@ -440,7 +393,7 @@ require('lazy').setup({
             require('mini.move').setup()
 
             -- Show notifications
-            require('mini.notify').setup()
+            -- require('mini.notify').setup()
 
             -- Add/delete/replace surroundings (brackets, quotes, etc.)
             --
