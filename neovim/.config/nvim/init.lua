@@ -66,10 +66,16 @@ vim.diagnostic.config({
     }
 })
 
+-- Setup notes
+local notes_dir = vim.fs.normalize('~/Documents/my-notes')
+
+-- Daily journal
+local dailyNotes = require('daily-notes')
+dailyNotes.setup({ dir = vim.fs.joinpath(notes_dir, 'journal') })
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 local map = vim.keymap.set
-local notes_dir = vim.fs.normalize('~/Documents/my-notes')
 
 -- Copy/paste with system clipboard
 map({ 'n', 'x' }, 'gy', '"+y', { desc = 'Copy to system clipboard' })
@@ -112,8 +118,11 @@ map("n", "k", "gk")
 -- map('n', '<leader>sv', '<cmd>Pick visit_paths<cr>', { desc = '[S]earch [V]isits' })
 
 -- notes
+map('n', '<leader>ni', function () vim.cmd.edit(vim.fs.joinpath(notes_dir, 'index.md')) end, { desc = 'Open [N]otes index' })
+map('n', '<leader>nd', function() dailyNotes.open_daily_note() end, { desc = 'Open [N]otes [D]aily' })
 -- map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
 -- map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
+-- vim.keymap.set('n', '<leader>nd', open_daily_journal, { desc = 'Open [N]otes [D]aily journal' })
 
 -- LSP
 map('n', 'grn', vim.lsp.buf.rename, { desc = '[R]e[n]ame' })
@@ -200,6 +209,14 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     -- Make pretty code snapshots
     { "mistricky/codesnap.nvim", build = "make" },
+
+
+    {
+        "opdavies/toggle-checkbox.nvim",
+        keys = {
+            { "<leader>tt", ":lua require('toggle-checkbox').toggle()<CR>" },
+        },
+    },
     {
         "folke/snacks.nvim",
         -- enabled = false,
@@ -212,6 +229,9 @@ require('lazy').setup({
                     keywords = {
                         TODO = { alt = { "TK" } },
                     },
+                    -- highlight = {
+                    --     pattern = [[.*<(KEYWORDS)\s*]]
+                    -- },
                 },
                 keys = {
                     { "<leader>st", function() Snacks.picker.todo_comments() end,                                                desc = "Todo" },
