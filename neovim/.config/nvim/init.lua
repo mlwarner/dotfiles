@@ -19,7 +19,7 @@ vim.o.mouse          = 'a'   -- Enable mouse for all available modes
 vim.o.breakindent    = true         -- Indent wrapped lines to match line start
 vim.o.cursorline     = true         -- Highlight current line
 vim.o.cursorlineopt  = 'number'     -- Only highlight the current line number
-vim.o.laststatus     = 2            -- Always show status line
+vim.o.laststatus     = 3            -- Always show status line
 vim.o.linebreak      = true         -- Wrap long lines at 'breakat' (if 'wrap' is set)
 vim.o.number         = true         -- Show line numbers
 vim.o.relativenumber = true         -- Show relative line numbers
@@ -370,7 +370,7 @@ require('lazy').setup({
             -- require('mini.cursorword').setup()
 
             -- Work with diff hunks
-            -- require('mini.diff').setup()
+            require('mini.diff').setup()
 
             -- file explorer
             -- require('mini.files').setup()
@@ -388,7 +388,7 @@ require('lazy').setup({
             -- require('mini.indentscope').setup()
 
             -- Work with 'git'
-            -- require('mini.git').setup()
+            require('mini.git').setup()
 
             -- Highlight patterns in text
             -- local hipatterns = require('mini.hipatterns')
@@ -434,7 +434,7 @@ require('lazy').setup({
             -- General purpose picker
             -- local MiniPick = require('mini.pick')
             -- local MiniExtra = require('mini.extra')
-            --
+            -- --
             -- MiniPick.setup()
             -- MiniExtra.setup()
 
