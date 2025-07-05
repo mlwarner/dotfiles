@@ -32,12 +32,12 @@ now(function()
 end)
 
 now(function()
-  require('mini.basics').setup({
-    -- Manage options manually in a spirit of transparency
-    options = { basic = false },
-    mappings = { windows = true, move_with_alt = true },
-    autocommands = { relnum_in_visual_mode = true },
-  })
+    require('mini.basics').setup({
+        -- Manage options manually in a spirit of transparency
+        options = { basic = false },
+        mappings = { windows = true, move_with_alt = true },
+        autocommands = { relnum_in_visual_mode = true },
+    })
 end)
 
 now(function() require('mini.files').setup({ windows = { preview = true } }) end)
@@ -111,10 +111,13 @@ later(function()
             miniclue.gen_clues.registers(),
             miniclue.gen_clues.windows(),
             miniclue.gen_clues.z(),
-            { mode = 'n', keys = '<Leader>g', desc = '[G]it' },
-            { mode = 'n', keys = '<Leader>n', desc = '[N]otes' },
-            { mode = 'n', keys = '<Leader>s', desc = '[S]earch' },
-            { mode = 'n', keys = '<Leader>t', desc = '[T]oggle' },
+            { mode = 'n', keys = '<Leader>b', desc = '+Buffer' },
+            { mode = 'n', keys = '<Leader>e', desc = '+Explore' },
+            { mode = 'n', keys = '<Leader>g', desc = '+Git' },
+            { mode = 'n', keys = '<Leader>n', desc = '+Notes' },
+            { mode = 'n', keys = '<Leader>o', desc = '+Other' },
+            { mode = 'n', keys = '<Leader>s', desc = '+Search' },
+            { mode = 'n', keys = '<Leader>v', desc = '+Visits' },
         },
     })
 end)
@@ -131,10 +134,10 @@ later(function()
     hipatterns.setup({
         highlighters = {
             fixme     = hi_words({ 'FIXME', 'Fixme', 'fixme' }, 'MiniHipatternsFixme'),
-            hack      = hi_words({ 'HACK', 'Hack', 'hack' }, 'MiniHipatternsHack'),
-            tk        = hi_words({ 'TK', 'tk' }, 'MiniHipatternsTodo'),
-            todo      = hi_words({ 'TODO', 'Todo', 'todo' }, 'MiniHipatternsTodo'),
-            note      = hi_words({ 'NOTE', 'Note', 'note' }, 'MiniHipatternsNote'),
+            hack      = hi_words({ 'HACK',  'Hack',  'hack' }, 'MiniHipatternsHack'),
+            tk        = hi_words({ 'TK',    'Tk',    'tk' }, 'MiniHipatternsTodo'),
+            todo      = hi_words({ 'TODO',  'Todo',  'todo' }, 'MiniHipatternsTodo'),
+            note      = hi_words({ 'NOTE',  'Note',  'note' }, 'MiniHipatternsNote'),
 
             hex_color = hipatterns.gen_highlighter.hex_color(),
         },
@@ -195,7 +198,4 @@ later(function() require('mini.surround').setup() end)
 
 later(function() require('mini.trailspace').setup() end)
 
-later(function()
-    -- Track and reuse file system visits
-    require('mini.visits').setup()
-end)
+later(function() require('mini.visits').setup() end)

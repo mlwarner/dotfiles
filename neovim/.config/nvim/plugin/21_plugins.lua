@@ -3,44 +3,50 @@
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 now(function()
+    -- The main branch is under active development and has different conventions
     add({
         source = 'nvim-treesitter/nvim-treesitter',
-        -- Use 'master' while monitoring updates in 'main'
-        checkout = 'master',
-        monitor = 'main',
+        checkout = 'main',
         -- Perform action after every checkout
         hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
     })
-    require('nvim-treesitter.configs').setup {
-        -- Add languages to be installed here that you want installed for treesitter
-        ensure_installed = {
-            'bash',
-            'c_sharp',
-            'css',
-            'diff',
-            'html',
-            'javascript',
-            'jsdoc',
-            'json',
-            'lua',
-            'markdown',
-            'markdown_inline',
-            'perl',
-            'python',
-            'regex',
-            'rust',
-            'swift',
-            'tsx',
-            'typescript',
-            'vim',
-            'vimdoc',
-        },
+    add({
+        source = 'nvim-treesitter/nvim-treesitter-textobjects',
+        checkout = 'main',
+    })
 
-        -- Autoinstall languages that are not installed.
-        auto_install = true,
-        highlight = { enable = true },
-        indent = { enable = true },
+    -- Ensure installed
+    local ensure_installed = {
+        'bash',
+        'c_sharp',
+        'css',
+        'diff',
+        'html',
+        'javascript',
+        'jsdoc',
+        'json',
+        'lua',
+        'markdown',
+        'markdown_inline',
+        'perl',
+        'python',
+        'regex',
+        'rust',
+        'swift',
+        'tsx',
+        'typescript',
+        'vim',
+        'vimdoc',
     }
+
+    -- no-op if already installed
+    require('nvim-treesitter').install(ensure_installed)
+
+    -- Ensure enabled
+    local filetypes = vim.iter(ensure_installed):map(vim.treesitter.language.get_filetypes):flatten():totable()
+    vim.list_extend(filetypes, { 'markdown', 'pandoc' })
+    local ts_start = function(ev) vim.treesitter.start(ev.buf) end
+    vim.api.nvim_create_autocmd('FileType', { pattern = filetypes, callback = ts_start })
 end)
 
 later(function()

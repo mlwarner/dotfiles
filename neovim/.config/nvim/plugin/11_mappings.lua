@@ -30,13 +30,17 @@ map('n', '<c-f>', '<cmd>Pick grep_live<cr>', { desc = 'live grep' })
 map('n', '<leader>,', '<cmd>Pick buffers<cr>', { desc = '[ ] Find existing buffers' })
 map('n', '<leader>/', '<cmd>Pick buf_lines<cr>', { desc = '[/] Fuzzily search in current buffer' })
 
+-- buffer
+map('n', '<leader>bs', function() vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true)) end, { desc = 'Scratch' })
+
 -- code companion
 map({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
 map({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
 map("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
 
 -- edit
-map('n', '<leader>e', '<cmd>lua MiniFiles.open()<cr>', { desc = 'Directory' })
+map('n', '<leader>ed', '<cmd>lua MiniFiles.open()<cr>', { desc = 'Directory' })
+map('n', '<leader>es', '<cmd>lua MiniSessions.select()<cr>', { desc = 'Sessions' })
 
 -- git
 map('n', '<leader>ga', '<cmd>Git diff --cached<cr>', { desc = 'Added diff' })
