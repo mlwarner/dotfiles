@@ -32,6 +32,17 @@ now(function()
 end)
 
 now(function()
+  require('mini.basics').setup({
+    -- Manage options manually in a spirit of transparency
+    options = { basic = false },
+    mappings = { windows = true, move_with_alt = true },
+    autocommands = { relnum_in_visual_mode = true },
+  })
+end)
+
+now(function() require('mini.files').setup({ windows = { preview = true } }) end)
+
+now(function()
     require('mini.icons').setup()
     later(MiniIcons.mock_nvim_web_devicons)
     later(MiniIcons.tweak_lsp_kind)
@@ -111,8 +122,6 @@ end)
 later(function() require('mini.cursorword').setup() end)
 
 later(function() require('mini.diff').setup() end)
-
-later(function() require('mini.files').setup() end)
 
 later(function() require('mini.git').setup() end)
 

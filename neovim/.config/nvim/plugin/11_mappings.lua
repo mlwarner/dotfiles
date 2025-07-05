@@ -24,38 +24,31 @@ map("v", "K", ":m '<-2<CR>gv=gv")
 map("n", "j", "gj")
 map("n", "k", "gk")
 
--- mini.pick
--- Top pickers
+-- General search
 map('n', '<c-p>', '<cmd>Pick files<cr>', { desc = 'find files' })
 map('n', '<c-f>', '<cmd>Pick grep_live<cr>', { desc = 'live grep' })
 map('n', '<leader>,', '<cmd>Pick buffers<cr>', { desc = '[ ] Find existing buffers' })
 map('n', '<leader>/', '<cmd>Pick buf_lines<cr>', { desc = '[/] Fuzzily search in current buffer' })
-map('n', '<leader>s.', '<cmd>Pick oldfiles<cr>', { desc = '[S]earch Recent Files ("." for repeat)' })
+
+-- code companion
+map({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+map({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+map("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+
+-- edit
+map('n', '<leader>e', '<cmd>lua MiniFiles.open()<cr>', { desc = 'Directory' })
 
 -- git
-map('n', '<leader>gc', '<cmd>Pick git_commits<cr>', { desc = 'Git Commits' })
-map('n', '<leader>gb', '<cmd>Pick git_branches<cr>', { desc = 'Git Branches' })
-map('n', '<leader>gh', '<cmd>Pick git_hunks<cr>', { desc = 'Git Hunks' })
-
--- grep
-map('n', '<leader>sd', '<cmd>Pick diagnostic<cr>', { desc = '[S]earch [D]iagnostics' })
-map('n', '<leader>sg', '<cmd>Pick grep_live<cr>', { desc = '[S]earch by [G]rep' })
-map('n', '<leader>sw', '<cmd>Pick grep<cr>', { desc = '[S]earch current [W]ord' })
-
--- search
-map('n', '<leader>sf', '<cmd>Pick files<cr>', { desc = '[S]earch [F]iles' })
-map('n', '<leader>sh', '<cmd>Pick help<cr>', { desc = '[S]earch [H]elp' })
-map('n', '<leader>sk', '<cmd>Pick keymaps<cr>', { desc = '[S]earch [K]eymaps' })
-map('n', '<leader>sr', '<cmd>Pick resume<cr>', { desc = '[S]earch [R]esume' })
-map('n', '<leader>sv', '<cmd>Pick visit_paths<cr>', { desc = '[S]earch [V]isits' })
-
--- notes
-map('n', '<leader>ni', function() vim.cmd.edit(vim.fs.joinpath(notes_dir, 'index.md')) end,
-    { desc = 'Open [N]otes index' })
-map('n', '<leader>nd', function() dailyNotes.open_daily_note() end, { desc = 'Open [N]otes [D]aily' })
-map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
-map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
--- vim.keymap.set('n', '<leader>nd', open_daily_journal, { desc = 'Open [N]otes [D]aily journal' })
+map('n', '<leader>ga', '<cmd>Git diff --cached<cr>', { desc = 'Added diff' })
+map('n', '<leader>gA', '<cmd>Git diff --cached -- %<cr>', { desc = 'Added diff buffer' })
+map('n', '<leader>gc', '<cmd>Git commit<cr>', { desc = 'Commit' })
+map('n', '<leader>gC', '<cmd>Git commit --amend<cr>', { desc = 'Commit amend' })
+map('n', '<leader>gd', '<cmd>Git diff<cr>', { desc = 'Diff' })
+map('n', '<leader>gD', '<cmd>Git diff -- %<cr>', { desc = 'Diff buffer' })
+map('n', '<leader>gl', '<cmd>Git log<cr>', { desc = 'Log' })
+map('n', '<leader>gL', '<cmd>Git log --follow -- %<cr>', { desc = 'Log buffer' })
+map('n', '<leader>go', '<cmd>lua MiniDiff.toggle_overlay()<cr>', { desc = 'Toggle overlay' })
+map('n', '<leader>gs', '<cmd>lua MiniGit.show_at_cursor()<cr>', { desc = 'Show at cursor' })
 
 -- LSP
 map('n', 'grn', vim.lsp.buf.rename, { desc = '[R]e[n]ame' })
@@ -71,26 +64,44 @@ map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc
 map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })) end,
     { desc = '[T]oggle Inlay [H]ints' })
 
--- mini.files
-map('n', '<leader>e', function() require('mini.files').open() end, { desc = 'File [E]xplorer' })
+-- notes
+map('n', '<leader>ni', function() vim.cmd.edit(vim.fs.joinpath(notes_dir, 'index.md')) end,
+    { desc = 'Open [N]otes index' })
+map('n', '<leader>nd', function() dailyNotes.open_daily_note() end, { desc = 'Open [N]otes [D]aily' })
+map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
+map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
+-- vim.keymap.set('n', '<leader>nd', open_daily_journal, { desc = 'Open [N]otes [D]aily journal' })
 
--- mini.misc
-map('n', '<leader>z', function() require('mini.misc').zoom() end, { desc = 'Zoom window' })
+-- other
+map('n', '<leader>ot', '<cmd>lua MiniTrailspace.trim()', { desc = 'Trim trailspace' })
+map('n', '<leader>oz', '<cmd>lua MiniMisc.zoom()<cr>', { desc = 'Zoom toggle' })
 
--- mini.visits
-map('n', '<leader>vv', '<Cmd>Pick visit_labels<CR>', { desc = 'Visit labels' })
+-- search
+map('n', '<leader>s/', '<cmd>Pick history scope="/"<cr>', { desc = '"/" history' })
+map('n', '<leader>s:', '<cmd>Pick history scope=":"<cr>', { desc = '":" history' })
+map('n', '<leader>s.', '<cmd>Pick oldfiles<cr>', { desc = 'Oldfiles ("." for repeat)' })
+map('n', '<leader>sa', '<cmd>Pick git_hunks scope="staged"<cr>', { desc = 'Added hunks (all)' })
+map('n', '<leader>sc', '<cmd>Pick git_commits<cr>', { desc = 'Commits (all)' })
+map('n', '<leader>sG', '<cmd>Pick grep pattern="<cword>"<cr>', { desc = 'Grep current word' })
+map('n', '<leader>sd', '<cmd>Pick diagnostic<cr>', { desc = 'Diagnostics' })
+map('n', '<leader>sf', '<cmd>Pick files<cr>', { desc = 'Files' })
+map('n', '<leader>sg', '<cmd>Pick grep_live<cr>', { desc = 'Grep live' })
+map('n', '<leader>sh', '<cmd>Pick help<cr>', { desc = 'Help' })
+map('n', '<leader>sk', '<cmd>Pick keymaps<cr>', { desc = 'Keymaps' })
+map('n', '<leader>sl', '<cmd>Pick buf_lines scope="all"<cr>', { desc = 'Lines (all)' })
+map('n', '<leader>sm', '<cmd>Pick git_hunks scope="staged"<cr>', { desc = 'Modified hunks (all)' })
+map('n', '<leader>sr', '<cmd>Pick resume<cr>', { desc = 'Resume' })
+map('n', '<leader>sv', '<cmd>Pick visit_paths cwd=""<cr>', { desc = 'Visits paths (all)' })
+map('n', '<leader>sV', '<cmd>Pick visit_paths<cr>', { desc = 'Visits paths (cwd)' })
+
+-- visits
 map('n', '<leader>va', '<Cmd>lua MiniVisits.add_label()<CR>', { desc = 'Add label' })
 map('n', '<leader>vr', '<Cmd>lua MiniVisits.remove_label()<CR>', { desc = 'Remove label' })
-
--- code companion
-map({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
-map({ "n", "v" }, "<LocalLeader>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-map("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
-
---- NOTE: ref to keymaps for builtin completion
---- https://gist.github.com/MariaSolOs/2e44a86f569323c478e5a078d0cf98cc
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
 map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+--- NOTE: ref to keymaps for builtin completion
+--- https://gist.github.com/MariaSolOs/2e44a86f569323c478e5a078d0cf98cc
