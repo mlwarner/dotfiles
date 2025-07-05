@@ -55,11 +55,13 @@ vim.o.spelloptions   = 'camel' -- Treat parts of camelCase words as separate wor
 -- Diagnostics
 -- See `:help vim.diagnostic.config()`
 vim.diagnostic.config({
-    underline = true,
-    update_in_insert = false, -- Diagnostics are only updated when not entering text
-    virtual_text = { current_line = true, severity = { min = "HINT", max = "WARN" } },
-    virtual_lines = { current_line = true, severity = { min = "ERROR" } },
+    signs = { severity = { min = 'WARN', max = 'ERROR' } },
+    underline = { severity = { min = 'HINT', max = 'ERROR' } },
+    virtual_lines = false,
+    virtual_text = { current_line = true, severity = { min = "ERROR", max = "ERROR" } },
+
     severity_sort = true,
+    update_in_insert = false, -- Diagnostics are only updated when not entering text
     -- default for vim.diagnostic.JumpOpts sets float to false
     jump = {
         float = true,
