@@ -98,11 +98,6 @@ later(function()
         }
     })
     require("codecompanion").setup({
-        display = {
-            action_palette = {
-                provider = "snacks",
-            },
-        },
         strategies = {
             chat = {
                 adapter = "anthropic",
