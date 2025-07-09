@@ -3,7 +3,7 @@
 local map = vim.keymap.set
 
 -- Setup notes
-local notes_dir = vim.fs.normalize('~/Documents/my-notes')
+local notes_dir = vim.fs.normalize('~/Documents/my-notes/')
 
 -- Daily journal
 local dailyNotes = require('daily-notes')
@@ -74,7 +74,6 @@ map('n', '<leader>ni', function() vim.cmd.edit(vim.fs.joinpath(notes_dir, 'index
 map('n', '<leader>nd', function() dailyNotes.open_daily_note() end, { desc = 'Open [N]otes [D]aily' })
 map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
 map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
--- vim.keymap.set('n', '<leader>nd', open_daily_journal, { desc = 'Open [N]otes [D]aily journal' })
 
 -- other
 map('n', '<leader>ot', '<cmd>lua MiniTrailspace.trim()', { desc = 'Trim trailspace' })

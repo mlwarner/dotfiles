@@ -63,9 +63,21 @@ now(function() require('mini.statusline').setup() end)
 
 later(function() require('mini.extra').setup() end)
 
-later(function() require('mini.align').setup() end)
+later(function()
+    local ai = require('mini.ai')
+    ai.setup({
+        custom_textobjects = {
+            B = MiniExtra.gen_ai_spec.buffer(),
+            F = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
+            o = ai.gen_spec.treesitter({
+                a = { '@conditional.outer', '@loop.outer' },
+                i = { '@conditional.inner', '@loop.inner' },
+            })
+        },
+    })
+end)
 
-later(function() require('mini.ai').setup() end)
+later(function() require('mini.align').setup() end)
 
 later(function()
     -- Show next key clues
@@ -134,10 +146,10 @@ later(function()
     hipatterns.setup({
         highlighters = {
             fixme     = hi_words({ 'FIXME', 'Fixme', 'fixme' }, 'MiniHipatternsFixme'),
-            hack      = hi_words({ 'HACK',  'Hack',  'hack' }, 'MiniHipatternsHack'),
-            tk        = hi_words({ 'TK',    'Tk',    'tk' }, 'MiniHipatternsTodo'),
-            todo      = hi_words({ 'TODO',  'Todo',  'todo' }, 'MiniHipatternsTodo'),
-            note      = hi_words({ 'NOTE',  'Note',  'note' }, 'MiniHipatternsNote'),
+            hack      = hi_words({ 'HACK', 'Hack', 'hack' }, 'MiniHipatternsHack'),
+            tk        = hi_words({ 'TK', 'Tk', 'tk' }, 'MiniHipatternsTodo'),
+            todo      = hi_words({ 'TODO', 'Todo', 'todo' }, 'MiniHipatternsTodo'),
+            note      = hi_words({ 'NOTE', 'Note', 'note' }, 'MiniHipatternsNote'),
 
             hex_color = hipatterns.gen_highlighter.hex_color(),
         },
@@ -149,6 +161,8 @@ later(function() require('mini.indentscope').setup() end)
 later(function() require('mini.misc').setup() end)
 
 later(function() require('mini.move').setup() end)
+
+later(function() require('mini.pairs').setup({ modes = { insert = true, command = true, terminal = true } }) end)
 
 later(function()
     -- Pick anything
