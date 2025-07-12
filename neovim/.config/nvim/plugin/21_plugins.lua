@@ -133,3 +133,24 @@ later(function()
         source = "opdavies/toggle-checkbox.nvim"
     })
 end)
+
+later(function()
+    add({
+        source = "jakobkhansen/journal.nvim"
+    })
+    local notes_dir = vim.fs.normalize('~/Documents/my-notes/journal')
+
+    require('journal').setup({
+        root = notes_dir,
+        journal = {
+            format = "%Y-%m-%d",
+            template = "",
+            entries = {
+                day = {
+                    format = "%Y-%m-%d",
+                    template = "",
+                }
+            }
+        }
+    })
+end)

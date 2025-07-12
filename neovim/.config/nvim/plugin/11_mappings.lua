@@ -2,13 +2,6 @@
 --  See `:help vim.keymap.set()`
 local map = vim.keymap.set
 
--- Setup notes
-local notes_dir = vim.fs.normalize('~/Documents/my-notes/')
-
--- Daily journal
-local dailyNotes = require('daily-notes')
-dailyNotes.setup({ dir = vim.fs.joinpath(notes_dir, 'journal') })
-
 -- Copy/paste with system clipboard
 map({ 'n', 'x' }, 'gy', '"+y', { desc = 'Copy to system clipboard' })
 map('n', 'gp', '"+p', { desc = 'Paste from system clipboard' })
@@ -69,9 +62,10 @@ map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hi
     { desc = '[T]oggle Inlay [H]ints' })
 
 -- notes
+local notes_dir = vim.fs.normalize('~/Documents/my-notes/')
 map('n', '<leader>ni', function() vim.cmd.edit(vim.fs.joinpath(notes_dir, 'index.md')) end,
     { desc = 'Open [N]otes index' })
-map('n', '<leader>nd', function() dailyNotes.open_daily_note() end, { desc = 'Open [N]otes [D]aily' })
+map('n', '<leader>nd', '<cmd>Journal<cr>', { desc = 'Open [N]otes [D]aily' })
 map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
 map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
 
