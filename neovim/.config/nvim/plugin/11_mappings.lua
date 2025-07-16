@@ -78,6 +78,7 @@ map('n', '<leader>s/', '<cmd>Pick history scope="/"<cr>', { desc = '"/" history'
 map('n', '<leader>s:', '<cmd>Pick history scope=":"<cr>', { desc = '":" history' })
 map('n', '<leader>s.', '<cmd>Pick oldfiles<cr>', { desc = 'Oldfiles ("." for repeat)' })
 map('n', '<leader>sa', '<cmd>Pick git_hunks scope="staged"<cr>', { desc = 'Added hunks (all)' })
+map('n', '<leader>sb', '<cmd>Pick buffers<cr>', { desc = 'Buffers' })
 map('n', '<leader>sc', '<cmd>Pick git_commits<cr>', { desc = 'Commits (all)' })
 map('n', '<leader>sG', '<cmd>Pick grep pattern="<cword>"<cr>', { desc = 'Grep current word' })
 map('n', '<leader>sd', '<cmd>Pick diagnostic<cr>', { desc = 'Diagnostics' })
