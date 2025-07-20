@@ -44,7 +44,6 @@ now(function()
 
     -- Ensure enabled
     local filetypes = vim.iter(ensure_installed):map(vim.treesitter.language.get_filetypes):flatten():totable()
-    vim.list_extend(filetypes, { 'markdown', 'pandoc' })
     local ts_start = function(ev) vim.treesitter.start(ev.buf) end
     vim.api.nvim_create_autocmd('FileType', { pattern = filetypes, callback = ts_start })
 end)

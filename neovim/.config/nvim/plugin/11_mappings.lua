@@ -70,7 +70,7 @@ map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]ile
 map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
 
 -- other
-map('n', '<leader>ot', '<cmd>lua MiniTrailspace.trim()', { desc = 'Trim trailspace' })
+map('n', '<leader>ot', '<cmd>lua MiniTrailspace.trim()<cr>', { desc = 'Trim trailspace' })
 map('n', '<leader>oz', '<cmd>lua MiniMisc.zoom()<cr>', { desc = 'Zoom toggle' })
 
 -- search

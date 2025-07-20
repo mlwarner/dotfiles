@@ -134,6 +134,8 @@ later(function()
     })
 end)
 
+later(function() require('mini.comment').setup() end)
+
 later(function() require('mini.cursorword').setup() end)
 
 later(function() require('mini.diff').setup() end)
