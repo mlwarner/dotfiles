@@ -31,12 +31,14 @@ now(function()
         'perl',
         'python',
         'regex',
+        'ruby',
         'rust',
         'swift',
         'tsx',
         'typescript',
         'vim',
         'vimdoc',
+        'yaml'
     }
 
     -- no-op if already installed

@@ -88,6 +88,12 @@ later(function()
             { mode = 'n', keys = '<Leader>' },
             { mode = 'x', keys = '<Leader>' },
 
+            -- mini.bracketed
+            { mode = 'n', keys = '[' },
+            { mode = 'n', keys = ']' },
+            { mode = 'x', keys = '[' },
+            { mode = 'x', keys = ']' },
+
             -- Built-in completion
             { mode = 'i', keys = '<C-x>' },
 
