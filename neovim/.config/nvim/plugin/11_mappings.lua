@@ -48,26 +48,26 @@ map('n', '<leader>go', '<cmd>lua MiniDiff.toggle_overlay()<cr>', { desc = 'Toggl
 map('n', '<leader>gs', '<cmd>lua MiniGit.show_at_cursor()<cr>', { desc = 'Show at cursor' })
 
 -- LSP
-map('n', 'grn', vim.lsp.buf.rename, { desc = '[R]e[n]ame' })
-map({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action, { desc = '[G]oto Code [A]ction' })
-map("n", "gO", "<Cmd>Pick lsp scope='document_symbol'<CR>", { desc = "Open document symbols" })
-map("n", "gW", "<Cmd>Pick lsp scope='workspace_symbol'<CR>", { desc = "Open workspace symbols" })
-map("n", "grr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "[R]eferences" })
-map("n", "gri", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "[I]mplementation" })
-map("n", "grd", "<Cmd>Pick lsp scope='definition'<CR>", { desc = "[G]oto [D]efinition" })
-map("n", "grD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "[G]oto [D]eclaration" })
-map("n", "grt", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "[G]oto [T]ype Definition" })
-map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = '[F]ormat' })
+map('n', 'grn', vim.lsp.buf.rename, { desc = 'Rename' })
+map({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action, { desc = 'Code Action' })
+map("n", "gO", "<Cmd>Pick lsp scope='document_symbol'<CR>", { desc = "Document symbols" })
+map("n", "gW", "<Cmd>Pick lsp scope='workspace_symbol'<CR>", { desc = "Workspace symbols" })
+map("n", "grr", "<Cmd>Pick lsp scope='references'<CR>", { desc = "References" })
+map("n", "gri", "<Cmd>Pick lsp scope='implementation'<CR>", { desc = "Implementation" })
+map("n", "grd", "<Cmd>Pick lsp scope='definition'<CR>", { desc = "Definition" })
+map("n", "grD", "<Cmd>Pick lsp scope='declaration'<CR>", { desc = "Declaration" })
+map("n", "grt", "<Cmd>Pick lsp scope='type_definition'<CR>", { desc = "Type Definition" })
+map('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, { desc = 'Format' })
 map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })) end,
-    { desc = '[T]oggle Inlay [H]ints' })
+    { desc = 'Toggle Inlay Hints' })
 
 -- notes
 local notes_dir = vim.fs.normalize('~/Documents/my-notes/')
 map('n', '<leader>ni', function() vim.cmd.edit(vim.fs.joinpath(notes_dir, 'index.md')) end,
     { desc = 'Open [N]otes index' })
-map('n', '<leader>nd', '<cmd>Journal<cr>', { desc = 'Open [N]otes [D]aily' })
-map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = '[N]otes [S]earch [F]iles' })
-map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = '[N]otes [S]earch by [G]rep' })
+map('n', '<leader>nd', '<cmd>Journal<cr>', { desc = 'Open daily note' })
+map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = 'Files' })
+map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = 'Grep' })
 
 -- other
 map('n', '<leader>ot', '<cmd>lua MiniTrailspace.trim()<cr>', { desc = 'Trim trailspace' })
