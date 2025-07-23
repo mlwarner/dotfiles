@@ -55,7 +55,18 @@ end)
 
 now(function() require('mini.sessions').setup() end)
 
--- now(function() require('mini.starter').setup() end)
+now(function()
+    local starter = require("mini.starter")
+    starter.setup({
+        evaluate_single = true,
+        footer = os.date(),
+        items = {
+            starter.sections.pick(),
+            starter.sections.sessions(),
+            starter.sections.builtin_actions(),
+        },
+    })
+end)
 
 now(function() require('mini.statusline').setup() end)
 
