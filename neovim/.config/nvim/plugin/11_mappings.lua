@@ -24,7 +24,8 @@ map('n', '<leader>,', '<cmd>Pick buffers<cr>', { desc = '[ ] Find existing buffe
 map('n', '<leader>/', '<cmd>Pick buf_lines<cr>', { desc = '[/] Fuzzily search in current buffer' })
 
 -- buffer
-map('n', '<leader>bs', function() vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true)) end, { desc = 'Scratch' })
+map('n', '<leader>bs', function() vim.api.nvim_win_set_buf(0, vim.api.nvim_create_buf(true, true)) end,
+    { desc = 'Scratch' })
 
 -- code companion
 map({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
@@ -63,9 +64,16 @@ map('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hi
 
 -- notes
 local notes_dir = vim.fs.normalize('~/Documents/my-notes/')
-map('n', '<leader>ni', function() vim.cmd.edit(vim.fs.joinpath(notes_dir, 'index.md')) end,
-    { desc = 'Open [N]otes index' })
-map('n', '<leader>nd', '<cmd>Journal<cr>', { desc = 'Open daily note' })
+
+-- Daily journal
+local dailyNotes = require('daily-notes')
+dailyNotes.setup({
+    root_dir = '~/Documents/my-notes/',
+    journal_dir = 'journal',
+})
+
+map('n', '<leader>ni', function() dailyNotes.open_index() end, { desc = 'Index' })
+map('n', '<leader>nd', function() dailyNotes.open_daily_note() end, { desc = 'Daily note' })
 map('n', '<leader>nsf', '<cmd>Pick notes<cr>', { desc = 'Files' })
 map('n', '<leader>nsg', '<cmd>Pick notes_grep<cr>', { desc = 'Grep' })
 

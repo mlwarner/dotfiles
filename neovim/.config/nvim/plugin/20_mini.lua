@@ -187,15 +187,17 @@ later(function()
     -- Pick anything
     require('mini.pick').setup()
     vim.ui.select = MiniPick.ui_select
-    local notes_dir = vim.fs.normalize('~/Documents/my-notes')
+
+    -- Expects daily notes to be setup
+    dailyNotes = require('daily-notes')
 
     MiniPick.registry.notes = function(local_opts)
-        local opts = { source = { cwd = notes_dir } }
+        local opts = { source = { cwd = dailyNotes.get_notes_dir() } }
         return MiniPick.builtin.files(local_opts, opts)
     end
 
     MiniPick.registry.notes_grep = function(local_opts)
-        local opts = { source = { cwd = notes_dir } }
+        local opts = { source = { cwd = dailyNotes.get_notes_dir() } }
         return MiniPick.builtin.grep_live(local_opts, opts)
     end
 end)
