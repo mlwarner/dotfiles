@@ -76,14 +76,19 @@ later(function() require('mini.extra').setup() end)
 
 later(function()
     local ai = require('mini.ai')
+    local gen_ai_spec = MiniExtra.gen_ai_spec
     ai.setup({
         custom_textobjects = {
-            B = MiniExtra.gen_ai_spec.buffer(),
+            B = gen_ai_spec.buffer(),
+            D = gen_ai_spec.diagnostic(),
             F = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
+            I = gen_ai_spec.indent(),
+            L = gen_ai_spec.line(),
+            N = gen_ai_spec.number(),
             o = ai.gen_spec.treesitter({
                 a = { '@conditional.outer', '@loop.outer' },
                 i = { '@conditional.inner', '@loop.inner' },
-            })
+            }),
         },
     })
 end)
