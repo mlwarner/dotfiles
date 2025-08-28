@@ -13,4 +13,3 @@ theme=Kanagawa Dragon
 # https://ghostty.org/docs/config/reference#keybind
 # https://ghostty.org/docs/config/keybind
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
-keybind = shift+enter=text:\n

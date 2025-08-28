@@ -1,10 +1,5 @@
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
--- Use 'HEAD' because I personally update it and don't want to follow `main`
--- This means that 'start/mini.nvim' will usually be present twice in
--- 'runtimepath' as there is a '.../pack/*/start/*' entry there.
-add({ name = 'mini.nvim', checkout = 'HEAD' })
-
 -- Load immediately -----------------------------
 
 now(function()
@@ -139,6 +134,7 @@ later(function()
 
         clues = {
             -- Enhance this by adding descriptions for <Leader> mapping groups
+            miniclue.gen_clues.square_brackets(),
             miniclue.gen_clues.builtin_completion(),
             miniclue.gen_clues.g(),
             miniclue.gen_clues.marks(),
