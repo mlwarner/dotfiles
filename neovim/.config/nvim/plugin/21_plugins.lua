@@ -104,16 +104,20 @@ later(function()
             "nvim-treesitter/nvim-treesitter",
         }
     })
+
     require("codecompanion").setup({
         strategies = {
             chat = {
-                adapter = "anthropic",
+                -- Use claude code subscription over API access
+                adapter = "claude_code",
             },
             inline = {
-                adapter = "anthropic",
+                -- adapter = "anthropic",
+                adapter = "claude_code",
             },
         },
     })
+
     -- Expand 'cc' into 'CodeCompanion' in the command line
     vim.cmd([[cab cc CodeCompanion]])
 end)
