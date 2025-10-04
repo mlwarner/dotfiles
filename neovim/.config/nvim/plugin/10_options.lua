@@ -67,3 +67,8 @@ vim.diagnostic.config({
         float = true,
     }
 })
+
+-- Builtin colorschemes
+-- vim.cmd('colorscheme retrobox')
+-- vim.cmd('colorscheme default')
+
