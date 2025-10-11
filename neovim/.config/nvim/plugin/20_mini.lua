@@ -2,6 +2,43 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 -- Load immediately -----------------------------
 
+now(function()
+    add({
+        source = 'rebelot/kanagawa.nvim'
+    })
+
+    require('kanagawa').setup({
+        colors = {
+            theme = {
+                all = {
+                    ui = {
+                        bg_gutter = "none"
+                    }
+                }
+            }
+        },
+        theme = "dragon",    -- vim.o.background = ""
+        background = {
+            dark = "dragon", -- vim.o.background = "dark"
+            light = "lotus"  -- vim.o.background = "light"
+        },
+    })
+    vim.cmd('colorscheme kanagawa')
+
+    -- Builtin colorschemes
+    -- vim.cmd('colorscheme retrobox')
+    -- vim.cmd('colorscheme default')
+end)
+
+now(function()
+    require('mini.basics').setup({
+        -- Manage options manually in a spirit of transparency
+        options = { basic = false },
+        mappings = { windows = true, move_with_alt = true },
+        autocommands = { relnum_in_visual_mode = true },
+    })
+end)
+
 now(function() require('mini.files').setup({ windows = { preview = true } }) end)
 
 now(function()
