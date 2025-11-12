@@ -1,5 +1,24 @@
-local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+-- ┌────────────────────┐
+-- │ MINI configuration │
+-- └────────────────────┘
+--
+-- This file contains configuration of the MINI parts of the config.
+-- It contains only configs for the 'mini.nvim' plugin (installed in 'init.lua').
+--
+-- 'mini.nvim' is a library of modules. Each is enabled independently via
+-- `require('mini.xxx').setup()` convention. It creates all intended side effects:
+-- mappings, autocommands, highlight groups, etc. It also creates a global
+-- `MiniXxx` table that can be later used to access module's features.
+--
+-- See `:h mini.nvim-general-principles` for more general principles.
 
+-- To minimize the time until first screen draw, modules are enabled in two steps:
+-- - Step one enables everything that is needed for first draw with `now()`.
+-- - Everything else is delayed until the first draw with `later()`.
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+local now_if_args = _G.Config.now_if_args
+
+-- Step one ===================================================================
 -- Load immediately -----------------------------
 
 now(function()
@@ -66,6 +85,7 @@ end)
 
 now(function() require('mini.statusline').setup() end)
 
+-- Step two ===================================================================
 -- Lazy load -------------------------------------
 
 later(function() require('mini.extra').setup() end)
