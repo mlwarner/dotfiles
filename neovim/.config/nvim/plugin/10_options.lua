@@ -52,21 +52,9 @@ vim.o.virtualedit    = 'block'                                 -- Allow going pa
 vim.o.spelllang      = 'en_us' -- Define spelling dictionaries
 vim.o.spelloptions   = 'camel' -- Treat parts of camelCase words as separate words
 
--- Diagnostics
--- See `:help vim.diagnostic.config()`
-vim.diagnostic.config({
-    signs = { severity = { min = 'WARN', max = 'ERROR' } },
-    underline = { severity = { min = 'HINT', max = 'ERROR' } },
-    virtual_lines = false,
-    virtual_text = { current_line = true, severity = { min = "ERROR", max = "ERROR" } },
-
-    severity_sort = true,
-    update_in_insert = false, -- Diagnostics are only updated when not entering text
-    -- default for vim.diagnostic.JumpOpts sets float to false
-    jump = {
-        float = true,
-    }
-})
+-- Builtin colorschemes
+-- vim.cmd('colorscheme retrobox')
+-- vim.cmd('colorscheme default')
 
 -- Autocommands ===============================================================
 
@@ -76,12 +64,28 @@ vim.diagnostic.config({
 local yank_highlight = function() vim.hl.on_yank() end
 _G.Config.new_autocmd('TextYankPost', nil, yank_highlight, 'Highlight when yanking text')
 
--- Don't auto-wrap comments and don't insert comment leader after hitting 'o'.
--- Do on `FileType` to always override these changes from filetype plugins.
-local f = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end
-_G.Config.new_autocmd('FileType', nil, f, "Proper 'formatoptions'")
+-- Diagnostics ================================================================
 
--- Builtin colorschemes
--- vim.cmd('colorscheme retrobox')
--- vim.cmd('colorscheme default')
+-- Neovim has built-in support for showing diagnostic messages. This configures
+-- a more conservative display while still being useful.
+-- See `:h vim.diagnostic` and `:h vim.diagnostic.config()`.
+local diagnostic_opts = {
+  -- Show signs on top of any other sign, but only for warnings and errors
+  signs = { priority = 9999, severity = { min = 'WARN', max = 'ERROR' } },
 
+  -- Show all diagnostics as underline (for their messages type `<Leader>ld`)
+  underline = { severity = { min = 'HINT', max = 'ERROR' } },
+
+  -- Show more details immediately for errors on the current line
+  virtual_lines = false,
+  virtual_text = {
+    current_line = true,
+    severity = { min = 'ERROR', max = 'ERROR' },
+  },
+
+  -- Don't update diagnostics when typing
+  update_in_insert = false,
+}
+
+-- Use `later()` to avoid sourcing `vim.diagnostic` on startup
+MiniDeps.later(function() vim.diagnostic.config(diagnostic_opts) end)
