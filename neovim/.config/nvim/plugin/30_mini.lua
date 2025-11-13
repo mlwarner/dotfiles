@@ -1,5 +1,24 @@
-local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+-- ┌────────────────────┐
+-- │ MINI configuration │
+-- └────────────────────┘
+--
+-- This file contains configuration of the MINI parts of the config.
+-- It contains only configs for the 'mini.nvim' plugin (installed in 'init.lua').
+--
+-- 'mini.nvim' is a library of modules. Each is enabled independently via
+-- `require('mini.xxx').setup()` convention. It creates all intended side effects:
+-- mappings, autocommands, highlight groups, etc. It also creates a global
+-- `MiniXxx` table that can be later used to access module's features.
+--
+-- See `:h mini.nvim-general-principles` for more general principles.
 
+-- To minimize the time until first screen draw, modules are enabled in two steps:
+-- - Step one enables everything that is needed for first draw with `now()`.
+-- - Everything else is delayed until the first draw with `later()`.
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+local now_if_args = _G.Config.now_if_args
+
+-- Step one ===================================================================
 -- Load immediately -----------------------------
 
 now(function()
@@ -66,6 +85,7 @@ end)
 
 now(function() require('mini.statusline').setup() end)
 
+-- Step two ===================================================================
 -- Lazy load -------------------------------------
 
 later(function() require('mini.extra').setup() end)
@@ -92,63 +112,82 @@ end)
 later(function() require('mini.align').setup() end)
 
 later(function()
-    -- Show next key clues
+    -- Go forward/backward with square brackets. Implements consistent sets of mappings
+    -- for selected targets (like buffers, diagnostic, quickfix list entries, etc.).
+    -- Example usage:
+    -- - `]b` - go to next buffer
+    -- - `[d` - go to previous diagnostic
+    -- - `]q` - go to next quickfix entry
+    -- - `[Q` - go to first quickfix entry
+    -- - `]X` - go to last conflict marker
+    --
+    -- See also:
+    -- - `:h MiniBracketed` - overall mapping design and list of targets
+    require('mini.bracketed').setup()
+end)
+
+later(function()
+    -- Remove buffers. Opened files occupy space in tabline and buffer picker.
+    -- When not needed, they can be removed. Example usage:
+    -- - `<Leader>bd` - delete current buffer (see `:h :bdelete`)
+    -- - `<Leader>bD` - delete current buffer even if it has changes
+    -- - `<Leader>bw` - completely wipeout current buffer (see `:h :bwipeout`)
+    -- - `<Leader>bW` - wipeout current buffer even if it has changes
+    require('mini.bufremove').setup()
+end)
+
+later(function()
+    -- Show next key clues. Example usage:
+    -- - Press `<Leader>` and wait for 1 second. A window with information about
+    --   next available keys should appear.
+    -- - Press one of the listed keys. Window updates immediately to show information
+    --   about new next available keys. You can press `<BS>` to go back in key sequence.
+    -- - Press keys until they resolve into some mapping.
+    --
+    -- See also:
+    -- - `:h MiniClue-examples` - examples of common setups
     local miniclue = require('mini.clue')
+    -- stylua: ignore
     miniclue.setup({
-        triggers = {
-            -- Leader triggers
-            { mode = 'n', keys = '<Leader>' },
-            { mode = 'x', keys = '<Leader>' },
-
-            -- mini.bracketed
-            { mode = 'n', keys = '[' },
-            { mode = 'n', keys = ']' },
-            { mode = 'x', keys = '[' },
-            { mode = 'x', keys = ']' },
-
-            -- Built-in completion
-            { mode = 'i', keys = '<C-x>' },
-
-            -- `g` key
-            { mode = 'n', keys = 'g' },
-            { mode = 'x', keys = 'g' },
-
-            -- Marks
-            { mode = 'n', keys = "'" },
-            { mode = 'n', keys = '`' },
-            { mode = 'x', keys = "'" },
-            { mode = 'x', keys = '`' },
-
-            -- Registers
-            { mode = 'n', keys = '"' },
-            { mode = 'x', keys = '"' },
-            { mode = 'i', keys = '<C-r>' },
-            { mode = 'c', keys = '<C-r>' },
-
-            -- Window commands
-            { mode = 'n', keys = '<C-w>' },
-
-            -- `z` key
-            { mode = 'n', keys = 'z' },
-            { mode = 'x', keys = 'z' },
-        },
-
+        -- Define which clues to show. By default shows only clues for custom mappings
+        -- (uses `desc` field from the mapping; takes precedence over custom clue).
         clues = {
-            -- Enhance this by adding descriptions for <Leader> mapping groups
-            miniclue.gen_clues.square_brackets(),
+            -- This is defined in 'plugin/20_keymaps.lua' with Leader group descriptions
+            Config.leader_group_clues,
             miniclue.gen_clues.builtin_completion(),
             miniclue.gen_clues.g(),
             miniclue.gen_clues.marks(),
             miniclue.gen_clues.registers(),
             miniclue.gen_clues.windows(),
             miniclue.gen_clues.z(),
-            { mode = 'n', keys = '<Leader>b', desc = '+Buffer' },
-            { mode = 'n', keys = '<Leader>e', desc = '+Explore' },
-            { mode = 'n', keys = '<Leader>g', desc = '+Git' },
-            { mode = 'n', keys = '<Leader>n', desc = '+Notes' },
-            { mode = 'n', keys = '<Leader>o', desc = '+Other' },
-            { mode = 'n', keys = '<Leader>s', desc = '+Search' },
-            { mode = 'n', keys = '<Leader>v', desc = '+Visits' },
+            -- mini.bracketed provides `[` and `]` mappings
+            { mode = 'n', keys = '[b', desc = 'Previous buffer' },
+            { mode = 'n', keys = ']b', desc = 'Next buffer' },
+            { mode = 'n', keys = '[d', desc = 'Previous diagnostic' },
+            { mode = 'n', keys = ']d', desc = 'Next diagnostic' },
+        },
+        -- Explicitly opt-in for set of common keys to trigger clue window
+        triggers = {
+            { mode = 'n', keys = '<Leader>' }, -- Leader triggers
+            { mode = 'x', keys = '<Leader>' },
+            { mode = 'n', keys = '[' },        -- mini.bracketed
+            { mode = 'n', keys = ']' },
+            { mode = 'x', keys = '[' },
+            { mode = 'x', keys = ']' },
+            { mode = 'i', keys = '<C-x>' },    -- Built-in completion
+            { mode = 'n', keys = 'g' },        -- `g` key
+            { mode = 'x', keys = 'g' },
+            { mode = 'n', keys = "'" },        -- Marks
+            { mode = 'n', keys = '`' },
+            { mode = 'x', keys = "'" },
+            { mode = 'x', keys = '`' },
+            { mode = 'n', keys = '"' },        -- Registers
+            { mode = 'x', keys = '"' },
+            { mode = 'i', keys = '<C-r>' },
+            { mode = 'c', keys = '<C-r>' },
+            { mode = 'n', keys = '<C-w>' },    -- Window commands
+            { mode = 'n', keys = 'z' },        -- `z` key
+            { mode = 'x', keys = 'z' },
         },
     })
 end)

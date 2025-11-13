@@ -1,8 +1,18 @@
--- Use 'mini.deps'. `now()` and `later()` are helpers for a safe two-stage
--- startup and are optional.
-local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+-- ┌─────────────────────────┐
+-- │ Plugins outside of MINI │
+-- └─────────────────────────┘
+--
+-- This file contains installation and configuration of plugins outside of MINI.
+-- They significantly improve user experience in a way not yet possible with MINI.
+--
+-- Use this file to install and configure other such plugins.
 
-now(function()
+-- Make concise helpers for installing/adding plugins in two stages
+local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+local now_if_args = _G.Config.now_if_args
+
+-- Tree-sitter ================================================================
+now_if_args(function()
     -- The main branch is under active development and has different conventions
     add({
         source = 'nvim-treesitter/nvim-treesitter',
@@ -50,7 +60,7 @@ now(function()
     -- Ensure enabled
     local filetypes = vim.iter(ensure_installed):map(vim.treesitter.language.get_filetypes):flatten():totable()
     local ts_start = function(ev) vim.treesitter.start(ev.buf) end
-    vim.api.nvim_create_autocmd('FileType', { pattern = filetypes, callback = ts_start })
+    _G.Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
 
     -- Disable injections in 'lua' language
     local ts_query = require('vim.treesitter.query')
@@ -58,6 +68,7 @@ now(function()
     ts_query_set('lua', 'injections', '')
 end)
 
+-- Language servers ===========================================================
 later(function()
     add({
         source = 'mason-org/mason-lspconfig.nvim',
@@ -82,6 +93,7 @@ later(function()
     vim.lsp.enable('sourcekit')
 end)
 
+-- Completion =================================================================
 later(function()
     -- use a release tag to download pre-built binaries
     add({
@@ -104,6 +116,7 @@ later(function()
     })
 end)
 
+-- AI Assistants ==============================================================
 later(function()
     add({
         source = "olimorris/codecompanion.nvim",
@@ -131,6 +144,7 @@ later(function()
     vim.cmd([[cab cc CodeCompanion]])
 end)
 
+-- Utilities ==================================================================
 later(function()
     add({
         source = "mistricky/codesnap.nvim",
