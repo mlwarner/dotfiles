@@ -112,6 +112,31 @@ end)
 later(function() require('mini.align').setup() end)
 
 later(function()
+    -- Go forward/backward with square brackets. Implements consistent sets of mappings
+    -- for selected targets (like buffers, diagnostic, quickfix list entries, etc.).
+    -- Example usage:
+    -- - `]b` - go to next buffer
+    -- - `[d` - go to previous diagnostic
+    -- - `]q` - go to next quickfix entry
+    -- - `[Q` - go to first quickfix entry
+    -- - `]X` - go to last conflict marker
+    --
+    -- See also:
+    -- - `:h MiniBracketed` - overall mapping design and list of targets
+    require('mini.bracketed').setup()
+end)
+
+later(function()
+    -- Remove buffers. Opened files occupy space in tabline and buffer picker.
+    -- When not needed, they can be removed. Example usage:
+    -- - `<Leader>bd` - delete current buffer (see `:h :bdelete`)
+    -- - `<Leader>bD` - delete current buffer even if it has changes
+    -- - `<Leader>bw` - completely wipeout current buffer (see `:h :bwipeout`)
+    -- - `<Leader>bW` - wipeout current buffer even if it has changes
+    require('mini.bufremove').setup()
+end)
+
+later(function()
     -- Show next key clues. Example usage:
     -- - Press `<Leader>` and wait for 1 second. A window with information about
     --   next available keys should appear.
@@ -135,6 +160,11 @@ later(function()
             miniclue.gen_clues.registers(),
             miniclue.gen_clues.windows(),
             miniclue.gen_clues.z(),
+            -- mini.bracketed provides `[` and `]` mappings
+            { mode = 'n', keys = '[b', desc = 'Previous buffer' },
+            { mode = 'n', keys = ']b', desc = 'Next buffer' },
+            { mode = 'n', keys = '[d', desc = 'Previous diagnostic' },
+            { mode = 'n', keys = ']d', desc = 'Next diagnostic' },
         },
         -- Explicitly opt-in for set of common keys to trigger clue window
         triggers = {
