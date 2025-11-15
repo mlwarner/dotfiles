@@ -23,14 +23,10 @@ dotfiles/
 ├── README.md                  # User-facing setup instructions
 ├── CLAUDE.md                  # This file - AI assistant guide
 │
-├── aerospace/                 # AeroSpace window manager (macOS tiling WM)
 ├── ghostty/                   # Ghostty terminal emulator
 ├── git/                       # Git configuration and global ignore
-├── mbsync/                    # Email sync automation (systemd/launchd)
 ├── neovim/                    # Neovim editor (most complex config)
-├── nix/                       # Nix/Home Manager declarative configs
-├── vscode/                    # VS Code settings (Vim mode)
-└── zellij/                    # Zellij terminal multiplexer
+└── vscode/                    # VS Code settings (Vim mode)
 ```
 
 ### GNU Stow Pattern
@@ -117,31 +113,6 @@ _G.Config.leader_group_clues = { ... }
 
 **Important:** All `.claude/settings.local.json` files are globally ignored.
 
-### aerospace/ - Window Management
-
-**Location:** `aerospace/.config/aerospace/aerospace.toml`
-
-**Purpose:** i3-like tiling window manager for macOS
-
-**Key Features:**
-- Named workspaces: E(mail), I(DE), N(otes), P(ersonal), S(lack), T(erminal), W(eb)
-- Vim navigation: `alt-hjkl` for focus
-- Auto-assignment of apps to workspaces
-- 8px gaps on all sides
-
-### nix/ - Declarative Configuration
-
-**Location:** `nix/.config/nixpkgs/`
-
-**Structure:** Modular nix files per tool
-- `home.nix` - Entry point for Home Manager
-- `shell/shell.nix` - Zsh with Prezto, fzf, zoxide
-- Individual tool configs (git, neovim, tmux, etc.)
-
-**Shell Aliases:**
-- Modern replacements: `bat` (cat), `delta` (diff), `fd` (find), `exa` (ls), `rg` (grep), `procs` (ps)
-- Brazil build aliases (Amazon-specific tooling)
-
 ### ghostty/ - Terminal Emulator
 
 **Location:** `ghostty/.config/ghostty/config`
@@ -153,19 +124,6 @@ _G.Config.leader_group_clues = { ... }
 - Font size: 16, thickening enabled
 - Quick terminal toggle support
 
-### zellij/ - Terminal Multiplexer
-
-**Location:** `zellij/.config/zellij/config.kdl`
-
-**Purpose:** Modern tmux alternative with modal interface
-
-**Features:**
-- Vim-style keybindings
-- Gruvbox dark theme
-- Multiple modes: normal, resize, pane, tab, scroll
-- Compact layout
-- Tmux compatibility mode
-
 ### vscode/ - Visual Studio Code
 
 **Location:** `vscode/Library/Application Support/Code/User/`
@@ -175,14 +133,6 @@ _G.Config.leader_group_clues = { ... }
 - JetBrains Mono font
 - Relative line numbers
 - Gruvbox theme
-
-### mbsync/ - Email Automation
-
-**Purpose:** Dual-platform email sync automation
-
-**Structure:**
-- `systemd/user/` - Linux service/timer (runs every minute)
-- `LaunchAgents/` - macOS launchd plist
 
 ## Development Workflows
 
@@ -298,7 +248,6 @@ ALL files should follow:
 | `neovim/.config/nvim/lua/daily-notes.lua` | Daily notes system | When modifying journaling workflow |
 | `git/.config/git/config` | Git aliases | When adding git shortcuts |
 | `git/.config/git/ignore` | Global gitignore | When adding global ignore patterns |
-| `aerospace/.config/aerospace/aerospace.toml` | Window manager config | When changing workspace behavior |
 | `.editorconfig` | Global editor standards | Rarely, affects all files |
 
 ## Special Considerations for AI Assistants
@@ -344,7 +293,7 @@ ALL files should follow:
 3. **Commit Guidelines:**
    - Use conventional commit format: `type(scope): description`
    - Types: feat, fix, chore, docs
-   - Scopes: nvim, git, aerospace, or tool name
+   - Scopes: nvim, git, ghostty, vscode, or tool name
    - Keep commits focused and atomic
 
 4. **Testing Changes:**
@@ -357,9 +306,8 @@ ALL files should follow:
 Based on the configuration, the user:
 - **Strongly prefers Vim keybindings** - Present in every tool
 - **Values consistency** - Same themes, fonts, and navigation across tools
-- **Uses modal editing heavily** - Neovim, Vim mode in VS Code, modal Zellij
-- **Organizes with semantic meaning** - Leader key groups, named workspaces
-- **Prefers modern alternatives** - Uses bat over cat, exa over ls, etc.
+- **Uses modal editing heavily** - Neovim, Vim mode in VS Code
+- **Organizes with semantic meaning** - Leader key groups with semantic two-key approach
 - **Works with notes/journaling** - Custom daily notes system
 - **Uses AI assistance** - CodeCompanion plugin for AI in Neovim
 
@@ -388,7 +336,6 @@ Based on the configuration, the user:
 
 **Updating dependencies:**
 - Neovim plugins: Use `:DepsUpdate` command
-- Nix packages: Edit `nix/.config/nixpkgs/home.nix` and rebuild
 - System packages: Use Homebrew as documented in README
 
 ## Quick Reference
