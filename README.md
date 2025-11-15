@@ -4,45 +4,43 @@ Personal configuration files managed with GNU Stow. Includes configurations for 
 
 ## Quick Start
 
-1. **Install dependencies**
-   ```sh
-   # macOS
-   brew install stow node neovim starship fzf zoxide
-
-   # Linux (Ubuntu/Debian)
-   sudo apt install stow nodejs neovim fzf zoxide
-   ```
-
-2. **Clone this repository**
+1. **Clone this repository**
    ```sh
    git clone https://github.com/mlwarner/dotfiles.git ~/dotfiles
    cd ~/dotfiles
    ```
 
-3. **Run the installation script**
+2. **Run the installation script**
    ```sh
-   ./install.sh
+   ./install.sh --all
    ```
 
-That's it! All configurations are now symlinked to the appropriate locations.
+That's it! The script will install all dependencies and symlink your configurations.
 
-## Updating
+## Installation Options
 
-To update symlinks after making changes:
 ```sh
-./install.sh --restow
+./install.sh --all         # Install dependencies + stow configs (recommended)
+./install.sh               # Stow configs only (requires stow already installed)
+./install.sh --deps-only   # Install dependencies only
+./install.sh --restow      # Update existing symlinks
+./install.sh --help        # Show all options
 ```
 
-## What's Included
+## What Gets Installed
 
+**Packages:**
+- stow, fzf, ripgrep, neovim, starship, git, tree-sitter, tmux, fd, node, zoxide
+
+**Configurations:**
 - **Neovim** - Mini.nvim-based configuration with LSP, Treesitter, and semantic keybindings
 - **Git** - Aliases and global ignore patterns
 - **Ghostty** - Terminal emulator configuration
 - **VS Code** - Settings with Vim mode enabled
 
-## Manual Installation
+## Selective Installation
 
-If you prefer to selectively install configurations:
+Install specific configurations only:
 ```sh
 cd ~/dotfiles
 stow neovim  # Install only Neovim config
