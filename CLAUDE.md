@@ -31,7 +31,6 @@ dotfiles/
 ├── neovim/                    # Neovim editor (most complex config)
 ├── nix/                       # Nix/Home Manager declarative configs
 ├── vscode/                    # VS Code settings (Vim mode)
-├── wezterm/                   # WezTerm terminal emulator
 └── zellij/                    # Zellij terminal multiplexer
 ```
 
@@ -146,7 +145,7 @@ _G.Config.leader_group_clues = { ... }
 
 ### Terminal Emulators
 
-**Three terminal configs:**
+**Two terminal configs:**
 1. **alacritty** - GPU-accelerated, TOML config
    - Font: Cascadia Code NF, 16pt
    - Option key as Alt (left only)
@@ -155,11 +154,6 @@ _G.Config.leader_group_clues = { ... }
    - Theme: Kanagawa Dragon
    - Font size: 16, thickening enabled
    - Quick terminal toggle support
-
-3. **wezterm** - Lua-configured
-   - Font: Cascadia Code NF
-   - WebGpu frontend
-   - Tango color scheme
 
 ### zellij/ - Terminal Multiplexer
 
