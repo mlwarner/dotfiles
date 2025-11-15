@@ -24,7 +24,6 @@ dotfiles/
 ├── CLAUDE.md                  # This file - AI assistant guide
 │
 ├── aerospace/                 # AeroSpace window manager (macOS tiling WM)
-├── alacritty/                 # Alacritty terminal emulator
 ├── ghostty/                   # Ghostty terminal emulator
 ├── git/                       # Git configuration and global ignore
 ├── mbsync/                    # Email sync automation (systemd/launchd)
@@ -143,17 +142,16 @@ _G.Config.leader_group_clues = { ... }
 - Modern replacements: `bat` (cat), `delta` (diff), `fd` (find), `exa` (ls), `rg` (grep), `procs` (ps)
 - Brazil build aliases (Amazon-specific tooling)
 
-### Terminal Emulators
+### ghostty/ - Terminal Emulator
 
-**Two terminal configs:**
-1. **alacritty** - GPU-accelerated, TOML config
-   - Font: Cascadia Code NF, 16pt
-   - Option key as Alt (left only)
+**Location:** `ghostty/.config/ghostty/config`
 
-2. **ghostty** - Modern terminal
-   - Theme: Kanagawa Dragon
-   - Font size: 16, thickening enabled
-   - Quick terminal toggle support
+**Purpose:** Modern terminal emulator
+
+**Features:**
+- Theme: Kanagawa Dragon
+- Font size: 16, thickening enabled
+- Quick terminal toggle support
 
 ### zellij/ - Terminal Multiplexer
 
