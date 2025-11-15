@@ -1,37 +1,49 @@
 # dotfiles
 
-## Description
+Personal configuration files managed with GNU Stow. Includes configurations for Neovim, Git, Ghostty, and VS Code.
 
-This is a collection of my different configurations I use. I checkout this
-repository and use GNU stow to symlink the layout of my folders.
+## Quick Start
 
-## Setup
+1. **Clone this repository**
+   ```sh
+   git clone https://github.com/mlwarner/dotfiles.git ~/dotfiles
+   cd ~/dotfiles
+   ```
 
-### Install Homebrew
+2. **Run the installation script**
+   ```sh
+   ./install.sh --all
+   ```
 
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+That's it! The script will install all dependencies and symlink your configurations.
 
-### Install CLI packages
+## Installation Options
 
 ```sh
-brew install node neovim starship stow fzf zoxide
+./install.sh --all         # Install dependencies + stow configs (recommended)
+./install.sh               # Stow configs only (requires stow already installed)
+./install.sh --deps-only   # Install dependencies only
+./install.sh --restow      # Update existing symlinks
+./install.sh --help        # Show all options
 ```
 
-### Install dotfiles
+## What Gets Installed
 
-Make a clone of this repository in your home folder. This will be the source of
-truth for configurations in your workspace.
+**Packages:**
+- stow, fzf, ripgrep, neovim, starship, git, tree-sitter, tmux, fd, node, zoxide
 
-```
-git clone https://github.com/mlwarner/dotfiles.git $HOME
-```
+**Configurations:**
+- **Neovim** - Mini.nvim-based configuration with LSP, Treesitter, and semantic keybindings
+- **Git** - Aliases and global ignore patterns
+- **Ghostty** - Terminal emulator configuration
+- **VS Code** - Settings with Vim mode enabled
 
-### Create symlinks
+## Selective Installation
 
-```
-cd $HOME/dotfiles
-stow .
+Install specific configurations only:
+```sh
+cd ~/dotfiles
+stow neovim  # Install only Neovim config
+stow git     # Install only Git config
 ```
 
