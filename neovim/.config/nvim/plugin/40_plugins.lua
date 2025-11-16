@@ -167,30 +167,43 @@ later(function()
     })
 end)
 
+-- now(function()
+--     add({
+--         source = 'rebelot/kanagawa.nvim'
+--     })
+--
+--     require('kanagawa').setup({
+--         colors = {
+--             theme = {
+--                 all = {
+--                     ui = {
+--                         bg_gutter = "none"
+--                     }
+--                 }
+--             }
+--         },
+--         theme = "dragon",    -- vim.o.background = ""
+--         background = {
+--             dark = "dragon", -- vim.o.background = "dark"
+--             light = "lotus"  -- vim.o.background = "light"
+--         },
+--         -- overrides = function(colors)
+--         --     return {
+--         --         BlinkCmpLabelDetail = { bg = colors.palette.dragonBlack3 },
+--         --         BlinkCmpMenu = { bg = colors.palette.dragonBlack3 },
+--         --         BlinkCmpMenuBorder = { bg = colors.palette.dragonBlack3 },
+--         --         BlinkCmpMenuSelection = { bg = colors.palette.waveBlue1 },
+--         --     }
+--         -- end,
+--     })
+--     vim.cmd('colorscheme kanagawa')
+-- end)
+
 now(function()
     add({
-        source = 'rebelot/kanagawa.nvim'
+        source = 'rose-pine/neovim'
     })
+    require('rose-pine').setup()
 
-    require('kanagawa').setup({
-        colors = {
-            theme = {
-                all = {
-                    ui = {
-                        bg_gutter = "none"
-                    }
-                }
-            }
-        },
-        theme = "dragon",    -- vim.o.background = ""
-        background = {
-            dark = "dragon", -- vim.o.background = "dark"
-            light = "lotus"  -- vim.o.background = "light"
-        },
-    })
-    vim.cmd('colorscheme kanagawa')
-
-    -- Builtin colorschemes
-    -- vim.cmd('colorscheme retrobox')
-    -- vim.cmd('colorscheme default')
+    vim.cmd('colorscheme rose-pine')
 end)
