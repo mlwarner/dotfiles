@@ -99,7 +99,7 @@ later(function()
     add({
         source = "saghen/blink.cmp",
         depends = { "rafamadriz/friendly-snippets" },
-        checkout = "v1.7.0", -- check releases for latest tag
+        checkout = "v1.8.0", -- check releases for latest tag
     })
     require('blink.cmp').setup({
         keymap = { preset = 'default' },
