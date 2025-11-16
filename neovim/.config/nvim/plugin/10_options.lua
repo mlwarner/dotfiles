@@ -16,41 +16,42 @@ vim.o.writebackup    = false -- Don't store backup while overwriting the file
 vim.o.mouse          = 'a'   -- Enable mouse for all available modes
 
 -- Appearance
-vim.o.breakindent    = true         -- Indent wrapped lines to match line start
-vim.o.cursorline     = true         -- Highlight current line
-vim.o.cursorlineopt  = 'number'     -- Only highlight the current line number
-vim.o.laststatus     = 3            -- Always show status line
-vim.o.linebreak      = true         -- Wrap long lines at 'breakat' (if 'wrap' is set)
-vim.o.number         = true         -- Show line numbers
+vim.o.breakindent    = true       -- Indent wrapped lines to match line start
+vim.o.cursorline     = true       -- Highlight current line
+vim.o.cursorlineopt  = 'number'   -- Only highlight the current line number
+vim.o.laststatus     = 3          -- Always show status line
+vim.o.linebreak      = true       -- Wrap long lines at 'breakat' (if 'wrap' is set)
+vim.o.number         = true       -- Show line numbers
 -- vim.o.relativenumber = true         -- Show relative line numbers
-vim.o.ruler          = false        -- Don't show cursor position in command line
-vim.o.scrolloff      = 8            -- scroll context
-vim.o.shortmess      = 'aoOtTWcCFS' -- Disable certain messages from |ins-completion-menu|
-vim.o.showmode       = false        -- Don't show mode in command line
-vim.o.sidescrolloff  = 8            -- line scroll context
-vim.o.signcolumn     = 'yes'        -- Always show sign column (otherwise it will shift text)
-vim.o.splitbelow     = true         -- Horizontal splits will be below
-vim.o.splitright     = true         -- Vertical splits will be to the right
-vim.o.wrap           = false        -- Display long lines as just one line
+vim.o.pumheight      = 10         -- Make popup menu smaller
+vim.o.ruler          = false      -- Don't show cursor position in command line
+vim.o.scrolloff      = 8          -- scroll context
+vim.o.shortmess      = 'CFOSWaco' -- Disable some built-in completion messages
+vim.o.showmode       = false      -- Don't show mode in command line
+vim.o.sidescrolloff  = 8          -- line scroll context
+vim.o.signcolumn     = 'yes'      -- Always show sign column (otherwise it will shift text)
+vim.o.splitbelow     = true       -- Horizontal splits will be below
+vim.o.splitright     = true       -- Vertical splits will be to the right
+vim.o.winborder      = 'single'   -- Use border in floating windows
+vim.o.wrap           = false      -- Display long lines as just one line
 
 -- Editing
-vim.o.cindent        = true                                    -- Or else comments do not indent in visualmode + > or <
-vim.o.completeopt    = 'menuone,noinsert,noselect,popup,fuzzy' -- Customize completions
+vim.o.autoindent     = true     -- Use auto indent
 vim.o.expandtab      = true
-vim.o.formatoptions  = 'rqnl1j'                                -- Improve comment editing
-vim.o.ignorecase     = true                                    -- Ignore case when searching (use `\C` to force not doing that)
-vim.o.incsearch      = true                                    -- Show search results while typing
-vim.o.infercase      = true                                    -- Infer letter cases for a richer built-in keyword completion
+vim.o.formatoptions  = 'rqnl1j' -- Improve comment editing
+vim.o.ignorecase     = true     -- Ignore case when searching (use `\C` to force not doing that)
+vim.o.incsearch      = true     -- Show search results while typing
+vim.o.infercase      = true     -- Infer letter cases for a richer built-in keyword completion
 vim.o.shiftwidth     = 4
-vim.o.smartcase      = true                                    -- Don't ignore case when searching if pattern has upper case
-vim.o.smartindent    = true                                    -- Make indenting smart
-vim.o.softtabstop    = -1                                      -- Copy shiftwidth value
+vim.o.smartcase      = true     -- Don't ignore case when searching if pattern has upper case
+vim.o.smartindent    = true     -- Make indenting smart
+vim.o.spelllang      = 'en_us'  -- Define spelling dictionaries
+vim.o.spelloptions   = 'camel'  -- Treat parts of camelCase words as separate words
 vim.o.tabstop        = 4
-vim.o.virtualedit    = 'block'                                 -- Allow going past the end of line in visual block mode
+vim.o.virtualedit    = 'block'  -- Allow going past the end of line in visual block mode
 
--- Spelling
-vim.o.spelllang      = 'en_us' -- Define spelling dictionaries
-vim.o.spelloptions   = 'camel' -- Treat parts of camelCase words as separate words
+-- Built-in completion
+vim.o.completeopt    = 'menuone,noselect,fuzzy,nosort' -- Use custom behavior
 
 -- Builtin colorschemes
 -- vim.cmd('colorscheme retrobox')
@@ -60,7 +61,7 @@ vim.o.spelloptions   = 'camel' -- Treat parts of camelCase words as separate wor
 
 -- Don't auto-wrap comments and don't insert comment leader after hitting 'o'.
 -- Do on `FileType` to always override these changes from filetype plugins.
-local f = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end
+local f              = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end
 _G.Config.new_autocmd('FileType', nil, f, "Proper 'formatoptions'")
 
 -- There are other autocommands created by 'mini.basics'. See 'plugin/30_mini.lua'.
@@ -71,21 +72,21 @@ _G.Config.new_autocmd('FileType', nil, f, "Proper 'formatoptions'")
 -- a more conservative display while still being useful.
 -- See `:h vim.diagnostic` and `:h vim.diagnostic.config()`.
 local diagnostic_opts = {
-  -- Show signs on top of any other sign, but only for warnings and errors
-  signs = { priority = 9999, severity = { min = 'WARN', max = 'ERROR' } },
+    -- Show signs on top of any other sign, but only for warnings and errors
+    signs = { priority = 9999, severity = { min = 'WARN', max = 'ERROR' } },
 
-  -- Show all diagnostics as underline (for their messages type `<Leader>ld`)
-  underline = { severity = { min = 'HINT', max = 'ERROR' } },
+    -- Show all diagnostics as underline (for their messages type `<Leader>ld`)
+    underline = { severity = { min = 'HINT', max = 'ERROR' } },
 
-  -- Show more details immediately for errors on the current line
-  virtual_lines = false,
-  virtual_text = {
-    current_line = true,
-    severity = { min = 'ERROR', max = 'ERROR' },
-  },
+    -- Show more details immediately for errors on the current line
+    virtual_lines = false,
+    virtual_text = {
+        current_line = true,
+        severity = { min = 'ERROR', max = 'ERROR' },
+    },
 
-  -- Don't update diagnostics when typing
-  update_in_insert = false,
+    -- Don't update diagnostics when typing
+    update_in_insert = false,
 }
 
 -- Use `later()` to avoid sourcing `vim.diagnostic` on startup

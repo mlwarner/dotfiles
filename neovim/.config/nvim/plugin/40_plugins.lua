@@ -166,3 +166,31 @@ later(function()
         source = "opdavies/toggle-checkbox.nvim"
     })
 end)
+
+now(function()
+    add({
+        source = 'rebelot/kanagawa.nvim'
+    })
+
+    require('kanagawa').setup({
+        colors = {
+            theme = {
+                all = {
+                    ui = {
+                        bg_gutter = "none"
+                    }
+                }
+            }
+        },
+        theme = "dragon",    -- vim.o.background = ""
+        background = {
+            dark = "dragon", -- vim.o.background = "dark"
+            light = "lotus"  -- vim.o.background = "light"
+        },
+    })
+    vim.cmd('colorscheme kanagawa')
+
+    -- Builtin colorschemes
+    -- vim.cmd('colorscheme retrobox')
+    -- vim.cmd('colorscheme default')
+end)

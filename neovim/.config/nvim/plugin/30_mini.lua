@@ -19,36 +19,19 @@ local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 local now_if_args = _G.Config.now_if_args
 
 -- Step one ===================================================================
--- Load immediately -----------------------------
 
-now(function()
-    add({
-        source = 'rebelot/kanagawa.nvim'
-    })
-
-    require('kanagawa').setup({
-        colors = {
-            theme = {
-                all = {
-                    ui = {
-                        bg_gutter = "none"
-                    }
-                }
-            }
-        },
-        theme = "dragon",    -- vim.o.background = ""
-        background = {
-            dark = "dragon", -- vim.o.background = "dark"
-            light = "lotus"  -- vim.o.background = "light"
-        },
-    })
-    vim.cmd('colorscheme kanagawa')
-
-    -- Builtin colorschemes
-    -- vim.cmd('colorscheme retrobox')
-    -- vim.cmd('colorscheme default')
-end)
-
+-- Common configuration presets. Example usage:
+-- - `<C-s>` in Insert mode - save and go to Normal mode
+-- - `go` / `gO` - insert empty line before/after in Normal mode
+-- - `gy` / `gp` - copy / paste from system clipboard
+-- - `\` + key - toggle common options. Like `\h` toggles highlighting search.
+-- - `<C-hjkl>` (four combos) - navigate between windows.
+-- - `<M-hjkl>` in Insert/Command mode - navigate in that mode.
+--
+-- See also:
+-- - `:h MiniBasics.config.options` - list of adjusted options
+-- - `:h MiniBasics.config.mappings` - list of created mappings
+-- - `:h MiniBasics.config.autocommands` - list of created autocommands
 now(function()
     require('mini.basics').setup({
         -- Manage options manually in a spirit of transparency
@@ -86,7 +69,6 @@ end)
 now(function() require('mini.statusline').setup() end)
 
 -- Step two ===================================================================
--- Lazy load -------------------------------------
 
 later(function() require('mini.extra').setup() end)
 
