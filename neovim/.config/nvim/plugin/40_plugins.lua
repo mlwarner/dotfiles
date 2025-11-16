@@ -26,7 +26,7 @@ now_if_args(function()
     })
 
     -- Ensure installed
-    local ensure_installed = {
+    local languages = {
         'bash',
         'c_sharp',
         'css',
@@ -50,17 +50,22 @@ now_if_args(function()
         'vimdoc',
         'yaml'
     }
+    local isnt_installed = function(lang)
+        return #vim.api.nvim_get_runtime_file('parser/' .. lang .. '.*', false) == 0
+    end
+    local to_install = vim.tbl_filter(isnt_installed, languages)
+    if #to_install > 0 then require('nvim-treesitter').install(to_install) end
 
-    -- Only install if parser isn't included
-    -- local isnt_installed = function(lang) return #vim.api.nvim_get_runtime_file('parser/' .. lang .. '.*', false) == 0 end
-    -- local to_install = vim.tbl_filter(isnt_installed, ensure_installed)
-    -- if #to_install > 0 then require('nvim-treesitter').install(to_install) end
-    require('nvim-treesitter').install(ensure_installed)
-
-    -- Ensure enabled
-    local filetypes = vim.iter(ensure_installed):map(vim.treesitter.language.get_filetypes):flatten():totable()
+    -- Enable tree-sitter after opening a file for a target language
+    local filetypes = {}
+    for _, lang in ipairs(languages) do
+        for _, ft in ipairs(vim.treesitter.language.get_filetypes(lang)) do
+            table.insert(filetypes, ft)
+        end
+    end
     local ts_start = function(ev) vim.treesitter.start(ev.buf) end
     _G.Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
+
 
     -- Disable injections in 'lua' language
     local ts_query = require('vim.treesitter.query')
