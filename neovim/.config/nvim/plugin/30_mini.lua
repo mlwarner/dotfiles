@@ -243,32 +243,33 @@ later(function()
     end
 end)
 
-later(function()
-    local gen_loader = require('mini.snippets').gen_loader
-    require('mini.snippets').setup({
-        -- Use Neovim's built-in snippet expansion
-        expand = {
-            insert = function(snippet, _) vim.snippet.expand(snippet.body) end
-        },
-        snippets = {
-            -- Load custom file with global snippets first (adjust for Windows)
-            gen_loader.from_file('~/.config/nvim/snippets/global.json'),
-
-            -- Load snippets based on current language by reading files from
-            -- "snippets/" subdirectories from 'runtimepath' directories.
-            gen_loader.from_lang(),
-        },
-    })
-    -- Make jump mappings or skip to use built-in <Tab>/<S-Tab> in Neovim>=0.11
-    local jump_next = function()
-        if vim.snippet.active({ direction = 1 }) then return vim.snippet.jump(1) end
-    end
-    local jump_prev = function()
-        if vim.snippet.active({ direction = -1 }) then vim.snippet.jump(-1) end
-    end
-    vim.keymap.set({ 'i', 's' }, '<C-l>', jump_next)
-    vim.keymap.set({ 'i', 's' }, '<C-h>', jump_prev)
-end)
+-- Use mini.snippets to manage and expand templates
+-- later(function()
+--     local gen_loader = require('mini.snippets').gen_loader
+--     require('mini.snippets').setup({
+--         -- Use Neovim's built-in snippet expansion
+--         expand = {
+--             insert = function(snippet, _) vim.snippet.expand(snippet.body) end
+--         },
+--         snippets = {
+--             -- Load custom file with global snippets first (adjust for Windows)
+--             gen_loader.from_file('~/.config/nvim/snippets/global.json'),
+--
+--             -- Load snippets based on current language by reading files from
+--             -- "snippets/" subdirectories from 'runtimepath' directories.
+--             gen_loader.from_lang(),
+--         },
+--     })
+--     -- Make jump mappings or skip to use built-in <Tab>/<S-Tab> in Neovim>=0.11
+--     local jump_next = function()
+--         if vim.snippet.active({ direction = 1 }) then return vim.snippet.jump(1) end
+--     end
+--     local jump_prev = function()
+--         if vim.snippet.active({ direction = -1 }) then vim.snippet.jump(-1) end
+--     end
+--     vim.keymap.set({ 'i', 's' }, '<C-l>', jump_next)
+--     vim.keymap.set({ 'i', 's' }, '<C-h>', jump_prev)
+-- end)
 
 later(function() require('mini.surround').setup() end)
 

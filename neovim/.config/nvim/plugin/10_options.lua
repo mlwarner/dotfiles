@@ -58,11 +58,12 @@ vim.o.spelloptions   = 'camel' -- Treat parts of camelCase words as separate wor
 
 -- Autocommands ===============================================================
 
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-local yank_highlight = function() vim.hl.on_yank() end
-_G.Config.new_autocmd('TextYankPost', nil, yank_highlight, 'Highlight when yanking text')
+-- Don't auto-wrap comments and don't insert comment leader after hitting 'o'.
+-- Do on `FileType` to always override these changes from filetype plugins.
+local f = function() vim.cmd('setlocal formatoptions-=c formatoptions-=o') end
+_G.Config.new_autocmd('FileType', nil, f, "Proper 'formatoptions'")
+
+-- There are other autocommands created by 'mini.basics'. See 'plugin/30_mini.lua'.
 
 -- Diagnostics ================================================================
 
