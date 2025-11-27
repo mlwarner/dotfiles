@@ -125,6 +125,7 @@ end)
 later(function()
     add({
         source = "olimorris/codecompanion.nvim",
+        checkout = "v17.33.0",
         depends = {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
