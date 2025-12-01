@@ -179,23 +179,27 @@ nmap_leader('gs', '<Cmd>lua MiniGit.show_at_cursor()<CR>', 'Show at cursor')
 
 xmap_leader('gs', '<Cmd>lua MiniGit.show_at_cursor()<CR>', 'Show at selection')
 
--- l is for 'Language' (LSP). Common usage:
--- - `grn` - perform rename via LSP (replaces built-in that conflicts with mini.operators)
--- - `gra` - show code actions
--- - `<Leader>lf` - format buffer
--- - `<Leader>lh` - show hover information
-nmap('grn', vim.lsp.buf.rename, 'LSP Rename')
-map({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action, { desc = 'LSP Code Action' })
+-- l is for 'Language'. Common usage:
+-- - `<Leader>ld` - show more diagnostic details in a floating window
+-- - `<Leader>lr` - perform rename via LSP
+-- - `<Leader>ls` - navigate to source definition of symbol under cursor
+--
+-- NOTE: most LSP mappings represent a more structured way of replacing built-in
+-- LSP mappings (like `:h gra` and others). This is needed because `gr` is mapped
+-- by an "replace" operator in 'mini.operators' (which is more commonly used).
+local formatting_cmd = '<Cmd>lua vim.lsp.buf.format({ async = true })<CR>'
 
-nmap_leader('lf', function() vim.lsp.buf.format({ async = true }) end, 'Format')
-nmap_leader('lh', vim.lsp.buf.hover, 'Hover')
+nmap_leader('la', '<Cmd>lua vim.lsp.buf.code_action()<CR>', 'Actions')
+nmap_leader('ld', '<Cmd>lua vim.diagnostic.open_float()<CR>', 'Diagnostic popup')
+nmap_leader('lf', formatting_cmd, 'Format')
+nmap_leader('li', '<Cmd>lua vim.lsp.buf.implementation()<CR>', 'Implementation')
+nmap_leader('lh', '<Cmd>lua vim.lsp.buf.hover()<CR>', 'Hover')
+nmap_leader('lr', '<Cmd>lua vim.lsp.buf.rename()<CR>', 'Rename')
+nmap_leader('lR', '<Cmd>lua vim.lsp.buf.references()<CR>', 'References')
+nmap_leader('ls', '<Cmd>lua vim.lsp.buf.definition()<CR>', 'Source definition')
+nmap_leader('lt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', 'Type definition')
 
--- Uncomment these if you prefer <Leader> mappings over built-in `gr*` mappings
--- nmap_leader('lr', '<Cmd>lua vim.lsp.buf.references()<CR>',      'References')
--- nmap_leader('li', '<Cmd>lua vim.lsp.buf.implementation()<CR>',  'Implementation')
--- nmap_leader('ld', '<Cmd>lua vim.lsp.buf.definition()<CR>',      'Definition')
--- nmap_leader('lD', '<Cmd>lua vim.lsp.buf.declaration()<CR>',     'Declaration')
--- nmap_leader('lt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', 'Type definition')
+xmap_leader('lf', formatting_cmd, 'Format selection')
 
 -- n is for 'Notes'. Common usage:
 -- - `<Leader>nd` - open today's daily note
@@ -215,7 +219,7 @@ nmap_leader('ng', '<Cmd>Pick notes_grep<CR>', 'Grep')
 
 -- o is for 'Other'. Common usage:
 -- - `<Leader>oz` - toggle between "zoomed" and regular view of current buffer
--- - `<Leader>ot` - trim trailing whitespace
+nmap_leader('or', '<Cmd>lua MiniMisc.resize_window()<CR>', 'Resize to default width')
 nmap_leader('ot', '<Cmd>lua MiniTrailspace.trim()<CR>', 'Trim trailspace')
 nmap_leader('oz', '<Cmd>lua MiniMisc.zoom()<CR>', 'Zoom toggle')
 
@@ -230,40 +234,9 @@ nmap_leader('sn', '<Cmd>lua ' .. session_new .. '<CR>', 'New')
 nmap_leader('sr', '<Cmd>lua MiniSessions.select("read")<CR>', 'Read')
 nmap_leader('sw', '<Cmd>lua MiniSessions.write()<CR>', 'Write current')
 
--- s is for 'Search' (Fuzzy Find). Common usage:
--- - `<Leader>sf` - search files; for best performance requires `ripgrep`
--- - `<Leader>sg` - search inside files (grep); requires `ripgrep`
--- - `<Leader>sh` - search help tags
--- - `<Leader>sr` - resume latest picker
--- - `<Leader>sv` - all visited paths; requires 'mini.visits'
---
--- All these use 'mini.pick'. See `:h MiniPick-overview` for an overview.
--- nmap_leader('s/', '<Cmd>Pick history scope="/"<CR>', '"/" history')
--- nmap_leader('s:', '<Cmd>Pick history scope=":"<CR>', '":" history')
--- nmap_leader('s.', '<Cmd>Pick oldfiles<CR>', 'Oldfiles')
--- nmap_leader('sa', '<Cmd>Pick git_hunks scope="staged"<CR>', 'Added hunks (all)')
--- nmap_leader('sb', '<Cmd>Pick buffers<CR>', 'Buffers')
--- nmap_leader('sc', '<Cmd>Pick git_commits<CR>', 'Commits (all)')
--- nmap_leader('sd', '<Cmd>Pick diagnostic<CR>', 'Diagnostics')
--- nmap_leader('sf', '<Cmd>Pick files<CR>', 'Files')
--- nmap_leader('sg', '<Cmd>Pick grep_live<CR>', 'Grep live')
--- nmap_leader('sG', '<Cmd>Pick grep pattern="<cword>"<CR>', 'Grep current word')
--- nmap_leader('sh', '<Cmd>Pick help<CR>', 'Help tags')
--- nmap_leader('sk', '<Cmd>Pick keymaps<CR>', 'Keymaps')
--- nmap_leader('sl', '<Cmd>Pick buf_lines scope="all"<CR>', 'Lines (all)')
--- nmap_leader('sm', '<Cmd>Pick git_hunks<CR>', 'Modified hunks (all)')
--- nmap_leader('sr', '<Cmd>Pick resume<CR>', 'Resume')
--- nmap_leader('sv', '<Cmd>Pick visit_paths cwd=""<CR>', 'Visit paths (all)')
--- nmap_leader('sV', '<Cmd>Pick visit_paths<CR>', 'Visit paths (cwd)')
-
 -- t is for 'Terminal'
 nmap_leader('tT', '<Cmd>horizontal term<CR>', 'Terminal (horizontal)')
 nmap_leader('tt', '<Cmd>vertical term<CR>', 'Terminal (vertical)')
-
--- t is for 'Toggle'
--- nmap_leader('th', function()
---     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }))
--- end, 'Inlay hints')
 
 -- v is for 'Visits'. Common usage:
 -- - `<Leader>vv` - add    "core" label to current file.
