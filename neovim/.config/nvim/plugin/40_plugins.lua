@@ -90,7 +90,7 @@ later(function()
             "marksman",
             "pyright",
             "rust_analyzer",
-            "vtsls",
+            "tsgo",
         },
     }
 
