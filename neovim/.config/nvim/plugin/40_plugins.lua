@@ -154,11 +154,8 @@ end)
 later(function()
     add({
         source = "mistricky/codesnap.nvim",
-        hooks = {
-            post_checkout = function()
-                vim.cmd('make')
-            end
-        }
+        checkout = "v1.6.3",
+        hooks = { post_checkout = function() vim.cmd('make') end }
     })
 end)
 
