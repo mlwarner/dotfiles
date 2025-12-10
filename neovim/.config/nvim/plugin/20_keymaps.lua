@@ -204,6 +204,8 @@ xmap_leader('lf', formatting_cmd, 'Format selection')
 -- n is for 'Notes'. Common usage:
 -- - `<Leader>nd` - open today's daily note
 -- - `<Leader>ni` - open notes index
+-- - `<Leader>nn` - next daily note
+-- - `<Leader>np` - previous daily note
 -- - `<Leader>nf` - find notes files
 -- - `<Leader>ng` - grep in notes
 local dailyNotes = require('daily-notes')
@@ -214,6 +216,8 @@ dailyNotes.setup({
 
 nmap_leader('nd', dailyNotes.open_daily_note, 'Daily note')
 nmap_leader('ni', dailyNotes.open_index, 'Index')
+nmap_leader('nn', dailyNotes.next_daily_note, 'Next daily note')
+nmap_leader('np', dailyNotes.prev_daily_note, 'Prev daily note')
 nmap_leader('nf', '<Cmd>Pick notes<CR>', 'Find files')
 nmap_leader('ng', '<Cmd>Pick notes_grep<CR>', 'Grep')
 
