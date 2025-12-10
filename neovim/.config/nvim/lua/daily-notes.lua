@@ -1,16 +1,12 @@
 --- *daily-notes.txt* Daily notes journaling system
 --- *DailyNotes*
 ---
---- MIT License Copyright (c) 2024 mlwarner
----
---- ==============================================================================
----
 --- A simple daily notes module for managing markdown journal entries.
 --- Follows mini.nvim module structure and conventions.
 ---
 --- Features:
 --- - Open today's daily note
---- - Navigate to next/previous daily notes
+--- - Navigate to next/previous existing daily notes
 --- - Open notes index file
 --- - Integration with mini.pick for finding notes
 
@@ -59,36 +55,48 @@ end
 
 --- Navigate to next daily note
 ---
---- If currently in a daily note, opens the note for the next day.
---- If not in a daily note, opens tomorrow's note.
---- Creates the file if it doesn't exist.
+--- Finds and opens the next existing daily note after the current date.
+--- If currently in a daily note, navigates from that date.
+--- If not in a daily note, navigates from today.
+--- Does nothing if no future notes exist.
 M.next_daily_note = function()
     local current_date = H.get_current_note_date()
     if not current_date then
-        -- Not in a daily note, open tomorrow
         current_date = os.date('%Y-%m-%d')
     end
 
-    local next_date = H.add_days(current_date, 1)
-    local note_path = H.get_daily_note_path(next_date)
-    vim.cmd.edit(note_path)
+    local existing_dates = H.get_existing_note_dates()
+    local next_date = H.find_next_date(existing_dates, current_date)
+
+    if next_date then
+        local note_path = H.get_daily_note_path(next_date)
+        vim.cmd.edit(note_path)
+    else
+        vim.notify('No next daily note found', vim.log.levels.INFO)
+    end
 end
 
 --- Navigate to previous daily note
 ---
---- If currently in a daily note, opens the note for the previous day.
---- If not in a daily note, opens yesterday's note.
---- Creates the file if it doesn't exist.
+--- Finds and opens the previous existing daily note before the current date.
+--- If currently in a daily note, navigates from that date.
+--- If not in a daily note, navigates from today.
+--- Does nothing if no earlier notes exist.
 M.prev_daily_note = function()
     local current_date = H.get_current_note_date()
     if not current_date then
-        -- Not in a daily note, open yesterday
         current_date = os.date('%Y-%m-%d')
     end
 
-    local prev_date = H.add_days(current_date, -1)
-    local note_path = H.get_daily_note_path(prev_date)
-    vim.cmd.edit(note_path)
+    local existing_dates = H.get_existing_note_dates()
+    local prev_date = H.find_prev_date(existing_dates, current_date)
+
+    if prev_date then
+        local note_path = H.get_daily_note_path(prev_date)
+        vim.cmd.edit(note_path)
+    else
+        vim.notify('No previous daily note found', vim.log.levels.INFO)
+    end
 end
 
 --- Open notes index file
@@ -160,33 +168,76 @@ H.get_current_note_date = function()
     return date
 end
 
---- Add or subtract days from a date string
+--- Get all existing daily note dates
 ---
---- Takes a date in YYYY-MM-DD format and adds/subtracts the specified number of days.
+--- Scans the journal directory for daily note files and extracts their dates.
 ---
----@param date_str string Date in YYYY-MM-DD format
----@param days number Number of days to add (positive) or subtract (negative)
----@return string New date in YYYY-MM-DD format
-H.add_days = function(date_str, days)
-    -- Parse YYYY-MM-DD format
-    local year, month, day = date_str:match('^(%d%d%d%d)%-(%d%d)%-(%d%d)$')
-    if not year then
-        error('Invalid date format: ' .. date_str .. '. Expected YYYY-MM-DD')
+---@return table List of date strings in YYYY-MM-DD format, sorted ascending
+H.get_existing_note_dates = function()
+    local dates = {}
+    local journal_path = H.config.journal_dir
+
+    -- Check if journal directory exists
+    local stat = vim.uv.fs_stat(journal_path)
+    if not stat or stat.type ~= 'directory' then
+        return dates
     end
 
-    -- Convert to time (os.time expects local time at noon to avoid DST issues)
-    local time = os.time({
-        year = tonumber(year),
-        month = tonumber(month),
-        day = tonumber(day),
-        hour = 12,
-    })
+    -- Scan directory for .md files
+    local handle = vim.uv.fs_scandir(journal_path)
+    if not handle then
+        return dates
+    end
 
-    -- Add days (86400 seconds per day)
-    local new_time = time + (days * 86400)
+    while true do
+        local name, type = vim.uv.fs_scandir_next(handle)
+        if not name then
+            break
+        end
 
-    -- Format back to YYYY-MM-DD
-    return os.date('%Y-%m-%d', new_time)
+        -- Match YYYY-MM-DD.md pattern
+        if type == 'file' then
+            local date = name:match('^(%d%d%d%d%-%d%d%-%d%d)%.md$')
+            if date then
+                table.insert(dates, date)
+            end
+        end
+    end
+
+    -- Sort dates in ascending order
+    table.sort(dates)
+
+    return dates
+end
+
+--- Find next date after current date
+---
+---@param dates table List of date strings, sorted ascending
+---@param current_date string Current date in YYYY-MM-DD format
+---@return string|nil Next date or nil if none found
+H.find_next_date = function(dates, current_date)
+    for _, date in ipairs(dates) do
+        if date > current_date then
+            return date
+        end
+    end
+    return nil
+end
+
+--- Find previous date before current date
+---
+---@param dates table List of date strings, sorted ascending
+---@param current_date string Current date in YYYY-MM-DD format
+---@return string|nil Previous date or nil if none found
+H.find_prev_date = function(dates, current_date)
+    local prev = nil
+    for _, date in ipairs(dates) do
+        if date >= current_date then
+            break
+        end
+        prev = date
+    end
+    return prev
 end
 
 return M
