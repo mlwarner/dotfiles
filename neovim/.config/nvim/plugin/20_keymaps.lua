@@ -21,10 +21,6 @@ end
 -- Paste in Visual with `P` to not copy selected text (`:h v_P`)
 -- map('x', 'gp', '"+P', { desc = 'Paste from system clipboard' })
 
--- Moves lines
-map("v", "J", ":m '>+1<CR>gv=gv")
-map("v", "K", ":m '<-2<CR>gv=gv")
-
 -- Navigate wrapped lines
 nmap("j", "gj", "Down (wrapped)")
 nmap("k", "gk", "Up (wrapped)")
