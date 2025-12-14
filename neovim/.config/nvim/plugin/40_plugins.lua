@@ -125,7 +125,7 @@ end)
 later(function()
     add({
         source = "olimorris/codecompanion.nvim",
-        checkout = "v17.33.0",
+        checkout = "v18.0.0",
         depends = {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
@@ -133,7 +133,7 @@ later(function()
     })
 
     require("codecompanion").setup({
-        strategies = {
+        interactions = {
             chat = {
                 -- Use claude code subscription over API access
                 adapter = "claude_code",
@@ -143,6 +143,11 @@ later(function()
                 -- acp adapter not supported for inline
                 -- adapter = "claude_code",
             },
+            background = {
+                -- By default uses copilot. Since we don't have that setup, use our chat adapter
+                -- ACP will silently fail, which is an improvement over loudly failing from Copilot
+                adapter = "claude_code",
+            }
         },
     })
 

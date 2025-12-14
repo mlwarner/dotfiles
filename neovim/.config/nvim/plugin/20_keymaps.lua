@@ -9,15 +9,6 @@
 -- Use this section to add custom general mappings. See `:h vim.keymap.set()`.
 local map = vim.keymap.set
 
--- Helper for creating Normal mode mappings
-local nmap = function(lhs, rhs, desc)
-    vim.keymap.set('n', lhs, rhs, { desc = desc })
-end
-
--- General search - quick access without leader
-nmap('<C-p>', '<cmd>Pick files<cr>', 'Pick files')
-nmap('<C-f>', '<cmd>Pick grep_live<cr>', 'Pick grep live')
-
 -- Leader mappings ============================================================
 
 -- Neovim has the concept of a Leader key (see `:h <Leader>`). It is a configurable
@@ -132,6 +123,7 @@ nmap_leader('fg', '<Cmd>Pick grep_live<CR>', 'Grep live')
 nmap_leader('fG', '<Cmd>Pick grep pattern="<cword>"<CR>', 'Grep current word')
 nmap_leader('fh', '<Cmd>Pick help<CR>', 'Help tags')
 nmap_leader('fH', '<Cmd>Pick hl_groups<CR>', 'Highlight groups')
+nmap_leader('fk', '<Cmd>Pick keymaps<CR>', 'Keymaps')
 nmap_leader('fl', '<Cmd>Pick buf_lines scope="all"<CR>', 'Lines (all)')
 nmap_leader('fL', '<Cmd>Pick buf_lines scope="current"<CR>', 'Lines (buf)')
 nmap_leader('fm', '<Cmd>Pick git_hunks<CR>', 'Modified hunks (all)')
@@ -249,7 +241,6 @@ nmap_leader('vL', '<Cmd>lua MiniVisits.remove_label()<CR>', 'Remove label')
 -- AI Assistant mappings
 map({ "n", "v" }, "<C-a>", "<Cmd>CodeCompanionActions<CR>", { desc = 'AI Actions' })
 map({ "n", "v" }, "<LocalLeader>a", "<Cmd>CodeCompanionChat Toggle<CR>", { desc = 'AI Chat Toggle' })
-map("v", "ga", "<Cmd>CodeCompanionChat Add<CR>", { desc = 'AI Chat Add' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
