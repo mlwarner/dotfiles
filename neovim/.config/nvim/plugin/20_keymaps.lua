@@ -14,17 +14,6 @@ local nmap = function(lhs, rhs, desc)
     vim.keymap.set('n', lhs, rhs, { desc = desc })
 end
 
--- Copy/paste with system clipboard
--- map({ 'n', 'x' }, 'gy', '"+y', { desc = 'Copy to system clipboard' })
--- map('n', 'gp', '"+p', { desc = 'Paste from system clipboard' })
-
--- Paste in Visual with `P` to not copy selected text (`:h v_P`)
--- map('x', 'gp', '"+P', { desc = 'Paste from system clipboard' })
-
--- Navigate wrapped lines
-nmap("j", "gj", "Down (wrapped)")
-nmap("k", "gk", "Up (wrapped)")
-
 -- General search - quick access without leader
 nmap('<C-p>', '<cmd>Pick files<cr>', 'Pick files')
 nmap('<C-f>', '<cmd>Pick grep_live<cr>', 'Pick grep live')
