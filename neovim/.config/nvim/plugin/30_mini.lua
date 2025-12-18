@@ -106,14 +106,9 @@ later(function()
         custom_textobjects = {
             B = gen_ai_spec.buffer(),
             D = gen_ai_spec.diagnostic(),
-            F = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
             I = gen_ai_spec.indent(),
             L = gen_ai_spec.line(),
             N = gen_ai_spec.number(),
-            o = ai.gen_spec.treesitter({
-                a = { '@conditional.outer', '@loop.outer' },
-                i = { '@conditional.inner', '@loop.inner' },
-            }),
         },
     })
 end)

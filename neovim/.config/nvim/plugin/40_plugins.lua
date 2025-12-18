@@ -20,10 +20,6 @@ now_if_args(function()
         -- Perform action after every checkout
         hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
     })
-    add({
-        source = 'nvim-treesitter/nvim-treesitter-textobjects',
-        checkout = 'main',
-    })
 
     -- Ensure installed
     local languages = {
