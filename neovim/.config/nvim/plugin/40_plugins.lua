@@ -40,6 +40,7 @@ now_if_args(function()
         'ruby',
         'rust',
         'swift',
+        'terraform',
         'tsx',
         'typescript',
         'vim',
@@ -86,6 +87,7 @@ later(function()
             "marksman",
             "pyright",
             "rust_analyzer",
+            "terraformls",
             "tsgo",
         },
     }
