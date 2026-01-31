@@ -5,7 +5,7 @@ return {
             linters = {
                 SpellCheck = false,
                 SentenceCapitalization = false,
-                TitleCase = false,
+                UseTitleCase = false,
             },
         }
     },
