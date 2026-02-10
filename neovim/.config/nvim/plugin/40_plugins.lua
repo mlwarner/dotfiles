@@ -102,7 +102,7 @@ later(function()
     add({
         source = "saghen/blink.cmp",
         depends = { "rafamadriz/friendly-snippets" },
-        checkout = "v1.9.0", -- check releases for latest tag
+        checkout = "v1.9.1", -- check releases for latest tag
     })
     require('blink.cmp').setup({
         keymap = { preset = 'default' },
@@ -123,7 +123,7 @@ end)
 later(function()
     add({
         source = "olimorris/codecompanion.nvim",
-        checkout = "v18.5.1",
+        checkout = "v18.6.0",
         depends = {
             "nvim-lua/plenary.nvim",
         }
