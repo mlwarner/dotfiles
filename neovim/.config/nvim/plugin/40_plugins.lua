@@ -123,7 +123,7 @@ end)
 later(function()
     add({
         source = "olimorris/codecompanion.nvim",
-        checkout = "v18.6.0",
+        checkout = "v18.7.0",
         depends = {
             "nvim-lua/plenary.nvim",
         }
