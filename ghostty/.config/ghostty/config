@@ -1,3 +1,6 @@
+# https://ghostty.org/docs/config/reference#font-family
+font-family=Cascadia Code
+
 # https://ghostty.org/docs/config/reference#font-size
 font-size=16
 

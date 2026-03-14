@@ -8,17 +8,19 @@
 -- Use this file to install and configure other such plugins.
 
 -- Make concise helpers for installing/adding plugins in two stages
-local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
-local now_if_args = _G.Config.now_if_args
+local add = vim.pack.add
+local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 -- Tree-sitter ================================================================
 now_if_args(function()
     -- The main branch is under active development and has different conventions
+    -- Define hook to update tree-sitter parsers after plugin is updated
+    local ts_update = function() vim.cmd('TSUpdate') end
+    Config.on_packchanged('nvim-treesitter', { 'update' }, ts_update, ':TSUpdate')
+
     add({
-        source = 'nvim-treesitter/nvim-treesitter',
-        checkout = 'main',
-        -- Perform action after every checkout
-        hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
+        'https://github.com/nvim-treesitter/nvim-treesitter',
+        'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
     })
 
     -- Ensure installed
@@ -61,7 +63,7 @@ now_if_args(function()
         end
     end
     local ts_start = function(ev) vim.treesitter.start(ev.buf) end
-    _G.Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
+    Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
 
 
     -- Disable injections in 'lua' language
@@ -73,11 +75,9 @@ end)
 -- Language servers ===========================================================
 later(function()
     add({
-        source = 'mason-org/mason-lspconfig.nvim',
-        depends = {
-            'mason-org/mason.nvim',
-            'neovim/nvim-lspconfig',
-        }
+        'https://github.com/neovim/nvim-lspconfig',
+        'https://github.com/mason-org/mason.nvim',
+        'https://github.com/mason-org/mason-lspconfig.nvim',
     })
     require('mason').setup()
     require("mason-lspconfig").setup {
@@ -100,9 +100,8 @@ end)
 later(function()
     -- use a release tag to download pre-built binaries
     add({
-        source = "saghen/blink.cmp",
-        depends = { "rafamadriz/friendly-snippets" },
-        checkout = "v1.9.1", -- check releases for latest tag
+        { src = "https://github.com/rafamadriz/friendly-snippets" },
+        { src = "https://github.com/saghen/blink.cmp",            version = "v1.9.1" },
     })
     require('blink.cmp').setup({
         keymap = { preset = 'default' },
@@ -122,11 +121,8 @@ end)
 -- AI Assistants ==============================================================
 later(function()
     add({
-        source = "olimorris/codecompanion.nvim",
-        checkout = "v19.3.0",
-        depends = {
-            "nvim-lua/plenary.nvim",
-        }
+        { src = "https://github.com/nvim-lua/plenary.nvim" },
+        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.3.0" },
     })
 
     require("codecompanion").setup({
@@ -141,23 +137,21 @@ end)
 
 -- Utilities ==================================================================
 later(function()
-    add({
-        source = "mistricky/codesnap.nvim",
-        checkout = "v1.6.3",
-        hooks = { post_checkout = function() vim.cmd('make') end }
-    })
+    local make = function() vim.cmd('make') end
+    -- TODO run post checkout
+    Config.on_packchanged('codesnap.nvim', { 'update' }, make)
+
+    add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v1.6.3", } })
 end)
 
 later(function()
     add({
-        source = "opdavies/toggle-checkbox.nvim"
+        "https://github.com/opdavies/toggle-checkbox.nvim"
     })
 end)
 
 -- now(function()
---     add({
---         source = 'rebelot/kanagawa.nvim'
---     })
+--     add({ 'https://github.com/rebelot/kanagawa.nvim' })
 --
 --     require('kanagawa').setup({
 --         colors = {
@@ -187,9 +181,8 @@ end)
 -- end)
 
 now(function()
-    add({
-        source = 'rose-pine/neovim'
-    })
+    add({ 'https://github.com/rose-pine/neovim' })
+
     require('rose-pine').setup()
 
     vim.cmd('colorscheme rose-pine')
