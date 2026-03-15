@@ -101,7 +101,7 @@ later(function()
     -- use a release tag to download pre-built binaries
     add({
         { src = "https://github.com/rafamadriz/friendly-snippets" },
-        { src = "https://github.com/saghen/blink.cmp",            version = "v1.9.1" },
+        { src = "https://github.com/saghen/blink.cmp",            version = "v1.10.1" },
     })
     require('blink.cmp').setup({
         keymap = { preset = 'default' },
@@ -137,11 +137,13 @@ end)
 
 -- Utilities ==================================================================
 later(function()
-    local make = function() vim.cmd('make') end
+    -- local make = function() vim.cmd('make') end
     -- TODO run post checkout
-    Config.on_packchanged('codesnap.nvim', { 'update' }, make)
+    -- Config.on_packchanged('codesnap.nvim', { 'update' }, make)
 
     add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v1.6.3", } })
+    -- version 2+ has a conflict with Blink
+    -- add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v2.0.1", } })
 end)
 
 later(function()
