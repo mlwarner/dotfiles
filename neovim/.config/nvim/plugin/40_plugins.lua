@@ -64,12 +64,6 @@ now_if_args(function()
     end
     local ts_start = function(ev) vim.treesitter.start(ev.buf) end
     Config.new_autocmd('FileType', filetypes, ts_start, 'Start tree-sitter')
-
-
-    -- Disable injections in 'lua' language
-    local ts_query = require('vim.treesitter.query')
-    local ts_query_set = vim.fn.has('nvim-0.9') == 1 and ts_query.set or ts_query.set_query
-    ts_query_set('lua', 'injections', '')
 end)
 
 -- Language servers ===========================================================
