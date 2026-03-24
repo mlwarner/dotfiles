@@ -6,9 +6,9 @@
       "version": "'v1.10.1'"
     },
     "codecompanion.nvim": {
-      "rev": "5ace714f80eca3e391a9629d0cab1dcadcb16131",
+      "rev": "af7f1042a424e17ab49cef93442f33a55d514de6",
       "src": "https://github.com/olimorris/codecompanion.nvim",
-      "version": "'v19.3.0'"
+      "version": "'v19.6.0'"
     },
     "codesnap.nvim": {
       "rev": "da475d35a9be9a0670f8145a8b13ff8aa9356108",
@@ -28,7 +28,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "9990c41f10f54f29a888d13024c9f765037bde23",
+      "rev": "439cdcd6992bc9012efd7d8ed7a7b7a0f1fac32a",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "neovim": {
@@ -40,11 +40,11 @@
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "2f5d4c3f3c675962242096bcc8e586d76dd72eb2",
+      "rev": "6620ae1c44dfa8623b22d0cbf873a9e8d073b849",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
-      "rev": "4e91b5d0394329a229725b021a8ea217099826ef",
+      "rev": "93d60a475f0b08a8eceb99255863977d3a25f310",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
     },
     "plenary.nvim": {
