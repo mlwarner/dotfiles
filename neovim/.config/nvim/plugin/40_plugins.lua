@@ -116,7 +116,7 @@ end)
 later(function()
     add({
         { src = "https://github.com/nvim-lua/plenary.nvim" },
-        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.6.0" },
+        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.7.0" },
     })
 
     require("codecompanion").setup({
@@ -130,14 +130,24 @@ later(function()
 end)
 
 -- Utilities ==================================================================
-later(function()
+
+-- TODO Reuse after version 2.0+ fixed for Blink
+-- later(function()
     -- local make = function() vim.cmd('make') end
-    -- TODO run post checkout
     -- Config.on_packchanged('codesnap.nvim', { 'update' }, make)
 
-    add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v1.6.3", } })
+    -- add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v1.6.3", } })
     -- version 2+ has a conflict with Blink
     -- add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v2.0.1", } })
+-- end)
+
+later(function()
+    add({
+        { src = "https://github.com/mistweaverco/snap.nvim.git", version = "v1.5.0" },
+    })
+    ---@type SnapUserConfig
+    local cfg = {}
+    require('snap').setup(cfg)
 end)
 
 later(function()

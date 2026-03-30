@@ -26,12 +26,13 @@ local map = vim.keymap.set
 -- Create a global table with information about Leader groups in certain modes.
 -- This is used to provide 'mini.clue' with extra clues.
 -- Add an entry if you create a new group.
-_G.Config.leader_group_clues = {
+Config.leader_group_clues = {
     { mode = 'n', keys = '<Leader>b', desc = '+Buffer' },
     { mode = 'n', keys = '<Leader>e', desc = '+Explore/Edit' },
     { mode = 'n', keys = '<Leader>f', desc = '+Find' },
     { mode = 'n', keys = '<Leader>g', desc = '+Git' },
     { mode = 'n', keys = '<Leader>l', desc = '+Language' },
+    { mode = 'n', keys = '<Leader>m', desc = '+Map' },
     { mode = 'n', keys = '<Leader>n', desc = '+Notes' },
     { mode = 'n', keys = '<Leader>o', desc = '+Other' },
     { mode = 'n', keys = '<Leader>s', desc = '+Session' },
@@ -178,6 +179,15 @@ nmap_leader('ls', '<Cmd>lua vim.lsp.buf.definition()<CR>', 'Source definition')
 nmap_leader('lt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', 'Type definition')
 
 xmap_leader('lf', formatting_cmd, 'Format selection')
+
+-- m is for 'Map'. Common usage:
+-- - `<Leader>mt` - toggle map from 'mini.map' (closed by default)
+-- - `<Leader>mf` - focus on the map for fast navigation
+-- - `<Leader>ms` - change map's side (if it covers something underneath)
+nmap_leader('mf', '<Cmd>lua MiniMap.toggle_focus()<CR>', 'Focus (toggle)')
+nmap_leader('mr', '<Cmd>lua MiniMap.refresh()<CR>', 'Refresh')
+nmap_leader('ms', '<Cmd>lua MiniMap.toggle_side()<CR>', 'Side (toggle)')
+nmap_leader('mt', '<Cmd>lua MiniMap.toggle()<CR>', 'Toggle')
 
 -- n is for 'Notes'. Common usage:
 -- - `<Leader>nd` - open today's daily note

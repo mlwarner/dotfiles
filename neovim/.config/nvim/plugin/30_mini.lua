@@ -225,6 +225,31 @@ end)
 
 later(function() require('mini.indentscope').setup() end)
 
+-- Window with text overview. It is displayed on the right hand side. Can be used
+-- for quick overview and navigation. Hidden by default. Example usage:
+-- - `<Leader>mt` - toggle map window
+-- - `<Leader>mf` - focus on the map for fast navigation
+-- - `<Leader>ms` - change map's side (if it covers something underneath)
+--
+-- See also:
+-- - `:h MiniMap.gen_encode_symbols` - list of symbols to use for text encoding
+-- - `:h MiniMap.gen_integration` - list of integrations to show in the map
+--
+-- NOTE: Might introduce lag on very big buffers (10000+ lines)
+later(function()
+    local map = require('mini.map')
+    map.setup({
+        -- Use Braille dots to encode text
+        symbols = { encode = map.gen_encode_symbols.dot('4x2') },
+        -- Show built-in search matches, 'mini.diff' hunks, and diagnostic entries
+        integrations = {
+            map.gen_integration.builtin_search(),
+            map.gen_integration.diff(),
+            map.gen_integration.diagnostic(),
+        },
+    })
+end)
+
 later(function() require('mini.move').setup() end)
 
 later(function() require('mini.pairs').setup({ modes = { insert = true, command = true, terminal = true } }) end)
