@@ -65,36 +65,56 @@ When `stow {tool-name}` is run, it creates symlinks:
 **Leader Key System:** Two-key approach with semantic grouping:
 - `<Space>` is Leader key
 - First key = semantic group, second key = action
-- Groups: `b`(Buffer), `e`(Explore/Edit), `f`(Find), `g`(Git), `l`(Language/LSP), `n`(Notes), `o`(Other), `s`(Session), `t`(Terminal), `v`(Visits)
+- Groups: `b`(Buffer), `e`(Explore/Edit), `f`(Find), `g`(Git), `l`(Language/LSP), `m`(Map), `n`(Notes), `o`(Other), `s`(Session), `t`(Terminal), `v`(Visits)
 
 **Important Patterns:**
 ```lua
 -- Global config table for sharing data between scripts
 _G.Config = {}
 
--- Lazy loading helpers from mini.deps
-MiniDeps.now()    -- Load immediately
-MiniDeps.later()  -- Load after startup
-Config.now_if_args -- Load now only if files passed as args
+-- Lazy loading helpers (from mini.misc, configured in init.lua)
+Config.now()          -- Load immediately (startup-critical)
+Config.later()        -- Load after startup
+Config.now_if_args    -- Load now only if files passed as args
+Config.on_event(ev, f)     -- Execute once on first matched event
+Config.on_filetype(ft, f)  -- Execute once on first matched filetype
 
 -- Custom autocmd helper
 Config.new_autocmd(event, pattern, callback, desc)
 
 -- Leader group clues (for mini.clue)
-_G.Config.leader_group_clues = { ... }
+Config.leader_group_clues = { ... }
 ```
+
+**Plugin Manager (vim.pack - Neovim 0.12+):**
+This config uses `vim.pack`, the built-in Neovim package manager (since Neovim 0.12), replacing the previous `mini.deps` setup:
+```lua
+-- Add plugins
+vim.pack.add({ 'https://github.com/author/plugin.nvim' })
+
+-- Update all plugins (opens buffer, :write to confirm)
+:lua vim.pack.update()
+
+-- Remove plugins
+:lua vim.pack.del({ ... })
+```
+- Lockfile: `nvim-pack-lock.json` (for reproducible installs)
+- See `:h vim.pack-examples`, `:h vim.pack-lockfile`
+- **Important:** `add()` / `MiniDeps.add()` references in old docs → now `vim.pack.add()`; `:DepsUpdate` → `:lua vim.pack.update()`
 
 **Custom Modules:**
 - `lua/daily-notes.lua` - Daily journaling system (~/Documents/my-notes/)
 - `lua/debug.lua` - Debugging utilities
+
+**Screenshot Plugin:**
+- Uses `snap.nvim` (mistweaverco/snap.nvim) as screenshot tool
+- Note: `codesnap.nvim` is commented out due to incompatibility with Blink; restore when fixed
 
 **Override System:**
 - `after/ftplugin/` - Filetype-specific settings (markdown, gitcommit, etc.)
 - `after/lsp/` - LSP server configurations (harper_ls, lua_ls, vtsls)
 
 **Key Keybindings to Remember:**
-- `<C-p>` - Quick file picker (no leader needed)
-- `<C-f>` - Quick grep live (no leader needed)
 - `<Space>ed` - File explorer at cwd
 - `<Space>ef` - File explorer at current file
 - `<Space>ff` - Find files
@@ -120,8 +140,8 @@ _G.Config.leader_group_clues = { ... }
 **Purpose:** Modern terminal emulator
 
 **Features:**
-- Theme: Kanagawa Dragon
-- Font size: 16, thickening enabled
+- Theme: Rose Pine
+- Fonts: Cascadia Code, font size 16, thickening enabled
 - Quick terminal toggle support
 
 ### vscode/ - Visual Studio Code
@@ -270,9 +290,10 @@ ALL files should follow:
    - Check if mini.nvim has a module before adding external plugin
 
 4. **Lazy Loading:**
-   - Use `MiniDeps.later()` for non-critical plugins
-   - Use `MiniDeps.now()` only when needed at startup
+   - Use `Config.later()` for non-critical plugins
+   - Use `Config.now()` only when needed at startup
    - Use `Config.now_if_args` for file-opening-specific plugins
+   - Wrap `vim.pack.add()` inside the appropriate helper
 
 5. **Documentation:**
    - Add comments explaining the reasoning behind changes
@@ -315,7 +336,7 @@ Based on the configuration, the user:
 
 **Adding a new Neovim plugin:**
 1. Edit `plugin/40_plugins.lua` (or `plugin/30_mini.lua` for mini modules)
-2. Use `MiniDeps.add()` with appropriate `now()` or `later()` wrapper
+2. Use `vim.pack.add()` inside an appropriate `now()` or `later()` wrapper
 3. Configure in the same file or create dedicated file
 4. Update keymaps in `plugin/20_keymaps.lua` if needed
 5. Add to `Config.leader_group_clues` if creating new group
@@ -335,7 +356,7 @@ Based on the configuration, the user:
 5. Run `stow toolname` to test
 
 **Updating dependencies:**
-- Neovim plugins: Use `:DepsUpdate` command
+- Neovim plugins: Run `:lua vim.pack.update()`, then `:write` to confirm
 - System packages: Use Homebrew as documented in README
 
 ## Quick Reference
@@ -347,8 +368,8 @@ Based on the configuration, the user:
 4. `git/.config/git/config` - Git aliases
 
 ### Key Navigation Shortcuts (Neovim)
-- Files: `<C-p>` or `<Space>ff`
-- Grep: `<C-f>` or `<Space>fg`
+- Files: `<Space>ff`
+- Grep: `<Space>fg`
 - Buffers: `<Space>,` or `<Space>fb`
 - Explorer: `<Space>ed` (cwd) or `<Space>ef` (current file)
 - Git: `<Space>g` prefix
@@ -356,7 +377,7 @@ Based on the configuration, the user:
 - Daily note: `<Space>nd`
 
 ### Useful Commands
-- Update Neovim plugins: `:DepsUpdate`
+- Update Neovim plugins: `:lua vim.pack.update()` (then `:write` to confirm)
 - Show mini.pick help: `:h MiniPick`
 - Show keybindings: `:h` on any keymap in config
 - Daily notes: `<Space>nd` (today), `<Space>ni` (index)
@@ -373,21 +394,13 @@ Based on the configuration, the user:
 **Neovim errors on startup:**
 - Check `init.lua` for syntax errors
 - Verify mini.nvim is bootstrapped: `:echo stdpath('data')`
-- Run `:DepsUpdate` to update plugins
+- Run `:lua vim.pack.update()` to update plugins
 - Check numbered files are in correct order
 
 **Git ignoring .claude files:**
 - This is intentional - see `git/.config/git/ignore`
 - `.claude/settings.local.json` should not be committed
 
-## Version Information
-
-- **Last Updated:** 2025-11-15
-- **Recent Changes:** MiniMax-style organization, updated keymaps, mini.bracketed and mini.bufremove additions
-- **Neovim Config Style:** MiniMax-inspired with mini.nvim ecosystem
-- **Primary Maintainer:** mlwarner
-
----
 
 **For AI Assistants:** When in doubt, prioritize:
 1. Maintaining consistency with existing patterns
