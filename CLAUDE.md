@@ -11,7 +11,7 @@ This is a **GNU Stow-based dotfiles repository** managing personal configuration
 - Target platforms: macOS and Linux (dual support)
 - Philosophy: Modular, tool-specific configurations with consistent themes and keybindings
 - Main editor: Neovim with mini.nvim ecosystem
-- Theme consistency: Gruvbox and Kanagawa across tools
+- Theme consistency: Rose Pine (Neovim, Ghostty) and Gruvbox (VS Code)
 - Keybinding philosophy: Vim-style hjkl navigation everywhere
 
 ## Repository Structure
@@ -112,7 +112,7 @@ vim.pack.add({ 'https://github.com/author/plugin.nvim' })
 
 **Override System:**
 - `after/ftplugin/` - Filetype-specific settings (markdown, gitcommit, etc.)
-- `after/lsp/` - LSP server configurations (harper_ls, lua_ls, vtsls)
+- `after/lsp/` - LSP server configurations (harper_ls, lua_ls)
 
 **Key Keybindings to Remember:**
 - `<Space>ed` - File explorer at cwd
