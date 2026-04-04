@@ -6,9 +6,9 @@
       "version": "'v1.10.1'"
     },
     "codecompanion.nvim": {
-      "rev": "4b3f17b558fc92a3e10c4310e562b1ca7458c6a9",
+      "rev": "893f56bdd41c5f58a49a1b0ab28e2ac6ad4667cc",
       "src": "https://github.com/olimorris/codecompanion.nvim",
-      "version": "'v19.8.0'"
+      "version": "'v19.9.0'"
     },
     "friendly-snippets": {
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
@@ -23,7 +23,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "3923662bf3d6ca49a9503f8d7196ea0450983e6a",
+      "rev": "402ee6c6ec8ea44b22330446c8fb4e615fd3953e",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "neovim": {
@@ -31,11 +31,11 @@
       "src": "https://github.com/rose-pine/neovim"
     },
     "nvim-lspconfig": {
-      "rev": "8e2084bf5e40c79c1f42210a6ef96a0a4793a763",
+      "rev": "9ccd58a7949091c0cc2777d4e92a45a209c808c1",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "539abf6da5ee8702e37b82cc953131dadd570da2",
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-treesitter-textobjects": {
