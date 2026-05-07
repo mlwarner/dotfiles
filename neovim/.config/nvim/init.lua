@@ -119,3 +119,41 @@ Config.on_packchanged = function(plugin_name, kinds, callback, desc)
   Config.new_autocmd('PackChanged', '*', f, desc)
 end
 
+-- Define user commands for package management
+-- Taken from https://github.com/neovim/neovim/issues/34764#issuecomment-3543397752
+local function complete_packages(match)
+  return vim.iter(vim.pack.get())
+    :map(function(pack) return pack.spec.name end)
+    :filter(function(pack) return pack:find(match) end)
+    :totable()
+end
+
+vim.api.nvim_create_user_command(
+  'PackUpdate',
+  function(info)
+    if #info.fargs ~= 0 then
+      vim.pack.update(info.fargs, { force = info.bang })
+    else
+      vim.pack.update(nil, { force = info.bang })
+    end
+  end,
+  {
+    desc = 'Update packages',
+    nargs = '*',
+    bang = true,
+    complete = complete_packages,
+  }
+)
+
+vim.api.nvim_create_user_command(
+  'PackDelete',
+  function(info)
+    vim.pack.del(info.fargs, { force = info.bang })
+  end,
+  {
+    desc = 'Delete packages',
+    nargs = '+',
+    bang = true,
+    complete = complete_packages,
+  }
+)

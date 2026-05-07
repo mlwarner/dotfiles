@@ -91,6 +91,10 @@ later(function()
 end)
 
 -- Completion =================================================================
+-- later(function()
+--     add({ { src = "https://github.com/rafamadriz/friendly-snippets" } })
+-- end)
+
 later(function()
     -- use a release tag to download pre-built binaries
     add({
@@ -116,7 +120,7 @@ end)
 later(function()
     add({
         { src = "https://github.com/nvim-lua/plenary.nvim" },
-        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.11.0" },
+        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.13.0" },
     })
 
     require("codecompanion").setup({
@@ -133,12 +137,12 @@ end)
 
 -- TODO Reuse after version 2.0+ fixed for Blink
 -- later(function()
-    -- local make = function() vim.cmd('make') end
-    -- Config.on_packchanged('codesnap.nvim', { 'update' }, make)
+-- local make = function() vim.cmd('make') end
+-- Config.on_packchanged('codesnap.nvim', { 'update' }, make)
 
-    -- add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v1.6.3", } })
-    -- version 2+ has a conflict with Blink
-    -- add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v2.0.1", } })
+-- add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v1.6.3", } })
+-- version 2+ has a conflict with Blink
+-- add({ { src = "https://github.com/mistricky/codesnap.nvim", version = "v2.0.1", } })
 -- end)
 
 later(function()
