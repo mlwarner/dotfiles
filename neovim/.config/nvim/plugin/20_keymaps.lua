@@ -31,6 +31,7 @@ Config.leader_group_clues = {
     { mode = 'n', keys = '<Leader>e', desc = '+Explore/Edit' },
     { mode = 'n', keys = '<Leader>f', desc = '+Find' },
     { mode = 'n', keys = '<Leader>g', desc = '+Git' },
+    { mode = 'n', keys = '<Leader>gB', desc = '+Browse' },
     { mode = 'n', keys = '<Leader>l', desc = '+Language' },
     { mode = 'n', keys = '<Leader>m', desc = '+Map' },
     { mode = 'n', keys = '<Leader>n', desc = '+Notes' },
@@ -152,9 +153,15 @@ nmap_leader('gd', '<Cmd>Git diff<CR>', 'Diff')
 nmap_leader('gD', '<Cmd>Git diff -- %<CR>', 'Diff buffer')
 nmap_leader('gl', '<Cmd>' .. git_log_cmd .. '<CR>', 'Log')
 nmap_leader('gL', '<Cmd>' .. git_log_buf_cmd .. '<CR>', 'Log buffer')
+nmap_leader('gBb', function() Snacks.gitbrowse({ what = 'branch' }) end, 'Browse branch')
+nmap_leader('gBc', function() Snacks.gitbrowse({ what = 'commit' }) end, 'Browse commit')
+nmap_leader('gBf', function() Snacks.gitbrowse({ what = 'file' }) end, 'Browse file')
+nmap_leader('gBp', function() Snacks.gitbrowse({ what = 'permalink' }) end, 'Browse permalink')
+nmap_leader('gBr', function() Snacks.gitbrowse({ what = 'repo' }) end, 'Browse repo')
 nmap_leader('go', '<Cmd>lua MiniDiff.toggle_overlay()<CR>', 'Toggle overlay')
 nmap_leader('gs', '<Cmd>lua MiniGit.show_at_cursor()<CR>', 'Show at cursor')
 
+xmap_leader('gBp', function() Snacks.gitbrowse({ what = 'permalink' }) end, 'Browse permalink')
 xmap_leader('gs', '<Cmd>lua MiniGit.show_at_cursor()<CR>', 'Show at selection')
 
 -- l is for 'Language'. Common usage:

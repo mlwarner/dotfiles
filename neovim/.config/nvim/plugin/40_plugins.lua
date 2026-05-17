@@ -135,6 +135,13 @@ end)
 
 -- Utilities ==================================================================
 
+later(function()
+    add({ 'https://github.com/folke/snacks.nvim' })
+    require('snacks').setup({
+        gitbrowse = { enabled = true },
+    })
+end)
+
 -- TODO Reuse after version 2.0+ fixed for Blink
 -- later(function()
 -- local make = function() vim.cmd('make') end
