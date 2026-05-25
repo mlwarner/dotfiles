@@ -264,3 +264,6 @@ map({ "n", "v" }, "<LocalLeader>a", "<Cmd>CodeCompanionChat Toggle<CR>", { desc 
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
 map('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Snacks
+nmap_leader("cc", function () Snacks.terminal.toggle('claude') end, "Claude Code")

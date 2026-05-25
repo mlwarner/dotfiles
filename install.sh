@@ -14,28 +14,29 @@ NC='\033[0m' # No Color
 
 # Required packages
 BREW_PACKAGES=(
-    "stow"
-    "fzf"
-    "ripgrep"
-    "neovim"
-    "starship"
-    "git"
-    "tree-sitter"
-    "tmux"
     "fd"
+    "fzf"
+    "git"
+    "neovim"
     "node"
+    "ripgrep"
+    "sk"
+    "starship"
+    "stow"
+    "tmux"
+    "tree-sitter"
     "zoxide"
 )
 
 APT_PACKAGES=(
-    "stow"
-    "fzf"
-    "ripgrep"
-    "neovim"
-    "git"
-    "tmux"
     "fd-find"
+    "fzf"
+    "git"
+    "neovim"
     "nodejs"
+    "ripgrep"
+    "stow"
+    "tmux"
 )
 
 # List of stow packages (directories to symlink)

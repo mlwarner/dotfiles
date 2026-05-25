@@ -139,6 +139,7 @@ later(function()
     add({ 'https://github.com/folke/snacks.nvim' })
     require('snacks').setup({
         gitbrowse = { enabled = true },
+        terminal = { enabled = true },
     })
 end)
 
