@@ -282,6 +282,10 @@ end)
 
 later(function() require('mini.indentscope').setup() end)
 
+-- Customizable user input with floating window, statusline, or virtual text views.
+-- Overrides vim.ui.input() with a richer, non-blocking implementation.
+later(function() require('mini.input').setup() end)
+
 -- Special key mappings. Provides helpers to map:
 -- - Multi-step actions. Apply action 1 if condition is met; else apply
 --   action 2 if condition is met; etc.
