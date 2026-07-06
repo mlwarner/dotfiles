@@ -1,7 +1,54 @@
+[core]
+	editor = nvim
+[difftool]
+    prompt = true
+[diff]
+    tool = nvimdiff
+	colorMoved = plain
+	algorithm = histogram
+	mnemonicPrefix = true
+	renames = true
+[difftool "nvimdiff"]
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [alias]
+    amend = "commit --amend --no-edit"
 	br = branch
 	ci = commit
 	co = checkout
-	st = status
-	sw = switch
+    dc = "diff --cached"
     df = diff
+    lg = "log --oneline --graph --decorate --all"
+	st = status
+    sw = switch
+    unstage = "reset HEAD --"
+
+[rebase]
+	autosquash = true
+	autoStash = true
+	updateRefs = true
+[pull]
+	ff = only
+[merge]
+	conflictstyle = zdiff3
+[commit]
+	verbose = true
+[branch]
+	sort = -committerdate
+[column]
+	ui = auto
+[tag]
+	sort = version:refname
+[init]
+	defaultBranch = main
+[push]
+	default = simple
+	autoSetupRemote = true
+[fetch]
+	prune = true
+	pruneTags = true
+	all = true
+[help]
+	autocorrect = prompt
+[rerere]
+	enabled = true
+	autoupdate = true

@@ -257,8 +257,8 @@ nmap_leader('vl', '<Cmd>lua MiniVisits.add_label()<CR>', 'Add label')
 nmap_leader('vL', '<Cmd>lua MiniVisits.remove_label()<CR>', 'Remove label')
 
 -- AI Assistant mappings
-map({ "n", "v" }, "<C-a>", "<Cmd>CodeCompanionActions<CR>", { desc = 'AI Actions' })
-map({ "n", "v" }, "<LocalLeader>a", "<Cmd>CodeCompanionChat Toggle<CR>", { desc = 'AI Chat Toggle' })
+map({ "n", "v" }, "<C-a>", "<Cmd>CodeCompanionActions<CR>", { noremap = true, silent = true, desc = 'AI Actions' })
+map({ "n", "v" }, "<LocalLeader>a", "<Cmd>CodeCompanionChat Toggle<CR>", { noremap = true, silent = true, desc = 'AI Chat Toggle' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
