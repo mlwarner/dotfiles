@@ -83,7 +83,7 @@ later(function()
         'marksman',
         'pyright',
         'rust_analyzer',
-        'sourcekit', -- not installed through Mason
+        'sourcekit',
         'terraformls',
         'tsgo',
     })
