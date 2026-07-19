@@ -67,16 +67,30 @@ now_if_args(function()
 end)
 
 -- Language servers ===========================================================
-later(function()
-    add({
-        'https://github.com/neovim/nvim-lspconfig',
-        -- Used only as an installer for the servers below (`:Mason` to manage).
-        -- Enabling is done explicitly via `vim.lsp.enable()`, not mason-lspconfig.
-        'https://github.com/mason-org/mason.nvim',
-    })
-    require('mason').setup()
 
-    -- Configure via 'nvim-lspconfig' defaults or 'after/lsp/' overrides.
+-- Language Server Protocol (LSP) is a set of conventions that power creation of
+-- language specific tools. It requires two parts:
+-- - Server - program that performs language specific computations.
+-- - Client - program that asks server for computations and shows results.
+--
+-- Here Neovim itself is a client (see `:h vim.lsp`). Language servers need to
+-- be installed separately based on your OS, CLI tools, and preferences.
+-- See note about 'mason.nvim' at the bottom of the file.
+--
+-- Neovim's team collects commonly used configurations for most language servers
+-- inside 'neovim/nvim-lspconfig' plugin.
+--
+-- Add it now if file (and not 'mini.starter') is shown after startup.
+--
+-- Troubleshooting:
+-- - Run `:checkhealth vim.lsp` to see potential issues.
+now_if_args(function()
+    add({ 'https://github.com/neovim/nvim-lspconfig' })
+
+    -- Use `:h vim.lsp.enable()` to automatically enable language server based on
+    -- the rules provided by 'nvim-lspconfig'.
+    -- Use `:h vim.lsp.config()` or 'after/lsp/' directory to configure servers.
+    -- Uncomment and tweak the following `vim.lsp.enable()` call to enable servers.
     vim.lsp.enable({
         'harper_ls',
         'lua_ls',
@@ -88,11 +102,6 @@ later(function()
         'tsgo',
     })
 end)
-
--- Completion =================================================================
--- later(function()
---     add({ { src = "https://github.com/rafamadriz/friendly-snippets" } })
--- end)
 
 later(function()
     -- use a release tag to download pre-built binaries
@@ -119,7 +128,7 @@ end)
 later(function()
     add({
         { src = "https://github.com/nvim-lua/plenary.nvim" },
-        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.18.0" },
+        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.20.0" },
     })
 
     require("codecompanion").setup({
@@ -165,6 +174,19 @@ later(function()
     add({
         "https://github.com/opdavies/toggle-checkbox.nvim"
     })
+end)
+
+-- 'mason-org/mason.nvim' (a.k.a. "Mason") is a great tool (package manager) for
+-- installing external language servers, formatters, and linters. It provides
+-- a unified interface for installing, updating, and deleting such programs.
+--
+-- The caveat is that these programs will be set up to be mostly used inside Neovim.
+-- If you need them to work elsewhere, consider using other package managers.
+--
+-- You can use it like so:
+now_if_args(function()
+    add({ 'https://github.com/mason-org/mason.nvim' })
+    require('mason').setup()
 end)
 
 -- now(function()
