@@ -70,24 +70,23 @@ end)
 later(function()
     add({
         'https://github.com/neovim/nvim-lspconfig',
+        -- Used only as an installer for the servers below (`:Mason` to manage).
+        -- Enabling is done explicitly via `vim.lsp.enable()`, not mason-lspconfig.
         'https://github.com/mason-org/mason.nvim',
-        'https://github.com/mason-org/mason-lspconfig.nvim',
     })
     require('mason').setup()
-    require("mason-lspconfig").setup {
-        ensure_installed = {
-            "harper_ls",
-            "lua_ls",
-            "marksman",
-            "pyright",
-            "rust_analyzer",
-            "terraformls",
-            "tsgo",
-        },
-    }
 
-    -- not included in mason lsp config
-    vim.lsp.enable('sourcekit')
+    -- Configure via 'nvim-lspconfig' defaults or 'after/lsp/' overrides.
+    vim.lsp.enable({
+        'harper_ls',
+        'lua_ls',
+        'marksman',
+        'pyright',
+        'rust_analyzer',
+        'sourcekit',
+        'terraformls',
+        'tsgo',
+    })
 end)
 
 -- Completion =================================================================

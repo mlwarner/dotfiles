@@ -35,6 +35,7 @@ vim.o.showmode        = false              -- Don't show mode in command line
 vim.o.sidescrolloff   = 8                  -- line scroll context
 vim.o.signcolumn      = 'yes'              -- Always show sign column (otherwise it will shift text)
 vim.o.splitbelow      = true               -- Horizontal splits will be below
+vim.o.splitkeep       = 'screen'           -- Reduce scroll during window split
 vim.o.splitright      = true               -- Vertical splits will be to the right
 vim.o.winborder       = 'single'           -- Use border in floating windows
 vim.o.wrap            = false              -- Display long lines as just one line

@@ -385,6 +385,15 @@ end)
 --     vim.keymap.set({ 'i', 's' }, '<C-h>', jump_prev)
 -- end)
 
+-- Split and join arguments (regions inside brackets between allowed separators).
+-- Example usage:
+-- - `gS` - toggle between joined (all in one line) and split (each on a separate
+--   line and indented) arguments. It is dot-repeatable (see `:h .`).
+--
+-- See also:
+-- - `:h MiniSplitjoin.gen_hook` - list of available hooks
+later(function() require('mini.splitjoin').setup() end)
+
 later(function() require('mini.surround').setup() end)
 
 later(function() require('mini.trailspace').setup() end)
