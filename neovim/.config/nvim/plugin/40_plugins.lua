@@ -12,8 +12,31 @@ local add = vim.pack.add
 local now, now_if_args, later = Config.now, Config.now_if_args, Config.later
 
 -- Tree-sitter ================================================================
+
+-- Tree-sitter is a tool for fast incremental parsing. It converts text into
+-- a hierarchical structure (called tree) that can be used to implement advanced
+-- and/or more precise actions: syntax highlighting, textobjects, indent, etc.
+--
+-- Tree-sitter support is built into Neovim (see `:h treesitter`). However, it
+-- requires two extra pieces that don't come with Neovim directly:
+-- - Language parsers: programs that convert text into trees. Some are built-in
+--   (like for Lua), 'nvim-treesitter' provides many others.
+--   NOTE: It requires third party software to build and install parsers.
+--   See the link for more info in "Requirements" section of the MiniMax README.
+-- - Query files: definitions of how to extract information from trees in
+--   a useful manner (see `:h treesitter-query`). 'nvim-treesitter' also provides
+--   these, while 'nvim-treesitter-textobjects' provides the ones for Neovim
+--   textobjects (see `:h text-objects`, `:h MiniAi.gen_spec.treesitter()`).
+--
+-- Add these plugins now if file (and not 'mini.starter') is shown after startup.
+--
+-- Troubleshooting:
+-- - Run `:checkhealth vim.treesitter nvim-treesitter` to see potential issues.
+-- - In case of errors related to queries for Neovim bundled parsers (like `lua`,
+--   `vimdoc`, `markdown`, etc.), manually install them via 'nvim-treesitter'
+--   with `:TSInstall <language>`. Be sure to have necessary system dependencies
+--   (see MiniMax README section for software requirements).
 now_if_args(function()
-    -- The main branch is under active development and has different conventions
     -- Define hook to update tree-sitter parsers after plugin is updated
     local ts_update = function() vim.cmd('TSUpdate') end
     Config.on_packchanged('nvim-treesitter', { 'update' }, ts_update, ':TSUpdate')
@@ -23,7 +46,9 @@ now_if_args(function()
         'https://github.com/nvim-treesitter/nvim-treesitter-textobjects',
     })
 
-    -- Ensure installed
+    -- Define languages which will have parsers installed and auto enabled
+    -- After changing this, restart Neovim once to install necessary parsers. Wait
+    -- for the installation to finish before opening a file for added language(s).
     local languages = {
         'bash',
         'c_sharp',
