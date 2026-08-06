@@ -5,9 +5,23 @@ font-family=Cascadia Code
 # https://ghostty.org/docs/config/reference#font-size
 font-size=18
 
+# Apply font features
+# https://ghostty.org/docs/config/reference#font-feature
+#font-feature=calt,liga,dlig
+
 # Draw fonts with a thicker stroke, if supported. This is only supported currently on macOS.
 # https://ghostty.org/docs/config/reference#font-thicken
-font-thicken=true
+# font-thicken=true
+
+# Quick Terminal: Lightweight terminal that animates down below the menu bar for instant access without interrupting work.
+# https://ghostty.org/docs/config/reference#quick-terminal-position
+quick-terminal-position = center
+quick-terminal-animation-duration = 0
+quick-terminal-size = 70%,70%
+
+# Some Ghostty features require integrating with your shell
+# https://ghostty.org/docs/config/reference#shell-integration-features
+shell-integration-features=true
 
 # To see a list of available themes, run `ghostty +list-themes`.
 # https://ghostty.org/docs/config/reference#theme
@@ -18,4 +32,5 @@ theme=Rose Pine
 # https://ghostty.org/docs/config/reference#keybind
 # https://ghostty.org/docs/config/keybind
 keybind = global:ctrl+grave_accent=toggle_quick_terminal
+keybind = global:super+grave_accent=toggle_quick_terminal
 keybind = shift+enter=text:\n
