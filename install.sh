@@ -15,7 +15,6 @@ NC='\033[0m' # No Color
 # Required packages
 BREW_PACKAGES=(
     "fd"
-    "fzf"
     "git"
     "neovim"
     "node"
@@ -44,6 +43,7 @@ STOW_PACKAGES=(
     "ghostty"
     "git"
     "neovim"
+    "tmux"
     "vscode"
 )
 
