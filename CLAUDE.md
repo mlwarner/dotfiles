@@ -26,6 +26,7 @@ dotfiles/
 ├── ghostty/                   # Ghostty terminal emulator
 ├── git/                       # Git configuration and global ignore
 ├── neovim/                    # Neovim editor (most complex config)
+├── tmux/                      # tmux terminal multiplexer
 └── vscode/                    # VS Code settings (Vim mode)
 ```
 
@@ -132,6 +133,19 @@ vim.pack.add({ 'https://github.com/author/plugin.nvim' })
 - `ignore` - Global gitignore patterns (includes `.claude/settings.local.json`)
 
 **Important:** All `.claude/settings.local.json` files are globally ignored.
+
+### tmux/ - Terminal Multiplexer
+
+**Location:** `tmux/.config/tmux/tmux.conf`
+
+**Features:**
+- Mouse support enabled (click panes, drag to resize, scroll)
+- Windows and panes are 1-indexed (`base-index`/`pane-base-index`), not 0-indexed
+- Windows auto-renumber when one is closed, so there are no gaps
+- Increased scrollback buffer (50,000 lines)
+- Reduced escape-time for faster Neovim key response
+- Focus events enabled (lets Neovim know when a pane gains/loses focus)
+- Aggressive resize (panes size based on the client actually viewing that window)
 
 ### ghostty/ - Terminal Emulator
 
@@ -268,6 +282,7 @@ ALL files should follow:
 | `neovim/.config/nvim/lua/daily-notes.lua` | Daily notes system | When modifying journaling workflow |
 | `git/.config/git/config` | Git aliases | When adding git shortcuts |
 | `git/.config/git/ignore` | Global gitignore | When adding global ignore patterns |
+| `tmux/.config/tmux/tmux.conf` | tmux settings | When changing multiplexer behavior |
 | `.editorconfig` | Global editor standards | Rarely, affects all files |
 
 ## Special Considerations for AI Assistants
