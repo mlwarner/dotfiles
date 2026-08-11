@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal configuration files managed with GNU Stow. Includes configurations for Neovim, Git, Ghostty, and VS Code.
+Personal configuration files managed with GNU Stow. Includes configurations for Neovim, Git, Ghostty, tmux, and VS Code.
 
 ## Quick Start
 
@@ -36,6 +36,7 @@ That's it! The script will install all dependencies and symlink your configurati
 - **Neovim** - Mini.nvim-based configuration with LSP, Treesitter, and semantic keybindings
 - **Git** - Aliases and global ignore patterns
 - **Ghostty** - Terminal emulator configuration
+- **tmux** - Terminal multiplexer configuration (mouse support, 1-indexed windows/panes)
 - **VS Code** - Settings with Vim mode enabled
 
 ## Selective Installation
@@ -45,5 +46,6 @@ Install specific configurations only:
 cd ~/dotfiles
 stow neovim  # Install only Neovim config
 stow git     # Install only Git config
+stow tmux    # Install only tmux config
 ```
 
