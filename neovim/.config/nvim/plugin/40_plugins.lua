@@ -124,7 +124,7 @@ now_if_args(function()
         'rust_analyzer',
         'sourcekit',
         'terraformls',
-        'tsgo',
+        'tsc',
     })
 end)
 
