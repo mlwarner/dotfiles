@@ -2,14 +2,14 @@
 ---
 --- https://github.com/microsoft/typescript-go
 ---
---- `typescript-go` is experimental port of the TypeScript compiler (tsc) and language server (tsserver) to the Go programming language.
+--- `tsc` is the TypeScript compiler (ported to Go), which also ships a native language server.
 ---
---- `tsgo` can be installed via npm `npm install @typescript/native-preview`.
+--- `tsc` can be installed via npm `npm install @typescript/native-preview`.
 ---
 --- ### Monorepo support
 ---
---- `tsgo` supports monorepos by default. It will automatically find the `tsconfig.json` or `jsconfig.json` corresponding to the package you are working on.
---- This works without the need of spawning multiple instances of `tsgo`, saving memory.
+--- `tsc` supports monorepos by default. It will automatically find the `tsconfig.json` or `jsconfig.json` corresponding to the package you are working on.
+--- This works without the need of spawning multiple instances of `tsc`, saving memory.
 ---
 --- It is recommended to use the same version of TypeScript in all packages, and therefore have it available in your workspace root. The location of the TypeScript binary will be determined automatically, but only once.
 ---
@@ -34,7 +34,7 @@
 ---     +-- node-module
 ---         +-- package.json
 ---         +-- src
----             +-- index.ts <-- a non-Deno file (ie, should use ts_ls or tsgols)
+---             +-- index.ts <-- a non-Deno file (ie, should use ts_ls or tsc)
 --- ```
 ---
 --- From the file being edited, we walk up to find the nearest package manager lockfile. This is PROJECT ROOT.
