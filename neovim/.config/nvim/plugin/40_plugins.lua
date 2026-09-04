@@ -171,9 +171,20 @@ end)
 later(function()
     add({ 'https://github.com/folke/snacks.nvim' })
     require('snacks').setup({
+        bigfile = { enabled = true },
         gitbrowse = { enabled = true },
         terminal = { enabled = true },
     })
+
+    -- Snacks flags a buffer as big based on file size or average line length
+    -- (catches minified single-line files too). Disable other mini.nvim
+    -- modules that recompute state on cursor movement, since they add
+    -- perceptible lag on such buffers.
+    Config.new_autocmd('User', 'SnacksBigFile', function(ev)
+        vim.b[ev.buf].miniindentscope_disable = true
+        vim.b[ev.buf].minicursorword_disable = true
+        vim.b[ev.buf].minihipatterns_disable = true
+    end, 'Disable heavy mini modules for big files')
 end)
 
 -- TODO Reuse after version 2.0+ fixed for Blink

@@ -280,7 +280,15 @@ later(function()
     })
 end)
 
-later(function() require('mini.indentscope').setup() end)
+later(function()
+    local indentscope = require('mini.indentscope')
+    indentscope.setup({
+        -- Draw scope indicator instantly instead of animating line-by-line.
+        -- The default animation reschedules a burst of redraws on every scope
+        -- change, which is perceptible as input lag during cursor movement.
+        draw = { animation = indentscope.gen_animation.none() },
+    })
+end)
 
 -- Customizable user input with floating window, statusline, or virtual text views.
 -- Overrides vim.ui.input() with a richer, non-blocking implementation.
