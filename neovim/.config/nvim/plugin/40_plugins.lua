@@ -153,7 +153,7 @@ end)
 later(function()
     add({
         { src = "https://github.com/nvim-lua/plenary.nvim" },
-        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.22.0" },
+        { src = "https://github.com/olimorris/codecompanion.nvim", version = "v19.24.1" },
     })
 
     require("codecompanion").setup({
