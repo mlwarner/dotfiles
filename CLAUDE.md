@@ -146,6 +146,7 @@ vim.pack.add({ 'https://github.com/author/plugin.nvim' })
 - Reduced escape-time for faster Neovim key response
 - Focus events enabled (lets Neovim know when a pane gains/loses focus)
 - Aggressive resize (panes size based on the client actually viewing that window)
+- Claude Code recommendations: `allow-passthrough` (notifications reach the outer terminal) and `extended-keys` (Shift+Enter newlines)
 
 ### ghostty/ - Terminal Emulator
 
