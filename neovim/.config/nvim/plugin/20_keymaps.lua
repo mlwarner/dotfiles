@@ -9,6 +9,11 @@
 -- Use this section to add custom general mappings. See `:h vim.keymap.set()`.
 local map = vim.keymap.set
 
+-- Paste linewise before/after current line
+-- Usage: `yiw` to yank a word and `]p` to put it on the next line.
+map('n', '[p', '<Cmd>exe "iput! " . v:register<CR>', { desc = 'Paste Above' })
+map('n', ']p', '<Cmd>exe "iput "  . v:register<CR>', { desc = 'Paste Below' })
+
 -- Leader mappings ============================================================
 
 -- Neovim has the concept of a Leader key (see `:h <Leader>`). It is a configurable
@@ -82,10 +87,7 @@ local edit_plugin_file = function(filename)
 end
 local explore_at_file = '<Cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<CR>'
 local explore_quickfix = function()
-    for _, win_id in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        if vim.fn.getwininfo(win_id)[1].quickfix == 1 then return vim.cmd('cclose') end
-    end
-    vim.cmd('copen')
+    vim.cmd(vim.fn.getqflist({ winid = true }).winid ~= 0 and 'cclose' or 'copen')
 end
 local explore_locations = function()
     vim.cmd(vim.fn.getloclist(0, { winid = true }).winid ~= 0 and 'lclose' or 'lopen')

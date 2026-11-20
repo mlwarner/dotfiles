@@ -52,8 +52,8 @@
 -- installed plugins is recorded in the lockfile named 'nvim-pack-lock.json'.
 -- Example usage:
 -- - `vim.pack.add({ ... })` - use inside config to add one or more plugins.
--- - `:lua vim.pack.update()` - update all plugins; execute `:write` to confirm.
--- - `:lua vim.pack.del({ ... })` - delete specific plugins.
+-- - `:packupdate` - update all plugins; execute `:write` to confirm.
+-- - `:packdel {name}` - delete plugin `{name}`.
 --
 -- See also:
 -- - `:h vim.pack-examples` - how to use it
@@ -65,9 +65,42 @@
 -- It is a global variable which can be use both as `_G.Config` and `Config`
 _G.Config = {}
 
+-- Define custom autocommand group and helper to create an autocommand.
+-- Autocommands are Neovim's way to define actions that are executed on events
+-- (like creating a buffer, setting an option, etc.).
+--
+-- See also:
+-- - `:h autocommand`
+-- - `:h nvim_create_augroup()`
+-- - `:h nvim_create_autocmd()`
+local gr = vim.api.nvim_create_augroup('custom-config', {})
+Config.new_autocmd = function(event, pattern, callback, desc)
+    local opts = { group = gr, pattern = pattern, callback = callback, desc = desc }
+    vim.api.nvim_create_autocmd(event, opts)
+end
+
+-- Define custom `vim.pack.add()` hook helper. Plugin data is passed as
+-- argument to the callback. See `:h vim.pack-events`.
+-- Example usage: see 'plugin/40_plugins.lua'.
+-- If any plugin requires installation hooks, add them after this function
+-- and before the first `vim.pack.add()` call.
+Config.on_packchanged = function(plugin_name, kinds, callback, desc)
+    local f = function(ev)
+        local name, kind = ev.data.spec.name, ev.data.kind
+        if not (name == plugin_name and vim.tbl_contains(kinds, kind)) then return end
+        if not ev.data.active then vim.cmd.packadd(plugin_name) end
+        callback(ev.data)
+    end
+    Config.new_autocmd('PackChanged', '*', f, desc)
+end
+
 -- 'mini.nvim' - all-in-one plugin powering most MiniMax features.
 -- See 'plugin/30_mini.lua' for how it is used.
 -- Load now to have 'mini.misc' available for custom loading helpers.
+-- Mirrors outside of Github are also available (replace URL with one of them,
+-- will take effect during the first plugin update with `vim.pack`):
+-- - https://tangled.org/nvim-mini.org/mini.nvim
+-- - https://codeberg.org/nvim-mini/mini.nvim
 vim.pack.add({ 'https://github.com/nvim-mini/mini.nvim' })
 
 -- Loading helpers used to organize config into fail-safe parts. Example usage:
@@ -92,68 +125,3 @@ Config.later = function(f) misc.safely('later', f) end
 Config.now_if_args = vim.fn.argc(-1) > 0 and Config.now or Config.later
 Config.on_event = function(ev, f) misc.safely('event:' .. ev, f) end
 Config.on_filetype = function(ft, f) misc.safely('filetype:' .. ft, f) end
-
--- Define custom autocommand group and helper to create an autocommand.
--- Autocommands are Neovim's way to define actions that are executed on events
--- (like creating a buffer, setting an option, etc.).
---
--- See also:
--- - `:h autocommand`
--- - `:h nvim_create_augroup()`
--- - `:h nvim_create_autocmd()`
-local gr = vim.api.nvim_create_augroup('custom-config', {})
-Config.new_autocmd = function(event, pattern, callback, desc)
-  local opts = { group = gr, pattern = pattern, callback = callback, desc = desc }
-  vim.api.nvim_create_autocmd(event, opts)
-end
-
--- Define custom `vim.pack.add()` hook helper. See `:h vim.pack-events`.
--- Example usage: see 'plugin/40_plugins.lua'.
-Config.on_packchanged = function(plugin_name, kinds, callback, desc)
-  local f = function(ev)
-    local name, kind = ev.data.spec.name, ev.data.kind
-    if not (name == plugin_name and vim.tbl_contains(kinds, kind)) then return end
-    if not ev.data.active then vim.cmd.packadd(plugin_name) end
-    callback()
-  end
-  Config.new_autocmd('PackChanged', '*', f, desc)
-end
-
--- Define user commands for package management
--- Taken from https://github.com/neovim/neovim/issues/34764#issuecomment-3543397752
-local function complete_packages(match)
-  return vim.iter(vim.pack.get())
-    :map(function(pack) return pack.spec.name end)
-    :filter(function(pack) return pack:find(match) end)
-    :totable()
-end
-
-vim.api.nvim_create_user_command(
-  'PackUpdate',
-  function(info)
-    if #info.fargs ~= 0 then
-      vim.pack.update(info.fargs, { force = info.bang })
-    else
-      vim.pack.update(nil, { force = info.bang })
-    end
-  end,
-  {
-    desc = 'Update packages',
-    nargs = '*',
-    bang = true,
-    complete = complete_packages,
-  }
-)
-
-vim.api.nvim_create_user_command(
-  'PackDelete',
-  function(info)
-    vim.pack.del(info.fargs, { force = info.bang })
-  end,
-  {
-    desc = 'Delete packages',
-    nargs = '+',
-    bang = true,
-    complete = complete_packages,
-  }
-)

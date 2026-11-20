@@ -40,7 +40,7 @@ now(function()
     })
 end)
 
-now(function() require('mini.files').setup({ windows = { preview = true } }) end)
+now_if_args(function() require('mini.files').setup({ windows = { preview = true } }) end)
 
 now(function()
     require('mini.icons').setup()
@@ -352,7 +352,7 @@ later(function()
     vim.ui.select = MiniPick.ui_select
 
     -- Expects daily notes to be setup
-    dailyNotes = require('daily-notes')
+    local dailyNotes = require('daily-notes')
 
     MiniPick.registry.notes = function(local_opts)
         local opts = { source = { cwd = dailyNotes.get_notes_dir() } }
