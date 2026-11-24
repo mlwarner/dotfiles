@@ -119,7 +119,8 @@ now_if_args(function()
     vim.lsp.enable({
         'harper_ls',
         'lua_ls',
-        'marksman',
+        -- 'marksman',
+        'markdown_oxide',
         'pyright',
         'rust_analyzer',
         'sourcekit',
