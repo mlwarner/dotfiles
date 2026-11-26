@@ -332,6 +332,9 @@ ALL files should follow:
    - Types: feat, fix, chore, docs
    - Scopes: nvim, git, ghostty, vscode, or tool name
    - Keep commits focused and atomic
+   - **Squash each change into a single commit.** Don't leave a trail of commits describing
+     incremental work ("add X", "tweak X", "fix X"). When revising an unmerged branch, amend or
+     squash and push with `--force-with-lease` instead of stacking follow-up commits.
 
 4. **Testing Changes:**
    - Test Neovim changes before committing
